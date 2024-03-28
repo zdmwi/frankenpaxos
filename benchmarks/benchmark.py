@@ -19,6 +19,7 @@ from . import proc
 from . import util
 from typing import (Any, Collection, Dict, Generic, Iterable, IO, List,
                     NamedTuple, Optional, Sequence, Tuple, TypeVar, Union)
+from contextlib import AbstractContextManager
 import colorful
 import contextlib
 import csv
@@ -27,11 +28,9 @@ import datetime
 import json
 import os
 import pandas as pd
-import queue
 import random
 import string
 import subprocess
-import threading
 
 
 def _random_string(n: int) -> str:
@@ -66,13 +65,41 @@ class _Reaped(object):
             f.write(str(returncode) + '\n')
 
 
+class Directory(AbstractContextManager):
+    def __init__(self, path: str = "") -> None:
+        assert os.path.exists(path)
+        self.path = path
+
+    def __get_classname(self) -> str:
+        return self.__class__.__name__
+
+    def __str__(self) -> str:
+        classname = self.__get_classname()
+        return f'{classname}({self.path})'
+
+    def abspath(self, filename: str) -> str:
+        return os.path.join(self.path, filename)
+    
+    def create_file(self, filename: str) -> IO:
+        return open(self.abspath(filename), 'w')
+    
+    def write_string(self, filename: str, s: str) -> str:
+        with self.create_file(filename) as f:
+            f.write(s + '\n')
+        return self.abspath(filename)
+    
+    def write_dict(self, filename: str, d: Dict) -> str:
+        self.write_string(filename, json.dumps(d, indent=4, default=str))
+        return self.abspath(filename)
+
+
 # A SuiteDirectory is a directory in which you can run a suite. It has
 # convenient methods to record information within the directory (e.g., the
 # start time, the set of inputs). It also contains methods to create
 # subdirectories for each benchmark in the suite.
-class SuiteDirectory(object):
-    def __init__(self, path: str, name: str = None) -> None:
-        assert os.path.exists(path)
+class SuiteDirectory(Directory):
+    def __init__(self, path: str, name: str = "") -> None:
+        super().__init__(path)
 
         self.benchmark_dir_id = 1
 
@@ -83,9 +110,6 @@ class SuiteDirectory(object):
         assert not os.path.exists(self.path)
         os.makedirs(self.path)
 
-    def __str__(self) -> str:
-        return f'SuiteDirectory({self.path})'
-
     def __enter__(self):
         self.write_string('start_time.txt', str(datetime.datetime.now()))
         return self
@@ -93,22 +117,7 @@ class SuiteDirectory(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.write_string('stop_time.txt', str(datetime.datetime.now()))
 
-    def abspath(self, filename: str) -> str:
-        return os.path.join(self.path, filename)
-
-    def create_file(self, filename: str) -> IO:
-        return open(self.abspath(filename), 'w')
-
-    def write_string(self, filename: str, s: str) -> str:
-        with self.create_file(filename) as f:
-            f.write(s + '\n')
-        return self.abspath(filename)
-
-    def write_dict(self, filename: str, d: Dict) -> str:
-        self.write_string(filename, json.dumps(d, indent=4, default=str))
-        return self.abspath(filename)
-
-    def benchmark_directory(self, name: str = None) -> 'BenchmarkDirectory':
+    def benchmark_directory(self, name: str = "") -> 'BenchmarkDirectory':
         benchmark_dir_id = self.benchmark_dir_id
         self.benchmark_dir_id += 1
         name_suffix = ("_" + name) if name else ""
@@ -121,7 +130,7 @@ class SuiteDirectory(object):
 # information about a benchmark as well as other helpful methods. For example,
 # the popen method allows you to run an executable and record its standard out,
 # standard error, and return code within a benchmark directory.
-class BenchmarkDirectory(object):
+class BenchmarkDirectory(Directory):
     def __init__(self, path: str) -> None:
         assert not os.path.exists(path)
         self.path = os.path.abspath(path)
@@ -142,9 +151,6 @@ class BenchmarkDirectory(object):
         # Whether we have already exited. We want to avoid exiting twice.
         self.exited = False
 
-    def __str__(self) -> str:
-        return f'BenchmarkDirectory({self.path})'
-
     def __enter__(self):
         self.process_stack.__enter__()
         self.write_string('start_time.txt', str(datetime.datetime.now()))
@@ -154,27 +160,13 @@ class BenchmarkDirectory(object):
         if self.exited:
             return
 
+        self.process_stack.pop_all().close() # kills all processes on the process stack
         self.process_stack.__exit__(cls, exn, trace)
         self.exited = True
         self.write_dict(
             'pids.json',
             {f'{ip}:{pid}': label for ((ip, pid), label) in self.pids.items()})
         self.write_string('stop_time.txt', str(datetime.datetime.now()))
-
-    def abspath(self, filename: str) -> str:
-        return os.path.join(self.path, filename)
-
-    def create_file(self, filename: str) -> IO:
-        return open(self.abspath(filename), 'w')
-
-    def write_string(self, filename: str, s: str) -> str:
-        with self.create_file(filename) as f:
-            f.write(s + '\n')
-        return self.abspath(filename)
-
-    def write_dict(self, filename: str, d: Dict) -> str:
-        self.write_string(filename, json.dumps(d, indent=4, default=str))
-        return self.abspath(filename)
 
     def log(self, s: str) -> None:
         self.logfile.write(f'[{_pretty_now_string()}] {s}\n')
