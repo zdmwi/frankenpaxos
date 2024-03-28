@@ -23,7 +23,7 @@ def get_benchmark_parser() -> argparse.ArgumentParser:
         type=str,
         default=os.path.join(
             os.path.dirname(os.path.realpath(__file__)), '..',
-            'jvm/target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar'),
+            'target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar'),
         help='FrankenPaxos JAR file')
     parser.add_argument('-l',
                         '--log_level',
