@@ -4,10 +4,8 @@ import frankenpaxos.util.TopK
 import frankenpaxos.util.TopOne
 import frankenpaxos.util.VertexIdLike
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-class Register extends StateMachine {
+ 
+ class Register extends StateMachine {
   private var x: String = ""
 
   override def toString(): String = x

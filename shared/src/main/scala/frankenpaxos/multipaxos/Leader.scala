@@ -13,24 +13,20 @@ import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.quorums.Grid
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
+ object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
   type A = LeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Leader {
+ object Leader {
   val serializer = LeaderInboundSerializer
 }
 
-@JSExportAll
-case class LeaderOptions(
+ case class LeaderOptions(
     resendPhase1asPeriod: java.time.Duration,
     // A leader flushes all of its channels to the proxy leaders after every
     // `flushPhase2asEveryN` Phase2a messages sent. For example, if
@@ -45,8 +41,7 @@ case class LeaderOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object LeaderOptions {
+ object LeaderOptions {
   val default = LeaderOptions(
     resendPhase1asPeriod = java.time.Duration.ofSeconds(5),
     flushPhase2asEveryN = 1,
@@ -56,8 +51,7 @@ object LeaderOptions {
   )
 }
 
-@JSExportAll
-class LeaderMetrics(collectors: Collectors) {
+ class LeaderMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("multipaxos_leader_requests_total")
@@ -91,8 +85,7 @@ class LeaderMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Leader[Transport <: frankenpaxos.Transport[Transport]](
+ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -113,22 +106,18 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   type Round = Int
   type Slot = Int
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case object Inactive extends State
+    case object Inactive extends State
 
-  @JSExportAll
-  case class Phase1(
+    case class Phase1(
       phase1bs: mutable.Buffer[mutable.Map[AcceptorIndex, Phase1b]],
       phase1bAcceptors: mutable.Set[(GroupIndex, AcceptorIndex)],
       pendingClientRequestBatches: mutable.Buffer[ClientRequestBatch],
       resendPhase1as: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class Phase2(
+    case class Phase2(
       noopFlush: Option[Transport#Timer]
   ) extends State
 
@@ -150,8 +139,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   // system. Every acceptor has a group index and an acceptor index within that
   // group. This is equivalent to the row and column. We use this pair to
   // identify the acceptors.
-  @JSExport
-  protected val grid: Grid[(GroupIndex, AcceptorIndex)] = new Grid(
+     protected val grid: Grid[(GroupIndex, AcceptorIndex)] = new Grid(
     for (row <- 0 until acceptors.size) yield {
       for (col <- 0 until acceptors(row).size) yield {
         (row, col)
@@ -168,29 +156,24 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
 
   // If the leader is the active leader, then this is its round. If it is
   // inactive, then this is the largest active round it knows about.
-  @JSExport
-  protected var round: Round = roundSystem
+     protected var round: Round = roundSystem
     .nextClassicRound(leaderIndex = 0, round = -1)
 
   // The next available slot in the log. Even though we have a next slot into
   // the log, you'll note that we don't even have a log! Because we've
   // decoupled aggressively, leaders don't actually need a log at all.
-  @JSExport
-  protected var nextSlot: Slot = 0
+     protected var nextSlot: Slot = 0
 
   // Every slot less than chosenWatermark has been chosen. Replicas
   // periodically send their chosenWatermarks to the leaders.
-  @JSExport
-  protected var chosenWatermark: Slot = 0
+     protected var chosenWatermark: Slot = 0
 
   // Leader election address. This field exists for the javascript
   // visualizations.
-  @JSExport
-  protected val electionAddress = config.leaderElectionAddresses(index)
+     protected val electionAddress = config.leaderElectionAddresses(index)
 
   // Leader election participant.
-  @JSExport
-  protected val election = new Participant[Transport](
+     protected val election = new Participant[Transport](
     address = electionAddress,
     transport = transport,
     logger = logger,
@@ -211,8 +194,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   private var currentProxyLeader: Int = 0
 
   // The leader's state.
-  @JSExport
-  protected var state: State = if (index == 0) {
+     protected var state: State = if (index == 0) {
     startPhase1(round, chosenWatermark)
   } else {
     Inactive

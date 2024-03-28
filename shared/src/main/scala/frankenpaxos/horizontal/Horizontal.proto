@@ -74,13 +74,11 @@ option (scalapb.options) = {
 
 // Helper messages. ////////////////////////////////////////////////////////////
 message Noop {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message CommandId {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // A client's address, pseudonym, and id uniquely identify a command.
   required bytes client_address = 1;
@@ -89,23 +87,20 @@ message CommandId {
 }
 
 message Command {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required bytes command = 2;
 }
 
 message Configuration {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required quorums.QuorumSystemProto quorum_system = 1;
 }
 
 message Value {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof value {
     Command command = 1;
@@ -115,8 +110,7 @@ message Value {
 }
 
 message Phase1bSlotInfo {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 vote_round = 2;
@@ -125,8 +119,7 @@ message Phase1bSlotInfo {
 
 // Normal case operations. /////////////////////////////////////////////////////
 message Phase1a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 
@@ -139,8 +132,7 @@ message Phase1a {
 }
 
 message Phase1b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required int32 first_slot = 2;
@@ -149,15 +141,13 @@ message Phase1b {
 }
 
 message ClientRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required Command command = 1;
 }
 
 message Phase2a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 round = 2;
@@ -166,8 +156,7 @@ message Phase2a {
 }
 
 message Phase2b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 round = 2;
@@ -175,16 +164,14 @@ message Phase2b {
 }
 
 message Chosen {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required Value value = 2;
 }
 
 message ClientReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required bytes result = 2;
@@ -192,41 +179,35 @@ message ClientReply {
 
 // Reconfiguration. ////////////////////////////////////////////////////////////
 message Reconfigure {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required Configuration configuration = 1;
 }
 
 // Abnormal case operations. ///////////////////////////////////////////////////
 message NotLeader {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // The round of the leader (hopefully).
   required int32 round = 1;
 }
 
 message Nack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message Recover {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // Replicas execute logs in prefix order. Thus, if the log permanently has a
   // hole in it, the algorithm remains forever blocked. To solve this, if a
@@ -237,8 +218,7 @@ message Recover {
 
 // Driver. /////////////////////////////////////////////////////////////////////
 message Die {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 // Inbound messages. ///////////////////////////////////////////////////////////

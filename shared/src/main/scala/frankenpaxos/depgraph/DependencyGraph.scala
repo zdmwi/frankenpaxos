@@ -3,8 +3,7 @@ package frankenpaxos.depgraph
 import frankenpaxos.compact.CompactSet
 import frankenpaxos.monitoring.Collectors
 import scala.collection.mutable
-import scala.scalajs.js.annotation.JSExportAll
-
+ 
 // # MultiPaxos
 // MultiPaxos replicas agree on a log by committing one log entry at a time.
 // Initially, the log is empty:
@@ -123,8 +122,7 @@ import scala.scalajs.js.annotation.JSExportAll
 // BPaxos doesn't even use sequence numbers. The key and sequence number
 // orderings are used to execute commands within a component in a deterministic
 // order.
-@JSExportAll
-abstract class DependencyGraph[
+ abstract class DependencyGraph[
     Key,
     SequenceNumber,
     KeySet <: CompactSet[KeySet] { type T = Key }

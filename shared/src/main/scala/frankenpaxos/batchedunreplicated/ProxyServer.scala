@@ -10,9 +10,7 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
 
-@JSExportAll
 object ProxyServerInboundSerializer
     extends ProtoSerializer[ProxyServerInbound] {
   type A = ProxyServerInbound
@@ -21,12 +19,10 @@ object ProxyServerInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
 object ProxyServer {
   val serializer = ProxyServerInboundSerializer
 }
 
-@JSExportAll
 case class ProxyServerOptions(
     // A proxy server flushes all of its channels to the clients after every
     // `flushEveryN` commands processed.
@@ -34,7 +30,6 @@ case class ProxyServerOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
 object ProxyServerOptions {
   val default = ProxyServerOptions(
     flushEveryN = 1,
@@ -42,7 +37,6 @@ object ProxyServerOptions {
   )
 }
 
-@JSExportAll
 class ProxyServerMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
@@ -59,7 +53,6 @@ class ProxyServerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
 class ProxyServer[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
@@ -74,8 +67,7 @@ class ProxyServer[Transport <: frankenpaxos.Transport[Transport]](
 
   // Fields ////////////////////////////////////////////////////////////////////
   // Client channels.
-  @JSExport
-  protected val clients =
+     protected val clients =
     mutable.Map[Transport#Address, Chan[Client[Transport]]]()
 
   // The number of messages since the last flush.

@@ -10,10 +10,8 @@ import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.statemachine.StateMachine
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object DepServiceNodeInboundSerializer
+ 
+ object DepServiceNodeInboundSerializer
     extends ProtoSerializer[DepServiceNodeInbound] {
   type A = DepServiceNodeInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -21,19 +19,16 @@ object DepServiceNodeInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-case class DepServiceNodeOptions(
+ case class DepServiceNodeOptions(
     // TODO(mwhittaker): Add options.
 )
 
-@JSExportAll
-object DepServiceNodeOptions {
+ object DepServiceNodeOptions {
   // TODO(mwhittaker): Add options.
   val default = DepServiceNodeOptions()
 }
 
-@JSExportAll
-class DepServiceNodeMetrics(collectors: Collectors) {
+ class DepServiceNodeMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("unanimous_bpaxos_dep_service_node_requests_total")
@@ -57,13 +52,11 @@ class DepServiceNodeMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-object DepServiceNode {
+ object DepServiceNode {
   val serializer = DepServiceNodeInboundSerializer
 }
 
-@JSExportAll
-class DepServiceNode[Transport <: frankenpaxos.Transport[Transport]](
+ class DepServiceNode[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -95,14 +88,12 @@ class DepServiceNode[Transport <: frankenpaxos.Transport[Transport]](
   // This conflict index stores all of the commands seen so far. When a
   // dependency service node receives a new command, it uses the conflict index
   // to efficiently compute dependencies.
-  @JSExport
-  protected val conflictIndex = stateMachine.conflictIndex[VertexId]()
+     protected val conflictIndex = stateMachine.conflictIndex[VertexId]()
 
   // dependencies caches the dependencies computed by the conflict index. If a
   // dependency service node receives a command more than once, it returns the
   // same set of dependencies.
-  @JSExport
-  protected val dependenciesCache = mutable.Map[VertexId, Set[VertexId]]()
+     protected val dependenciesCache = mutable.Map[VertexId, Set[VertexId]]()
 
   // Handlers //////////////////////////////////////////////////////////////////
   override def receive(

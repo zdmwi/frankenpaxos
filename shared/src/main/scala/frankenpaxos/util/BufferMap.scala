@@ -1,20 +1,15 @@
 package frankenpaxos.util
 
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
+ 
 // TODO(mwhittaker): Document.
-@JSExportAll
-class BufferMap[V](val growSize: Int = 5000) {
-  @JSExport
-  protected val buffer: mutable.Buffer[Option[V]] =
+ class BufferMap[V](val growSize: Int = 5000) {
+     protected val buffer: mutable.Buffer[Option[V]] =
     mutable.Buffer.fill(growSize)(None)
 
-  @JSExport
-  protected var watermark: Int = 0
+     protected var watermark: Int = 0
 
-  @JSExport
-  protected var largestKey: Int = -1
+     protected var largestKey: Int = -1
 
   override def toString(): String = buffer.toString()
 

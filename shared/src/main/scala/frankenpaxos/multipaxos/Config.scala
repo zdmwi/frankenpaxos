@@ -1,9 +1,7 @@
 package frankenpaxos.multipaxos
 
-import scala.scalajs.js.annotation.JSExportAll
-
-@JSExportAll
-case class Config[Transport <: frankenpaxos.Transport[Transport]](
+ 
+ case class Config[Transport <: frankenpaxos.Transport[Transport]](
     f: Int,
     batcherAddresses: Seq[Transport#Address],
     readBatcherAddresses: Seq[Transport#Address],

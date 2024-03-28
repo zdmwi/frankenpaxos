@@ -9,10 +9,8 @@ import frankenpaxos.ProtoSerializer
 import java.io.File
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object BenchmarkClientInboundSerializer
+ 
+ object BenchmarkClientInboundSerializer
     extends ProtoSerializer[BenchmarkClientInbound] {
   type A = BenchmarkClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -20,13 +18,11 @@ object BenchmarkClientInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object BenchmarkClient {
+ object BenchmarkClient {
   val serializer = BenchmarkClientInboundSerializer
 }
 
-@JSExportAll
-class BenchmarkClient[Transport <: frankenpaxos.Transport[Transport]](
+ class BenchmarkClient[Transport <: frankenpaxos.Transport[Transport]](
     srcAddress: Transport#Address,
     dstAddress: Transport#Address,
     transport: Transport,

@@ -6,10 +6,8 @@ import frankenpaxos.Logger
 import frankenpaxos.ProtoSerializer
 import frankenpaxos.Util
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object ParticipantInboundSerializer
+ 
+ object ParticipantInboundSerializer
     extends ProtoSerializer[ParticipantInbound] {
   type A = ParticipantInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -17,8 +15,7 @@ object ParticipantInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Participant {
+ object Participant {
   val serializer = ParticipantInboundSerializer
 }
 
@@ -52,8 +49,7 @@ object ElectionOptions {
   )
 }
 
-@JSExportAll
-class Participant[Transport <: frankenpaxos.Transport[Transport]](
+ class Participant[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -66,25 +62,21 @@ class Participant[Transport <: frankenpaxos.Transport[Transport]](
   // Possible states ///////////////////////////////////////////////////////////
   sealed trait ElectionState
 
-  @JSExportAll
-  case class LeaderlessFollower(
+    case class LeaderlessFollower(
       noPingTimer: Transport#Timer
   ) extends ElectionState
 
-  @JSExportAll
-  case class Follower(
+    case class Follower(
       noPingTimer: Transport#Timer,
       leader: Transport#Address
   ) extends ElectionState
 
-  @JSExportAll
-  case class Candidate(
+    case class Candidate(
       notEnoughVotesTimer: Transport#Timer,
       votes: Set[Transport#Address]
   ) extends ElectionState
 
-  @JSExportAll
-  case class Leader(pingTimer: Transport#Timer) extends ElectionState
+    case class Leader(pingTimer: Transport#Timer) extends ElectionState
 
   // Members ///////////////////////////////////////////////////////////////////
   override type InboundMessage = ParticipantInbound

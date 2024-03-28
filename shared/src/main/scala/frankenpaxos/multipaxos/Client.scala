@@ -14,24 +14,20 @@ import frankenpaxos.quorums.Grid
 import frankenpaxos.roundsystem.RoundSystem
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
+ object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Client {
+ object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
-case class ClientOptions(
+ case class ClientOptions(
     // Resend periods.
     resendClientRequestPeriod: java.time.Duration,
     resendMaxSlotRequestsPeriod: java.time.Duration,
@@ -57,8 +53,7 @@ case class ClientOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ClientOptions {
+ object ClientOptions {
   val default = ClientOptions(
     resendClientRequestPeriod = java.time.Duration.ofSeconds(10),
     resendMaxSlotRequestsPeriod = java.time.Duration.ofSeconds(10),
@@ -73,8 +68,7 @@ object ClientOptions {
   )
 }
 
-@JSExportAll
-class ClientMetrics(collectors: Collectors) {
+ class ClientMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("multipaxos_client_requests_total")
@@ -150,8 +144,7 @@ class ClientMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Client[Transport <: frankenpaxos.Transport[Transport]](
+ class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -171,19 +164,16 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   type GroupIndex = Int
   type AcceptorIndex = Int
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case class PendingWrite(
+    case class PendingWrite(
       id: Id,
       command: Array[Byte],
       result: Promise[Array[Byte]],
       resendClientRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class MaxSlot(
+    case class MaxSlot(
       id: Id,
       command: Array[Byte],
       result: Promise[Array[Byte]],
@@ -191,36 +181,31 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       resendMaxSlotRequests: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class PendingRead(
+    case class PendingRead(
       id: Id,
       command: Array[Byte],
       result: Promise[Array[Byte]],
       resendReadRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class PendingSequentialRead(
+    case class PendingSequentialRead(
       id: Id,
       command: Array[Byte],
       result: Promise[Array[Byte]],
       resendSequentialReadRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class PendingEventualRead(
+    case class PendingEventualRead(
       id: Id,
       command: Array[Byte],
       result: Promise[Array[Byte]],
       resendEventualReadRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  class Ticker(fireEveryN: Int, thunk: () => Unit) {
+    class Ticker(fireEveryN: Int, thunk: () => Unit) {
     logger.checkGe(fireEveryN, 1)
 
-    @JSExport
-    protected var x: Int = 0
+         protected var x: Int = 0
 
     def tick() {
       x = x + 1
@@ -267,8 +252,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // system. Every acceptor has a group index and an acceptor index within that
   // group. This is equivalent to the row and column. We use this pair to
   // identify the acceptors.
-  @JSExport
-  protected val grid: Grid[(GroupIndex, AcceptorIndex)] = new Grid(
+     protected val grid: Grid[(GroupIndex, AcceptorIndex)] = new Grid(
     for (row <- 0 until acceptors.size) yield {
       for (col <- 0 until acceptors(row).size) yield {
         (row, col)
@@ -288,31 +272,26 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // with this round can be computed using `roundSystem`. The clients need to
   // know who the leader is because they need to know where to send their
   // commands.
-  @JSExport
-  protected var round: Int = 0
+     protected var round: Int = 0
 
   // Every request that a client sends is annotated with a monotonically
   // increasing client id. Here, we assume that if a client fails, it does not
   // recover, so we are safe to intialize the id to 0. If clients can recover
   // from failure, we would have to implement some mechanism to ensure that
   // client ids increase over time, even after crashes and restarts.
-  @JSExport
-  protected var ids = mutable.Map[Pseudonym, Id]()
+     protected var ids = mutable.Map[Pseudonym, Id]()
 
   // To implement sequentially consistent reads, a client must keep track of
   // the largest slot in which any previous read or write has occured.
-  @JSExport
-  protected var largestSeenSlots = mutable.Map[Pseudonym, Int]()
+     protected var largestSeenSlots = mutable.Map[Pseudonym, Int]()
 
   // Clients can only propose one request at a time (per pseudonym), so if
   // there is a pending command, no other command can be proposed. This
   // restriction hurts performance a bit---a single client cannot pipeline
   // requests---but it simplifies the design of the protocol.
-  @JSExport
-  protected var states = mutable.Map[Pseudonym, State]()
+     protected var states = mutable.Map[Pseudonym, State]()
 
-  @JSExport
-  protected val writeTicker: Option[Ticker] =
+     protected val writeTicker: Option[Ticker] =
     if (options.flushWritesEveryN == 1) {
       None
     } else {
@@ -326,8 +305,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       }))
     }
 
-  @JSExport
-  protected val readTicker: Option[Ticker] =
+     protected val readTicker: Option[Ticker] =
     if (options.flushReadsEveryN == 1) {
       None
     } else {

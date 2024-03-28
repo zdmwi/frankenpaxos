@@ -83,13 +83,11 @@ option (scalapb.options) = {
 
 // Helper messages. ////////////////////////////////////////////////////////////
 message Noop {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message CommandId {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // A client's address, pseudonym, and id uniquely identify a command.
   required bytes client_address = 1;
@@ -98,16 +96,14 @@ message CommandId {
 }
 
 message Command {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required bytes command = 2;
 }
 
 message CommandOrNoop {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof value {
     Command command = 1;
@@ -116,16 +112,14 @@ message CommandOrNoop {
 }
 
 message Configuration {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required quorums.QuorumSystemProto quorum_system = 2;
 }
 
 message MatchmakerConfiguration {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 reconfigurer_index = 2;
@@ -133,8 +127,7 @@ message MatchmakerConfiguration {
 }
 
 message Phase1bSlotInfo {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 vote_round = 2;
@@ -142,8 +135,7 @@ message Phase1bSlotInfo {
 }
 
 message MatchPhase1bVote {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 vote_round = 1;
   required MatchmakerConfiguration vote_value = 2;
@@ -151,16 +143,14 @@ message MatchPhase1bVote {
 
 // Normal case operations. /////////////////////////////////////////////////////
 message MatchRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration matchmaker_configuration = 1;
   required Configuration configuration = 2;
 }
 
 message MatchReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 round = 2;
@@ -174,8 +164,7 @@ message MatchReply {
 }
 
 message Phase1a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 
@@ -190,8 +179,7 @@ message Phase1a {
 }
 
 message Phase1b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required int32 acceptor_index = 2;
@@ -203,15 +191,13 @@ message Phase1b {
 }
 
 message ClientRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required Command command = 1;
 }
 
 message Phase2a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 round = 2;
@@ -219,8 +205,7 @@ message Phase2a {
 }
 
 message Phase2b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 round = 2;
@@ -229,24 +214,21 @@ message Phase2b {
 }
 
 message Chosen {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required CommandOrNoop value = 2;
 }
 
 message ChosenWatermark {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // All slots less than `watermark` have been chosen.
   required int32 watermark = 1;
 }
 
 message ClientReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required bytes result = 2;
@@ -254,41 +236,35 @@ message ClientReply {
 
 // Abnormal case operations. ///////////////////////////////////////////////////
 message NotLeader {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // The round of the leader (hopefully).
   required int32 round = 1;
 }
 
 message MatchmakerNack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // The leader should retry with a round at least as large as round.
   required int32 round = 1;
 }
 
 message AcceptorNack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message Recover {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // Replicas execute logs in prefix order. Thus, if the log permanently has a
   // hole in it, the algorithm remains forever blocked. To solve this, if a
@@ -299,13 +275,11 @@ message Recover {
 
 // Garbage Collection. /////////////////////////////////////////////////////////
 message ExecutedWatermarkRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message ExecutedWatermarkReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // Replica `replica_index` has executed all commands in slots less than
   // `executed_watermark`.
@@ -314,8 +288,7 @@ message ExecutedWatermarkReply {
 }
 
 message Persisted {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // All commands in slots less than persisted_watermark have been stored on at
   // least f + 1 replicas.
@@ -323,16 +296,14 @@ message Persisted {
 }
 
 message PersistedAck {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 acceptor_index = 1;
   required int32 persisted_watermark = 2;
 }
 
 message GarbageCollect {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration matchmaker_configuration = 1;
   // Garbage collect all rounds less than `gc_watermark`.
@@ -340,8 +311,7 @@ message GarbageCollect {
 }
 
 message GarbageCollectAck {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 matchmaker_index = 2;
@@ -350,31 +320,27 @@ message GarbageCollectAck {
 
 // Matchmaker reconfiguration. /////////////////////////////////////////////////
 message Stopped {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // The matchmaker is stopped in this epoch.
   required int32 epoch = 1;
 }
 
 message Reconfigure {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration matchmaker_configuration = 1;
   repeated int32 new_matchmaker_index = 2;
 }
 
 message Stop {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration matchmaker_configuration = 1;
 }
 
 message StopAck {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 matchmaker_index = 2;
@@ -383,8 +349,7 @@ message StopAck {
 }
 
 message Bootstrap {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 reconfigurer_index = 2;
@@ -393,24 +358,21 @@ message Bootstrap {
 }
 
 message BootstrapAck {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 matchmaker_index = 2;
 }
 
 message MatchPhase1a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration matchmaker_configuration = 1;
   required int32 round = 2;
 }
 
 message MatchPhase1b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 round = 2;
@@ -419,8 +381,7 @@ message MatchPhase1b {
 }
 
 message MatchPhase2a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration matchmaker_configuration = 1;
   required int32 round = 2;
@@ -428,8 +389,7 @@ message MatchPhase2a {
 }
 
 message MatchPhase2b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 epoch = 1;
   required int32 round = 2;
@@ -437,8 +397,7 @@ message MatchPhase2b {
 }
 
 message MatchChosen {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required MatchmakerConfiguration value = 1;
 }
@@ -446,8 +405,7 @@ message MatchChosen {
 // TODO(mwhittaker): We have MatchmakerNack and MatchNack, and they're
 // different. Name them better. It's confusing.
 message MatchNack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // The reconfigurer should retry with a round at least as large as round.
   required int32 epoch = 1;
@@ -456,20 +414,17 @@ message MatchNack {
 
 // Driver. /////////////////////////////////////////////////////////////////////
 message Die {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message ForceReconfiguration {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   repeated int32 acceptor_index = 1;
 }
 
 message ForceMatchmakerReconfiguration {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   repeated int32 matchmaker_index = 1;
 }

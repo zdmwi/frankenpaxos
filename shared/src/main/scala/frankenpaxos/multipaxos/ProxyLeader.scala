@@ -11,11 +11,9 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ProxyLeaderInboundSerializer
+ object ProxyLeaderInboundSerializer
     extends ProtoSerializer[ProxyLeaderInbound] {
   type A = ProxyLeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -23,13 +21,11 @@ object ProxyLeaderInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object ProxyLeader {
+ object ProxyLeader {
   val serializer = ProxyLeaderInboundSerializer
 }
 
-@JSExportAll
-case class ProxyLeaderOptions(
+ case class ProxyLeaderOptions(
     // A proxy leader flushes all of its channels to the acceptors after every
     // `flushPhase2asEveryN` Phase2a messages sent. For example, if
     // `flushPhase2asEveryN` is 1, then the proxy leader flushes after every
@@ -38,16 +34,14 @@ case class ProxyLeaderOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ProxyLeaderOptions {
+ object ProxyLeaderOptions {
   val default = ProxyLeaderOptions(
     flushPhase2asEveryN = 1,
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class ProxyLeaderMetrics(collectors: Collectors) {
+ class ProxyLeaderMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("multipaxos_proxy_leader_requests_total")
@@ -63,8 +57,7 @@ class ProxyLeaderMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class ProxyLeader[Transport <: frankenpaxos.Transport[Transport]](
+ class ProxyLeader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -83,20 +76,16 @@ class ProxyLeader[Transport <: frankenpaxos.Transport[Transport]](
   type GroupIndex = Int
   type AcceptorIndex = Int
 
-  @JSExportAll
-  case class SlotRound(slot: Int, round: Int)
+    case class SlotRound(slot: Int, round: Int)
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case class Pending(
+    case class Pending(
       phase2a: Phase2a,
       phase2bs: mutable.Map[(GroupIndex, AcceptorIndex), Phase2b]
   ) extends State
 
-  @JSExportAll
-  object Done extends State
+    object Done extends State
 
   // Fields ////////////////////////////////////////////////////////////////////
   // A random number generator instantiated from `seed`. This allows us to
@@ -114,8 +103,7 @@ class ProxyLeader[Transport <: frankenpaxos.Transport[Transport]](
   // system. Every acceptor has a group index and an acceptor index within that
   // group. This is equivalent to the row and column. We use this pair to
   // identify the acceptors.
-  @JSExport
-  protected val grid: Grid[(GroupIndex, AcceptorIndex)] = new Grid(
+     protected val grid: Grid[(GroupIndex, AcceptorIndex)] = new Grid(
     for (row <- 0 until acceptors.size) yield {
       for (col <- 0 until acceptors(row).size) yield {
         (row, col)
@@ -131,8 +119,7 @@ class ProxyLeader[Transport <: frankenpaxos.Transport[Transport]](
   // The number of Phase2a messages since the last flush.
   private var numPhase2asSentSinceLastFlush: Int = 0
 
-  @JSExport
-  protected var states = mutable.Map[SlotRound, State]()
+     protected var states = mutable.Map[SlotRound, State]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   private def timed[T](label: String)(e: => T): T = {

@@ -26,8 +26,7 @@ message GridProto {
 }
 
 message QuorumSystemProto {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof value {
     SimpleMajorityProto simple_majority_proto = 1;

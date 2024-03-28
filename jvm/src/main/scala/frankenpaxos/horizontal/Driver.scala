@@ -15,10 +15,8 @@ import frankenpaxos.quorums.QuorumSystem
 import frankenpaxos.quorums.QuorumSystemProto
 import frankenpaxos.quorums.SimpleMajority
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
 import scala.util.Random
 
-@JSExportAll
 object DriverInboundSerializer extends Serializer[Unit] {
   type A = Unit
   override def toBytes(x: A): Array[Byte] = Array[Byte]()
@@ -26,7 +24,6 @@ object DriverInboundSerializer extends Serializer[Unit] {
   override def toPrettyString(x: A): String = "()"
 }
 
-@JSExportAll
 class Driver[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,

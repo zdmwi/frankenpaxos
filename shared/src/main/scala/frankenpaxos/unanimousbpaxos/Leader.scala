@@ -21,18 +21,15 @@ import frankenpaxos.statemachine.StateMachine
 import frankenpaxos.util
 import scala.collection.mutable
 import scala.concurrent.Future
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
+ 
+ object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
   type A = LeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-case class LeaderOptions(
+ case class LeaderOptions(
     resendDependencyRequestsTimerPeriod: java.time.Duration,
     resendPhase1asTimerPeriod: java.time.Duration,
     resendPhase2asTimerPeriod: java.time.Duration,
@@ -40,8 +37,7 @@ case class LeaderOptions(
     recoverVertexTimerMaxPeriod: java.time.Duration
 )
 
-@JSExportAll
-object LeaderOptions {
+ object LeaderOptions {
   val default = LeaderOptions(
     resendDependencyRequestsTimerPeriod = java.time.Duration.ofSeconds(1),
     resendPhase1asTimerPeriod = java.time.Duration.ofSeconds(1),
@@ -51,8 +47,7 @@ object LeaderOptions {
   )
 }
 
-@JSExportAll
-class LeaderMetrics(collectors: Collectors) {
+ class LeaderMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("unanimous_bpaxos_leader_requests_total")
@@ -175,26 +170,22 @@ class LeaderMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-object Leader {
+ object Leader {
   val serializer = LeaderInboundSerializer
 
   type Round = Int
   type ClientPseudonym = Int
   type AcceptorIndex = Int
 
-  @JSExportAll
-  sealed trait State[Transport <: frankenpaxos.Transport[Transport]]
+    sealed trait State[Transport <: frankenpaxos.Transport[Transport]]
 
-  @JSExportAll
-  case class Phase2Fast[Transport <: frankenpaxos.Transport[Transport]](
+    case class Phase2Fast[Transport <: frankenpaxos.Transport[Transport]](
       command: Command,
       phase2bFasts: mutable.Map[AcceptorIndex, Phase2bFast],
       resendDependencyRequests: Transport#Timer
   ) extends State[Transport]
 
-  @JSExportAll
-  case class Phase1[Transport <: frankenpaxos.Transport[Transport]](
+    case class Phase1[Transport <: frankenpaxos.Transport[Transport]](
       // The current round.
       round: Round,
       // Phase 1b responses.
@@ -203,8 +194,7 @@ object Leader {
       resendPhase1as: Transport#Timer
   ) extends State[Transport]
 
-  @JSExportAll
-  case class Phase2Classic[Transport <: frankenpaxos.Transport[Transport]](
+    case class Phase2Classic[Transport <: frankenpaxos.Transport[Transport]](
       // The current round.
       round: Round,
       // The value we're trying to get chosen.
@@ -216,15 +206,13 @@ object Leader {
   ) extends State[Transport]
 
   // TODO(mwhittaker): Decide whether we need a Committed entry.
-  @JSExportAll
-  case class Committed[Transport <: frankenpaxos.Transport[Transport]](
+    case class Committed[Transport <: frankenpaxos.Transport[Transport]](
       commandOrNoop: CommandOrNoop,
       dependencies: Set[VertexId]
   ) extends State[Transport]
 }
 
-@JSExportAll
-class Leader[Transport <: frankenpaxos.Transport[Transport]](
+ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -269,23 +257,20 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
 
   // The next available vertex id. When a leader receives a command, it assigns
   // it a vertex id using nextVertexId and then increments nextVertexId.
-  @JSExport
-  protected var nextVertexId: Int = 0
+     protected var nextVertexId: Int = 0
 
   // The state of each vertex that the leader knows about.
   val states = mutable.Map[VertexId, State[Transport]]()
 
   // The client table, which records the latest commands for each client.
   implicit private val addressSerializer = transport.addressSerializer
-  @JSExport
-  protected val clientTable =
+     protected val clientTable =
     ClientTable[(Transport#Address, ClientPseudonym), Array[Byte]]()
 
   // If a leader commits a command in vertex A with a dependency on uncommitted
   // vertex B, then the leader sets a timer to recover vertex B. This prevents
   // a vertex from being forever stalled.
-  @JSExport
-  protected val recoverVertexTimers = mutable.Map[VertexId, Transport#Timer]()
+     protected val recoverVertexTimers = mutable.Map[VertexId, Transport#Timer]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   def roundSystem(vertexId: VertexId): RoundSystem =

@@ -13,38 +13,32 @@ import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
+ object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Client {
+ object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
-case class ClientOptions(
+ case class ClientOptions(
     resendClientRequestPeriod: java.time.Duration,
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ClientOptions {
+ object ClientOptions {
   val default = ClientOptions(
     resendClientRequestPeriod = java.time.Duration.ofSeconds(10),
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class ClientMetrics(collectors: Collectors) {
+ class ClientMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("horizontal_client_requests_total")
@@ -84,8 +78,7 @@ class ClientMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Client[Transport <: frankenpaxos.Transport[Transport]](
+ class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -125,31 +118,27 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // with this round can be computed using `roundSystem`. The clients need to
   // know who the leader is because they need to know where to send their
   // commands.
-  @JSExport
-  protected var round: Int = 0
+     protected var round: Int = 0
 
   // Every request that a client sends is annotated with a monotonically
   // increasing client id. Here, we assume that if a client fails, it does not
   // recover, so we are safe to intialize the id to 0. If clients can recover
   // from failure, we would have to implement some mechanism to ensure that
   // client ids increase over time, even after crashes and restarts.
-  @JSExport
-  protected var ids = mutable.Map[Pseudonym, Id]()
+     protected var ids = mutable.Map[Pseudonym, Id]()
 
   // Clients can only propose one request at a time (per pseudonym), so if
   // there is a pending command, no other command can be proposed. This
   // restriction hurts performance a bit---a single client cannot pipeline
   // requests---but it simplifies the design of the protocol.
-  @JSExportAll
-  case class PendingCommand(
+    case class PendingCommand(
       pseudonym: Pseudonym,
       id: Id,
       command: Array[Byte],
       result: Promise[Array[Byte]]
   )
 
-  @JSExport
-  protected var pendingCommands = mutable.Map[Pseudonym, PendingCommand]()
+     protected var pendingCommands = mutable.Map[Pseudonym, PendingCommand]()
 
   // A timer to resend a proposed value. If a client doesn't hear back quickly
   // enough, it resends its proposal to all of the batchers (or leaders).

@@ -2,8 +2,7 @@ package frankenpaxos.depgraph
 
 import frankenpaxos.compact.CompactSet
 import scala.collection.mutable
-import scala.scalajs.js.annotation.JSExportAll
-import scala.util.control.Breaks._
+ import scala.util.control.Breaks._
 
 // IncrementalTarjanDependencyGraph implements a dependency graph using an
 // incremental variant of Tarjans's strongly connected components algorithm [1,

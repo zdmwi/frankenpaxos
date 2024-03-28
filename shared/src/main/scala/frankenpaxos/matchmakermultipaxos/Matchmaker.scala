@@ -13,24 +13,20 @@ import frankenpaxos.monitoring.Gauge
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object MatchmakerInboundSerializer extends ProtoSerializer[MatchmakerInbound] {
+ object MatchmakerInboundSerializer extends ProtoSerializer[MatchmakerInbound] {
   type A = MatchmakerInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Matchmaker {
+ object Matchmaker {
   val serializer = MatchmakerInboundSerializer
 }
 
-@JSExportAll
-case class MatchmakerOptions(
+ case class MatchmakerOptions(
     // When a Matchmaker receives a MatchRequest, it delays sending back a
     // MatchReply for this amount of time. This simulates a WAN deployment
     // without actually having to deploy on a WAN.
@@ -38,16 +34,14 @@ case class MatchmakerOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object MatchmakerOptions {
+ object MatchmakerOptions {
   val default = MatchmakerOptions(
     matchRequestDelay = java.time.Duration.ofSeconds(0),
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class MatchmakerMetrics(collectors: Collectors) {
+ class MatchmakerMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("matchmakermultipaxos_matchmaker_requests_total")
@@ -75,8 +69,7 @@ class MatchmakerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
+ class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -124,34 +117,28 @@ class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
   //     +---+
   //
   // All entries below the gcWatermark are garbage collected.
-  @JSExportAll
-  case class Log(
+    case class Log(
       gcWatermark: Int,
       configurations: mutable.SortedMap[Round, Configuration]
   )
 
-  @JSExportAll
-  sealed trait MatchmakerState
+    sealed trait MatchmakerState
 
-  @JSExportAll
-  case class Pending(
+    case class Pending(
       logs: mutable.Map[ReconfigurerIndex, Log]
   ) extends MatchmakerState
 
-  @JSExportAll
-  case class Normal(
+    case class Normal(
       gcWatermark: Int,
       configurations: mutable.SortedMap[Round, Configuration]
   ) extends MatchmakerState
 
-  @JSExportAll
-  case class HasStopped(
+    case class HasStopped(
       gcWatermark: Int,
       configurations: mutable.SortedMap[Round, Configuration]
   ) extends MatchmakerState
 
-  @JSExportAll
-  case class AcceptorState(
+    case class AcceptorState(
       round: Int,
       voteRound: Int,
       voteValue: Option[MatchmakerConfiguration]
@@ -164,15 +151,12 @@ class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
   // assign each set of matchmakers an epoch and reconfigure from one epoch to
   // the next. A physical matchmaker may play the role of multiple logical
   // matchmakers in different epochs.
-  @JSExport
-  protected var matchmakerStates = mutable.SortedMap[Epoch, MatchmakerState]()
+     protected var matchmakerStates = mutable.SortedMap[Epoch, MatchmakerState]()
 
-  @JSExport
-  protected var acceptorStates = mutable.SortedMap[Epoch, AcceptorState]()
+     protected var acceptorStates = mutable.SortedMap[Epoch, AcceptorState]()
 
   // A nonce used to make matchRequestDelay timer names unique.
-  @JSExport
-  protected var nonce: Int = 0
+     protected var nonce: Int = 0
 
   // For simplicity, we assume the first 2f+1 matchmakers are in the first
   // epoch.

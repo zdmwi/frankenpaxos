@@ -16,24 +16,20 @@ import frankenpaxos.quorums.QuorumSystemProto
 import frankenpaxos.quorums.SimpleMajority
 import frankenpaxos.quorums.UnanimousWrites
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
+ object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
   type A = LeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Leader {
+ object Leader {
   val serializer = LeaderInboundSerializer
 }
 
-@JSExportAll
-case class LeaderOptions(
+ case class LeaderOptions(
     // If true, Phase2as are thrifty.
     thrifty: Boolean,
     // Leaders use timeouts to re-send requests and ensure liveness. These
@@ -68,8 +64,7 @@ case class LeaderOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object LeaderOptions {
+ object LeaderOptions {
   val default = LeaderOptions(
     thrifty = true,
     resendMatchRequestsPeriod = java.time.Duration.ofSeconds(5),
@@ -89,8 +84,7 @@ object LeaderOptions {
   )
 }
 
-@JSExportAll
-class LeaderMetrics(collectors: Collectors) {
+ class LeaderMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("matchmakermultipaxos_leader_requests_total")
@@ -248,8 +242,7 @@ class LeaderMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Leader[Transport <: frankenpaxos.Transport[Transport]](
+ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -271,19 +264,16 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   type Round = Int
   type Slot = Int
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
   // One of the proposers is elected leader. All other proposers are inactive.
-  @JSExportAll
-  case class Inactive(
+    case class Inactive(
       // When this inactive proposer becomes a leader, it begins in the first
       // round it owns larger than `round`.
       round: Round
   ) extends State
 
-  @JSExportAll
-  case class Matchmaking(
+    case class Matchmaking(
       round: Round,
       // The matchmakers used to matchmake. If this set of matchmakers is
       // stopped and a new set of matchmakers is elected, then we'll restart
@@ -305,8 +295,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   // then we have to contact the reconfigurers and wait for them to tell us
   // about the new matchmakers. When we do learn about the new matchmakers, we
   // revert back to the Matchmaking phase.
-  @JSExportAll
-  case class WaitingForNewMatchmakers(
+    case class WaitingForNewMatchmakers(
       // When we resume matchmaking, we resume in this round.
       round: Round,
       // The matchmakers previously used to matchmake. We send this
@@ -323,8 +312,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       resendReconfigure: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class Phase1(
+    case class Phase1(
       round: Round,
       // The quorum system that this leader intends to use to get values chosen.
       quorumSystem: QuorumSystem[AcceptorIndex],
@@ -356,11 +344,9 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   //      chosen.
   //   5. The leader sends a garbage collect command to the matchmakers and
   //      waits to hear back all the acks.
-  @JSExportAll
-  sealed trait GarbageCollection
+    sealed trait GarbageCollection
 
-  @JSExportAll
-  case class QueryingReplicas(
+    case class QueryingReplicas(
       // At the end of Phase 1 and at the beginning of Phase 2, entries [0,
       // chosenWatermark) were known to be chosen. Phase2as were sent for
       // entries [chosenWatermark, maxSlot]. Entries (maxSlot, infinity) were
@@ -371,8 +357,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       resendExecutedWatermarkRequests: Transport#Timer
   ) extends GarbageCollection
 
-  @JSExportAll
-  case class PushingToAcceptors(
+    case class PushingToAcceptors(
       // At the end of Phase 1 and at the beginning of Phase 2, entries [0,
       // chosenWatermark) were known to be chosen. Phase2as were sent for
       // entries [chosenWatermark, maxSlot]. Entries (maxSlot, infinity) were
@@ -384,8 +369,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       resendPersisted: Transport#Timer
   ) extends GarbageCollection
 
-  @JSExportAll
-  case class WaitingForLargerChosenWatermark(
+    case class WaitingForLargerChosenWatermark(
       // At the end of Phase 1 and at the beginning of Phase 2, entries [0,
       // chosenWatermark) were known to be chosen. Phase2as were sent for
       // entries [chosenWatermark, maxSlot]. Entries (maxSlot, infinity) were
@@ -394,8 +378,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       maxSlot: Slot
   ) extends GarbageCollection
 
-  @JSExportAll
-  case class GarbageCollecting(
+    case class GarbageCollecting(
       gcWatermark: Round,
       // The matchmakers to which we sent GarbageCollect messages. If a
       // matchmaker reconfiguration happens during the reconfiguration, then we
@@ -405,8 +388,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       resendGarbageCollects: Transport#Timer
   ) extends GarbageCollection
 
-  @JSExportAll
-  case object Done extends GarbageCollection
+    case object Done extends GarbageCollection
 
   // During an i/i+1 configuration, we cancel any pending garbage collection
   // being performed during round i. This is not necessary for correctness, but
@@ -415,11 +397,9 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   //
   // Similarly, if a matchmaker reconfiguration happens during garbage
   // collection, we just cancel the garbage collection.
-  @JSExportAll
-  case object Cancelled extends GarbageCollection
+    case object Cancelled extends GarbageCollection
 
-  @JSExportAll
-  case class Phase2(
+    case class Phase2(
       round: Round,
       // The next free slot in the log. Note that even though we have a
       // nextSlot, we don't actually have a log.
@@ -450,8 +430,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   //
   // With Phase2Matchmaking, the leader is in Phase 2 in round i and in the
   // Matchmaking phase in round i + 1.
-  @JSExportAll
-  case class Phase2Matchmaking(
+    case class Phase2Matchmaking(
       phase2: Phase2,
       matchmaking: Matchmaking,
       // When we perform a reconfiguration, we record how long each phase of
@@ -463,8 +442,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   // With Phase212, the Leader is in Phase 2 in round i and in both Phase 1 and
   // Phase 2 in round i+1. See section 4.4 of our paper for an explanation of
   // how we're in both Phase 1 and 2 at the same time.
-  @JSExportAll
-  case class Phase212(
+    case class Phase212(
       oldPhase2: Phase2,
       newPhase1: Phase1,
       newPhase2: Phase2,
@@ -474,8 +452,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   // Here, we're in Phase 2 in both rounds i and i+1. We want to wait for all
   // of the pending values chosen in round i to be chosen before we move to a
   // Phase2 in round i+1.
-  @JSExportAll
-  case class Phase22(
+    case class Phase22(
       oldPhase2: Phase2,
       newPhase2: Phase2,
       startNanos: Long
@@ -520,17 +497,14 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
 
   // Every slot less than chosenWatermark has been chosen. The active leader
   // periodically sends its chosenWatermarks to the other leaders.
-  @JSExport
-  protected var chosenWatermark: Slot = 0
+     protected var chosenWatermark: Slot = 0
 
   // Leader election address. This field exists for the javascript
   // visualizations.
-  @JSExport
-  protected val electionAddress = config.leaderElectionAddresses(index)
+     protected val electionAddress = config.leaderElectionAddresses(index)
 
   // Leader election participant.
-  @JSExport
-  protected val election = new Participant[Transport](
+     protected val election = new Participant[Transport](
     address = electionAddress,
     transport = transport,
     logger = logger,
@@ -548,8 +522,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   })
 
   // The latest matchmakerConfiguration that this leader knows about.
-  @JSExport
-  protected var matchmakerConfiguration: MatchmakerConfiguration =
+     protected var matchmakerConfiguration: MatchmakerConfiguration =
     MatchmakerConfiguration(
       epoch = 0,
       reconfigurerIndex = -1,
@@ -557,8 +530,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     )
 
   // The leader's state.
-  @JSExport
-  protected var state: State = if (index == 0) {
+     protected var state: State = if (index == 0) {
     // In the first round, we use a predetermined set of acceptors. This is not
     // necessary, but it is convenient for some benchmarks.
     val quorumSystem =

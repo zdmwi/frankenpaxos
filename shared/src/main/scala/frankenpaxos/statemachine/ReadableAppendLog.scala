@@ -4,13 +4,11 @@ import frankenpaxos.util.TopK
 import frankenpaxos.util.TopOne
 import frankenpaxos.util.VertexIdLike
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
+ 
 // A ReadableAppendLog is a log of non-empty strings. If an empty string is
 // received, the latest entry in the log is returned. This API is a little
 // janky, but it's meant to keep testing simple.
-@JSExportAll
-class ReadableAppendLog extends StateMachine {
+ class ReadableAppendLog extends StateMachine {
   private var xs = mutable.Buffer[String]()
 
   override def toString(): String = xs.toString()

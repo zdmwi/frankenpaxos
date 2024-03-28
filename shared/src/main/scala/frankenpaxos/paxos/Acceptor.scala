@@ -1,26 +1,22 @@
 package frankenpaxos.paxos
 
-import scala.scalajs.js.annotation._
-import frankenpaxos.Actor
+ import frankenpaxos.Actor
 import frankenpaxos.Logger
 import frankenpaxos.ProtoSerializer
 import frankenpaxos.Chan
 
-@JSExportAll
-object AcceptorInboundSerializer extends ProtoSerializer[AcceptorInbound] {
+ object AcceptorInboundSerializer extends ProtoSerializer[AcceptorInbound] {
   type A = AcceptorInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Acceptor {
+ object Acceptor {
   val serializer = AcceptorInboundSerializer
 }
 
-@JSExportAll
-class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
+ class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,

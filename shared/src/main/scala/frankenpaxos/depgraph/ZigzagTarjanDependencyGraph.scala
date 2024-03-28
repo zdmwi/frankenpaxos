@@ -9,9 +9,7 @@ import frankenpaxos.monitoring.Summary
 import frankenpaxos.util.BufferMap
 import frankenpaxos.util.VertexIdLike
 import scala.collection.mutable
-import scala.scalajs.js.annotation.JSExport
-import scala.scalajs.js.annotation.JSExportAll
-
+  
 case class ZigzagTarjanDependencyGraphOptions(
     verticesGrowSize: Int,
     garbageCollectEveryNCommands: Int
@@ -28,8 +26,7 @@ object ZigzagTarjanDependencyGraphOptions {
   )
 }
 
-@JSExportAll
-class ZigzagTarjanDependencyGraphMetrics(collectors: Collectors) {
+ class ZigzagTarjanDependencyGraphMetrics(collectors: Collectors) {
   val latency: Summary = collectors.summary
     .build()
     .name("zigzag_tarjan_latency")
@@ -131,8 +128,7 @@ object ZigzagTarjanDependencyGraph {
   }
 }
 
-@JSExportAll
-class ZigzagTarjanDependencyGraph[
+ class ZigzagTarjanDependencyGraph[
     Key,
     SequenceNumber,
     KeySet <: CompactSet[KeySet] { type T = Key }
@@ -158,34 +154,28 @@ class ZigzagTarjanDependencyGraph[
   // - Attempt to execute vertices in increasing vertex id order.
   import ZigzagTarjanDependencyGraph._
 
-  @JSExportAll
-  case class Vertex(
+    case class Vertex(
       key: Key,
       sequenceNumber: SequenceNumber,
       dependencies: KeySet
   )
 
-  @JSExportAll
-  case class VertexMetadata(
+    case class VertexMetadata(
       var number: Int,
       var lowLink: Int,
       var stackIndex: Int,
       var eligible: Boolean
   )
 
-  @JSExport
-  protected val vertices = mutable.Buffer.fill[BufferMap[Vertex]](numLeaders)(
+     protected val vertices = mutable.Buffer.fill[BufferMap[Vertex]](numLeaders)(
     new BufferMap(options.verticesGrowSize)
   )
 
-  @JSExport
-  protected var executedWatermark = mutable.Buffer.fill[Int](numLeaders)(0)
+     protected var executedWatermark = mutable.Buffer.fill[Int](numLeaders)(0)
 
-  @JSExport
-  protected var numCommandsSinceLastGc: Int = 0
+     protected var numCommandsSinceLastGc: Int = 0
 
-  @JSExport
-  protected val executed: KeySet = emptyKeySet
+     protected val executed: KeySet = emptyKeySet
 
   // Appenders.
   private val flatAppender = new FlatAppender[Key]()

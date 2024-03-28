@@ -12,36 +12,30 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object MatchmakerInboundSerializer extends ProtoSerializer[MatchmakerInbound] {
+ object MatchmakerInboundSerializer extends ProtoSerializer[MatchmakerInbound] {
   type A = MatchmakerInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Matchmaker {
+ object Matchmaker {
   val serializer = MatchmakerInboundSerializer
 }
 
-@JSExportAll
-case class MatchmakerOptions(
+ case class MatchmakerOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object MatchmakerOptions {
+ object MatchmakerOptions {
   val default = MatchmakerOptions(
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class MatchmakerMetrics(collectors: Collectors) {
+ class MatchmakerMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("matchmakerpaxos_matchmaker_requests_total")
@@ -57,8 +51,7 @@ class MatchmakerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
+ class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -77,8 +70,7 @@ class Matchmaker[Transport <: frankenpaxos.Transport[Transport]](
   // Fields ////////////////////////////////////////////////////////////////////
   private val index = config.matchmakerAddresses.indexOf(address)
 
-  @JSExport
-  protected val acceptorGroups = mutable.SortedMap[Round, AcceptorGroup]()
+     protected val acceptorGroups = mutable.SortedMap[Round, AcceptorGroup]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   private def timed[T](label: String)(e: => T): T = {

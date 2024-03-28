@@ -8,10 +8,8 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import java.net.InetAddress
 import java.net.InetSocketAddress
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object ServerInboundSerializer extends ProtoSerializer[ServerInbound] {
+ 
+ object ServerInboundSerializer extends ProtoSerializer[ServerInbound] {
   type A = ServerInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
@@ -30,8 +28,7 @@ class ServerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Server[Transport <: frankenpaxos.Transport[Transport]](
+ class Server[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,

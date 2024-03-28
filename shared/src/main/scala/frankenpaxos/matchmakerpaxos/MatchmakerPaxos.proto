@@ -28,16 +28,14 @@ option (scalapb.options) = {
 
 // Helper messages. ////////////////////////////////////////////////////////////
 message AcceptorGroup {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required quorums.QuorumSystemProto quorum_system = 2;
 }
 
 message Phase1bVote {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 vote_round = 1;
   required string vote_value = 2;
@@ -45,22 +43,19 @@ message Phase1bVote {
 
 // Protocol messages. //////////////////////////////////////////////////////////
 message ClientRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required string v = 1;
 }
 
 message MatchRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required AcceptorGroup acceptor_group = 1;
 }
 
 message MatchReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required int32 matchmaker_index = 2;
@@ -68,15 +63,13 @@ message MatchReply {
 }
 
 message Phase1a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message Phase1b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required int32 acceptor_index = 2;
@@ -84,38 +77,33 @@ message Phase1b {
 }
 
 message Phase2a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required string value = 2;
 }
 
 message Phase2b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
   required int32 acceptor_index = 2;
 }
 
 message ClientReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required string chosen = 1;
 }
 
 message MatchmakerNack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message AcceptorNack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }

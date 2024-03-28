@@ -1,10 +1,8 @@
 package frankenpaxos
 
-import scala.scalajs.js.annotation.JSExportAll
-
+ 
 // TODO(mwhittaker): Document.
-@JSExportAll
-abstract class Actor[Transport <: frankenpaxos.Transport[Transport]](
+ abstract class Actor[Transport <: frankenpaxos.Transport[Transport]](
     val address: Transport#Address,
     val transport: Transport,
     // TODO(mwhittaker): Remove logger. It's not needed.

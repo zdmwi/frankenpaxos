@@ -17,10 +17,8 @@ import frankenpaxos.Actor
 import frankenpaxos.Chan
 import frankenpaxos.Logger
 import frankenpaxos.ProtoSerializer
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object ParticipantInboundSerializer
+ 
+ object ParticipantInboundSerializer
     extends ProtoSerializer[ParticipantInbound] {
   type A = ParticipantInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -28,8 +26,7 @@ object ParticipantInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Participant {
+ object Participant {
   val serializer = ParticipantInboundSerializer
 }
 
@@ -68,8 +65,7 @@ object HeartbeatOptions {
   )
 }
 
-@JSExportAll
-class Participant[Transport <: frankenpaxos.Transport[Transport]](
+ class Participant[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -103,16 +99,13 @@ class Participant[Transport <: frankenpaxos.Transport[Transport]](
       yield timer(s"successTimer$a", options.successPeriod, () => succeed(i))
 
   // The number of unacknowledged retries sent to every participant.
-  @JSExport
-  protected val numRetries = mutable.Buffer.fill(addresses.size)(0)
+     protected val numRetries = mutable.Buffer.fill(addresses.size)(0)
 
   // The estimated delay between this node and every other node.
-  @JSExport
-  protected var networkDelayNanos = mutable.Map[Index, Double]()
+     protected var networkDelayNanos = mutable.Map[Index, Double]()
 
   // The addresses of participants that are alive.
-  @JSExport
-  protected val alive: mutable.Set[Transport#Address] = mutable
+     protected val alive: mutable.Set[Transport#Address] = mutable
     .Set() ++ addresses
 
   // Send a ping to every participant and start the timers.

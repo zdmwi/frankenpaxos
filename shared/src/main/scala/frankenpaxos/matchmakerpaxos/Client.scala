@@ -12,39 +12,32 @@ import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.roundsystem.RoundSystem
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
+ object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Client {
+ object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
-case class ClientOptions(
+ case class ClientOptions(
     resendClientRequestPeriod: java.time.Duration
 )
 
-@JSExportAll
-object ClientOptions {
+ object ClientOptions {
   val default = ClientOptions(
     resendClientRequestPeriod = java.time.Duration.ofSeconds(10)
   )
 }
 
-@JSExportAll
-class ClientMetrics(collectors: Collectors) {}
+ class ClientMetrics(collectors: Collectors) {}
 
-@JSExportAll
-class Client[Transport <: frankenpaxos.Transport[Transport]](
+ class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -59,20 +52,16 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   override type InboundMessage = ClientInbound
   override val serializer = ClientInboundSerializer
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case object Inactive extends State
+    case object Inactive extends State
 
-  @JSExportAll
-  case class Pending(
+    case class Pending(
       promises: mutable.Buffer[Promise[String]],
       resendClientRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class Chosen(v: String) extends State
+    case class Chosen(v: String) extends State
 
   // Fields ////////////////////////////////////////////////////////////////////
   // A random number generator instantiated from `seed`. This allows us to

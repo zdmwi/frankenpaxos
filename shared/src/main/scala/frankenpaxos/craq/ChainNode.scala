@@ -10,10 +10,8 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
 import scala.util.Random
 
-@JSExportAll
 object ChainNodeInboundSerializer extends ProtoSerializer[ChainNodeInbound] {
   type A = ChainNodeInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -21,24 +19,20 @@ object ChainNodeInboundSerializer extends ProtoSerializer[ChainNodeInbound] {
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
 object ChainNode {
   val serializer = ChainNodeInboundSerializer
 }
 
-@JSExportAll
 case class ChainNodeOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
 object ChainNodeOptions {
   val default = ChainNodeOptions(
     measureLatencies = true
   )
 }
 
-@JSExportAll
 class ChainNodeMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
@@ -55,7 +49,6 @@ class ChainNodeMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
 class ChainNode[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,

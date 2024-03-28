@@ -14,24 +14,20 @@ import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
 import frankenpaxos.statemachine.StateMachine
 import frankenpaxos.util
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ReplicaInboundSerializer extends ProtoSerializer[ReplicaInbound] {
+ object ReplicaInboundSerializer extends ProtoSerializer[ReplicaInbound] {
   type A = ReplicaInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Replica {
+ object Replica {
   val serializer = ReplicaInboundSerializer
 }
 
-@JSExportAll
-case class ReplicaOptions(
+ case class ReplicaOptions(
     // A Replica implements its log as a BufferMap. `logGrowSize` is the
     // `growSize` argument used to construct the BufferMap.
     logGrowSize: Int,
@@ -56,8 +52,7 @@ case class ReplicaOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ReplicaOptions {
+ object ReplicaOptions {
   val default = ReplicaOptions(
     logGrowSize = 5000,
     unsafeDontUseClientTable = false,
@@ -69,8 +64,7 @@ object ReplicaOptions {
   )
 }
 
-@JSExportAll
-class ReplicaMetrics(collectors: Collectors) {
+ class ReplicaMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("multipaxos_replica_requests_total")
@@ -147,8 +141,7 @@ class ReplicaMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Replica[Transport <: frankenpaxos.Transport[Transport]](
+ class Replica[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -190,8 +183,7 @@ class Replica[Transport <: frankenpaxos.Transport[Transport]](
 
   // The log of commands. We implement the log as a BufferMap as opposed to
   // something like a SortedMap for efficiency. `log` is public for testing.
-  @JSExport
-  val log =
+     val log =
     new util.BufferMap[CommandBatchOrNoop](options.logGrowSize)
 
   // In Evelyn Paxos, a client can issue a read directly to a replica. The read
@@ -199,29 +191,25 @@ class Replica[Transport <: frankenpaxos.Transport[Transport]](
   // been executed before executing the read. If a replica receives the read
   // request before i has been executed, then it stores the read request in
   // this log for later.
-  @JSExportAll
-  case class DeferredRead(
+    case class DeferredRead(
       command: Command,
       startTimeNanos: Long
   )
 
-  @JSExport
-  protected val deferredReads =
+     protected val deferredReads =
     new util.BufferMap[mutable.Buffer[DeferredRead]](options.logGrowSize)
 
   // Every log entry less than `executedWatermark` has been executed. There may
   // be commands larger than `executedWatermark` pending execution.
   // `executedWatermark` is public for testing.
-  @JSExport
-  var executedWatermark: Int = 0
+     var executedWatermark: Int = 0
 
   // The number of log entries that have been chosen and placed in `log`. We
   // use `numChosen` and `executedWatermark` to know whether there are commands
   // pending execution. If `numChosen == executedWatermark`, then all chosen
   // commands have been executed. Otherwise, there are commands waiting to get
   // executed.
-  @JSExport
-  protected var numChosen: Int = 0
+     protected var numChosen: Int = 0
 
   // The client table used to ensure exactly once execution semantics. Every
   // entry in the client table is keyed by a clients address and its pseudonym
@@ -229,8 +217,7 @@ class Replica[Transport <: frankenpaxos.Transport[Transport]](
   // executing the command. Note that unlike with generalized protocols like
   // BPaxos and EPaxos, we don't need to use the more complex ClientTable
   // class. A simple map suffices.
-  @JSExport
-  protected var clientTable =
+     protected var clientTable =
     mutable.Map[(ByteString, ClientPseudonym), (ClientId, ByteString)]()
 
   // A timer to send Recover messages to the leaders. The timer is optional

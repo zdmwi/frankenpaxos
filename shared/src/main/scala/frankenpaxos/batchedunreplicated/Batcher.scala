@@ -10,37 +10,31 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object BatcherInboundSerializer extends ProtoSerializer[BatcherInbound] {
+ 
+ object BatcherInboundSerializer extends ProtoSerializer[BatcherInbound] {
   type A = BatcherInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Batcher {
+ object Batcher {
   val serializer = BatcherInboundSerializer
 }
 
-@JSExportAll
-case class BatcherOptions(
+ case class BatcherOptions(
     batchSize: Int,
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object BatcherOptions {
+ object BatcherOptions {
   val default = BatcherOptions(
     batchSize = 100,
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class BatcherMetrics(collectors: Collectors) {
+ class BatcherMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("batchedunreplicated_batcher_requests_total")
@@ -62,8 +56,7 @@ class BatcherMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Batcher[Transport <: frankenpaxos.Transport[Transport]](
+ class Batcher[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -81,8 +74,7 @@ class Batcher[Transport <: frankenpaxos.Transport[Transport]](
   private val server: Chan[Server[Transport]] =
     chan[Server[Transport]](config.serverAddress, Server.serializer)
 
-  @JSExport
-  protected var growingBatch = mutable.Buffer[Command]()
+     protected var growingBatch = mutable.Buffer[Command]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   private def timed[T](label: String)(e: => T): T = {

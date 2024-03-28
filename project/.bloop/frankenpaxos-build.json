@@ -20,15 +20,18 @@
             "/Users/zidanewright/.sbt/boot/scala-2.12.18/lib/scala-library.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.12/sbt_1.0/0.14.9/jars/sbt-assembly.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.15/sbt-bloop_2.12_1.0-1.5.15.jar",
-            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.thesamet/sbt-protoc/scala_2.12/sbt_1.0/0.99.18/jars/sbt-protoc.jar",
-            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin-shaded_2.12/0.7.4/compilerplugin-shaded_2.12-0.7.4.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/sbt-protoc_2.12_1.0/1.0.6/sbt-protoc-1.0.6.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin_2.12/0.11.3/compilerplugin_2.12-0.11.3.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/main_2.12/1.9.9/main_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.12/1.9.9/io_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.1/scalactic_2.12-3.0.1.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/pantsbuild/jarjar/1.7.2/jarjar-1.7.2.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/1.5.5/bloop-config_2.12-1.5.5.jar",
-            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/os72/protoc-jar/3.5.1/protoc-jar-3.5.1.jar",
-            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.7.3/protoc-bridge_2.12-0.7.3.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/portable-scala/sbt-platform-deps_2.12_1.0/1.0.1/sbt-platform-deps-1.0.1.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.9.5/protoc-bridge_2.12-0.9.5.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/google/protobuf/protobuf-java/3.15.8/protobuf-java-3.15.8.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.10.0/scala-collection-compat_2.12-2.10.0.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-gen_2.12/0.9.2/protoc-gen_2.12-0.9.2.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/logic_2.12/1.9.9/logic_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/actions_2.12/1.9.9/actions_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/main-settings_2.12/1.9.9/main-settings_2.12-1.9.9.jar",
@@ -58,6 +61,7 @@
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/apache/maven/maven-plugin-api/3.3.9/maven-plugin-api-3.3.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.12/2.4.0/jsoniter-scala-core_2.12-2.4.0.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/dirs/directories/26/directories-26.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.12/1.9.9/util-relation_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/completion_2.12/1.9.9/completion_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/task-system_2.12/1.9.9/task-system_2.12-1.9.9.jar",
@@ -84,7 +88,6 @@
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2/disruptor-3.4.2.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/checkerframework/checker-qual/3.4.1/checker-qual-3.4.1.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.4.0/error_prone_annotations-2.4.0.jar",
-            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.10.0/scala-collection-compat_2.12-2.10.0.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar",
             "/Users/zidanewright/.sbt/boot/scala-2.12.18/lib/scala-compiler.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/jcraft/jsch/0.1.54/jsch-0.1.54.jar",
@@ -172,8 +175,8 @@
                 "import _root_.sbt._",
                 "import _root_.sbt.Keys._",
                 "import _root_.sbt.nio.Keys._",
-                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.sbt.plugins.JUnitXmlReportPlugin.autoImport._, _root_.sbt.plugins.MiniDependencyTreePlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._, _root_.sbtprotoc.ProtocPlugin.autoImport._",
-                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.SemanticdbPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.sbt.plugins.MiniDependencyTreePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.sbtassembly.AssemblyPlugin, _root_.sbtprotoc.ProtocPlugin"
+                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.sbt.plugins.JUnitXmlReportPlugin.autoImport._, _root_.sbt.plugins.MiniDependencyTreePlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._, _root_.sbtprotoc.ProtocPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._",
+                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.SemanticdbPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.sbt.plugins.MiniDependencyTreePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.sbtassembly.AssemblyPlugin, _root_.sbtprotoc.ProtocPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin"
             ]
         },
         "test": {
@@ -256,20 +259,24 @@
                 "/Users/zidanewright/School/csi699/frankenpaxos/project/.bloop/frankenpaxos-build/scala-2.12/sbt-1.0/classes",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.12/sbt_1.0/0.14.9/jars/sbt-assembly.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.15/sbt-bloop_2.12_1.0-1.5.15.jar",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.thesamet/sbt-protoc/scala_2.12/sbt_1.0/0.99.18/jars/sbt-protoc.jar",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin-shaded_2.12/0.7.4/compilerplugin-shaded_2.12-0.7.4.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/sbt-protoc_2.12_1.0/1.0.6/sbt-protoc-1.0.6.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin_2.12/0.11.3/compilerplugin_2.12-0.11.3.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.1/scalactic_2.12-3.0.1.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/pantsbuild/jarjar/1.7.2/jarjar-1.7.2.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/1.5.5/bloop-config_2.12-1.5.5.jar",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/os72/protoc-jar/3.5.1/protoc-jar-3.5.1.jar",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.7.3/protoc-bridge_2.12-0.7.3.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/portable-scala/sbt-platform-deps_2.12_1.0/1.0.1/sbt-platform-deps-1.0.1.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.9.5/protoc-bridge_2.12-0.9.5.jar",
                 "/Users/zidanewright/.sbt/boot/scala-2.12.18/lib/scala-library.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/google/protobuf/protobuf-java/3.15.8/protobuf-java-3.15.8.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.4.4/scala-collection-compat_2.12-2.4.4.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-gen_2.12/0.9.2/protoc-gen_2.12-0.9.2.jar",
                 "/Users/zidanewright/.sbt/boot/scala-2.12.18/lib/scala-reflect.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/apache/ant/ant/1.9.9/ant-1.9.9.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/ow2/asm/asm/7.0/asm-7.0.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/ow2/asm/asm-commons/7.0/asm-commons-7.0.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/apache/maven/maven-plugin-api/3.3.9/maven-plugin-api-3.3.9.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.12/2.4.0/jsoniter-scala-core_2.12-2.4.0.jar",
+                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/dirs/directories/26/directories-26.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/apache/ant/ant-launcher/1.9.9/ant-launcher-1.9.9.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/ow2/asm/asm-tree/7.0/asm-tree-7.0.jar",
                 "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/ow2/asm/asm-analysis/7.0/asm-analysis-7.0.jar",
@@ -325,43 +332,34 @@
                 {
                     "organization": "com.thesamet",
                     "name": "sbt-protoc",
-                    "version": "0.99.18",
-                    "configurations": "compile",
+                    "version": "1.0.6",
+                    "configurations": "default",
                     "artifacts": [
                         {
                             "name": "sbt-protoc",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.thesamet/sbt-protoc/scala_2.12/sbt_1.0/0.99.18/jars/sbt-protoc.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/sbt-protoc_2.12_1.0/1.0.6/sbt-protoc-1.0.6.jar"
                         },
                         {
                             "name": "sbt-protoc",
                             "classifier": "sources",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.thesamet/sbt-protoc/scala_2.12/sbt_1.0/0.99.18/srcs/sbt-protoc-sources.jar"
-                        },
-                        {
-                            "name": "sbt-protoc",
-                            "classifier": "javadoc",
-                            "checksum": {
-                                "type": "sha1",
-                                "digest": "b7e47cf71ab370c3564d6ee3239963aaf37ce00a"
-                            },
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.thesamet/sbt-protoc/scala_2.12/sbt_1.0/0.99.18/docs/sbt-protoc-javadoc.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/sbt-protoc_2.12_1.0/1.0.6/sbt-protoc-1.0.6-sources.jar"
                         }
                     ]
                 },
                 {
                     "organization": "com.thesamet.scalapb",
-                    "name": "compilerplugin-shaded_2.12",
-                    "version": "0.7.4",
+                    "name": "compilerplugin_2.12",
+                    "version": "0.11.3",
                     "configurations": "default",
                     "artifacts": [
                         {
-                            "name": "compilerplugin-shaded_2.12",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin-shaded_2.12/0.7.4/compilerplugin-shaded_2.12-0.7.4.jar"
+                            "name": "compilerplugin_2.12",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin_2.12/0.11.3/compilerplugin_2.12-0.11.3.jar"
                         },
                         {
-                            "name": "compilerplugin-shaded_2.12",
+                            "name": "compilerplugin_2.12",
                             "classifier": "sources",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin-shaded_2.12/0.7.4/compilerplugin-shaded_2.12-0.7.4-sources.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/compilerplugin_2.12/0.11.3/compilerplugin_2.12-0.11.3-sources.jar"
                         }
                     ]
                 },
@@ -417,36 +415,36 @@
                     ]
                 },
                 {
-                    "organization": "com.github.os72",
-                    "name": "protoc-jar",
-                    "version": "3.5.1",
+                    "organization": "org.portable-scala",
+                    "name": "sbt-platform-deps",
+                    "version": "1.0.1",
                     "configurations": "default",
                     "artifacts": [
                         {
-                            "name": "protoc-jar",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/os72/protoc-jar/3.5.1/protoc-jar-3.5.1.jar"
+                            "name": "sbt-platform-deps",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/portable-scala/sbt-platform-deps_2.12_1.0/1.0.1/sbt-platform-deps-1.0.1.jar"
                         },
                         {
-                            "name": "protoc-jar",
+                            "name": "sbt-platform-deps",
                             "classifier": "sources",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/os72/protoc-jar/3.5.1/protoc-jar-3.5.1-sources.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/portable-scala/sbt-platform-deps_2.12_1.0/1.0.1/sbt-platform-deps-1.0.1-sources.jar"
                         }
                     ]
                 },
                 {
                     "organization": "com.thesamet.scalapb",
                     "name": "protoc-bridge_2.12",
-                    "version": "0.7.3",
+                    "version": "0.9.5",
                     "configurations": "default",
                     "artifacts": [
                         {
                             "name": "protoc-bridge_2.12",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.7.3/protoc-bridge_2.12-0.7.3.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.9.5/protoc-bridge_2.12-0.9.5.jar"
                         },
                         {
                             "name": "protoc-bridge_2.12",
                             "classifier": "sources",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.7.3/protoc-bridge_2.12-0.7.3-sources.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-bridge_2.12/0.9.5/protoc-bridge_2.12-0.9.5-sources.jar"
                         }
                     ]
                 },
@@ -464,6 +462,40 @@
                             "name": "scala-library",
                             "classifier": "sources",
                             "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.google.protobuf",
+                    "name": "protobuf-java",
+                    "version": "3.15.8",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "protobuf-java",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/google/protobuf/protobuf-java/3.15.8/protobuf-java-3.15.8.jar"
+                        },
+                        {
+                            "name": "protobuf-java",
+                            "classifier": "sources",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/google/protobuf/protobuf-java/3.15.8/protobuf-java-3.15.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.thesamet.scalapb",
+                    "name": "protoc-gen_2.12",
+                    "version": "0.9.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "protoc-gen_2.12",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-gen_2.12/0.9.2/protoc-gen_2.12-0.9.2.jar"
+                        },
+                        {
+                            "name": "protoc-gen_2.12",
+                            "classifier": "sources",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/thesamet/scalapb/protoc-gen_2.12/0.9.2/protoc-gen_2.12-0.9.2-sources.jar"
                         }
                     ]
                 },
@@ -566,6 +598,23 @@
                             "name": "jsoniter-scala-core_2.12",
                             "classifier": "sources",
                             "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.12/2.4.0/jsoniter-scala-core_2.12-2.4.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.dirs",
+                    "name": "directories",
+                    "version": "26",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "directories",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/dirs/directories/26/directories-26.jar"
+                        },
+                        {
+                            "name": "directories",
+                            "classifier": "sources",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/dirs/directories/26/directories-26-sources.jar"
                         }
                     ]
                 },
@@ -855,6 +904,23 @@
                             "name": "io_2.12",
                             "classifier": "sources",
                             "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.12/1.9.9/io_2.12-1.9.9-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-collection-compat_2.12",
+                    "version": "2.10.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-collection-compat_2.12",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.10.0/scala-collection-compat_2.12-2.10.0.jar"
+                        },
+                        {
+                            "name": "scala-collection-compat_2.12",
+                            "classifier": "sources",
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.10.0/scala-collection-compat_2.12-2.10.0-sources.jar"
                         }
                     ]
                 },
@@ -1688,23 +1754,6 @@
                             "name": "error_prone_annotations",
                             "classifier": "sources",
                             "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.4.0/error_prone_annotations-2.4.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.scala-lang.modules",
-                    "name": "scala-collection-compat_2.12",
-                    "version": "2.10.0",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "scala-collection-compat_2.12",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.10.0/scala-collection-compat_2.12-2.10.0.jar"
-                        },
-                        {
-                            "name": "scala-collection-compat_2.12",
-                            "classifier": "sources",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.12/2.10.0/scala-collection-compat_2.12-2.10.0-sources.jar"
                         }
                     ]
                 },

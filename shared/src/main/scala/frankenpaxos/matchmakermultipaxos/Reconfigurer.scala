@@ -16,11 +16,9 @@ import frankenpaxos.quorums.QuorumSystemProto
 import frankenpaxos.quorums.SimpleMajority
 import frankenpaxos.quorums.UnanimousWrites
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ReconfigurerInboundSerializer
+ object ReconfigurerInboundSerializer
     extends ProtoSerializer[ReconfigurerInbound] {
   type A = ReconfigurerInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -28,13 +26,11 @@ object ReconfigurerInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Reconfigurer {
+ object Reconfigurer {
   val serializer = ReconfigurerInboundSerializer
 }
 
-@JSExportAll
-case class ReconfigurerOptions(
+ case class ReconfigurerOptions(
     resendStopsPeriod: java.time.Duration,
     resendBootstrapsPeriod: java.time.Duration,
     resendMatchPhase1asPeriod: java.time.Duration,
@@ -42,8 +38,7 @@ case class ReconfigurerOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ReconfigurerOptions {
+ object ReconfigurerOptions {
   val default = ReconfigurerOptions(
     resendStopsPeriod = java.time.Duration.ofSeconds(5),
     resendBootstrapsPeriod = java.time.Duration.ofSeconds(5),
@@ -53,8 +48,7 @@ object ReconfigurerOptions {
   )
 }
 
-@JSExportAll
-class ReconfigurerMetrics(collectors: Collectors) {
+ class ReconfigurerMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("matchmakermultipaxos_reconfigurer_requests_total")
@@ -94,8 +88,7 @@ class ReconfigurerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Reconfigurer[Transport <: frankenpaxos.Transport[Transport]](
+ class Reconfigurer[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -114,32 +107,27 @@ class Reconfigurer[Transport <: frankenpaxos.Transport[Transport]](
   type Epoch = Int
   type MatchmakerIndex = Int
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case class Idle(
+    case class Idle(
       configuration: MatchmakerConfiguration
   ) extends State
 
-  @JSExportAll
-  case class Stopping(
+    case class Stopping(
       configuration: MatchmakerConfiguration,
       newConfiguration: MatchmakerConfiguration,
       stopAcks: mutable.Map[MatchmakerIndex, StopAck],
       resendStops: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class Bootstrapping(
+    case class Bootstrapping(
       configuration: MatchmakerConfiguration,
       newConfiguration: MatchmakerConfiguration,
       bootstrapAcks: mutable.Map[MatchmakerIndex, BootstrapAck],
       resendBootstraps: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class Phase1(
+    case class Phase1(
       configuration: MatchmakerConfiguration,
       newConfiguration: MatchmakerConfiguration,
       round: Int,
@@ -147,8 +135,7 @@ class Reconfigurer[Transport <: frankenpaxos.Transport[Transport]](
       resendMatchPhase1as: Transport#Timer
   ) extends State
 
-  @JSExportAll
-  case class Phase2(
+    case class Phase2(
       configuration: MatchmakerConfiguration,
       newConfiguration: MatchmakerConfiguration,
       round: Int,

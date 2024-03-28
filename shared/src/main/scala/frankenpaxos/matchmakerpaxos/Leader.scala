@@ -16,35 +16,29 @@ import frankenpaxos.quorums.QuorumSystemProto
 import frankenpaxos.quorums.SimpleMajority
 import frankenpaxos.quorums.UnanimousWrites
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
+ object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
   type A = LeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
-@JSExportAll
-object Leader {
+ object Leader {
   val serializer = LeaderInboundSerializer
 }
 
-@JSExportAll
-case class LeaderOptions(
+ case class LeaderOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object LeaderOptions {
+ object LeaderOptions {
   val default = LeaderOptions(
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class LeaderMetrics(collectors: Collectors) {
+ class LeaderMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("matchmakerpaxos_leader_requests_total")
@@ -60,8 +54,7 @@ class LeaderMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Leader[Transport <: frankenpaxos.Transport[Transport]](
+ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -80,21 +73,17 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   type AcceptorIndex = Int
   type Round = Int
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case object Inactive extends State
+    case object Inactive extends State
 
-  @JSExportAll
-  case class Matchmaking(
+    case class Matchmaking(
       v: String,
       quorumSystem: QuorumSystem[Int],
       matchReplies: mutable.Map[MatchmakerIndex, MatchReply]
   ) extends State
 
-  @JSExportAll
-  case class Phase1(
+    case class Phase1(
       v: String,
       quorumSystem: QuorumSystem[Int],
       previousQuorumSystems: Map[Round, QuorumSystem[Int]],
@@ -103,15 +92,13 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       phase1bs: mutable.Map[AcceptorIndex, Phase1b]
   ) extends State
 
-  @JSExportAll
-  case class Phase2(
+    case class Phase2(
       v: String,
       quorumSystem: QuorumSystem[Int],
       phase2bs: mutable.Map[AcceptorIndex, Phase2b]
   ) extends State
 
-  @JSExportAll
-  case class Chosen(v: String) extends State
+    case class Chosen(v: String) extends State
 
   // Fields ////////////////////////////////////////////////////////////////////
   // A random number generator instantiated from `seed`. This allows us to
@@ -137,8 +124,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
 
   // If the leader is the active leader, then this is its round. If it is
   // inactive, then this is the largest active round it knows about.
-  @JSExport
-  protected var round: Round = -1
+     protected var round: Round = -1
 
   // The leader's state. Public for testing.
   var state: State = Inactive

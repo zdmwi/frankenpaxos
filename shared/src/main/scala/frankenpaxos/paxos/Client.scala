@@ -3,27 +3,23 @@ package frankenpaxos.paxos
 import scala.collection.mutable.Buffer
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-import frankenpaxos.Actor
+ import frankenpaxos.Actor
 import frankenpaxos.Logger
 import frankenpaxos.ProtoSerializer
 import frankenpaxos.Chan
 
-@JSExportAll
-object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
+ object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Client {
+ object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
-class Client[Transport <: frankenpaxos.Transport[Transport]](
+ class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -43,8 +39,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
 
   // proposedValue holds a proposed value, if one has been proposed. Once a
   // Paxos client has proposed a value, it will not propose any other value.
-  @JSExport
-  protected var proposedValue: Option[String] = None
+     protected var proposedValue: Option[String] = None
 
   // The value chosen by Paxos.
   var chosenValue: Option[String] = None

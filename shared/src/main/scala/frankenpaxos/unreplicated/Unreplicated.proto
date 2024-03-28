@@ -11,16 +11,14 @@ option (scalapb.options) = {
 
 // Protocol messages. //////////////////////////////////////////////////////////
 message ClientRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 command_id = 1;
   required bytes command = 2;
 }
 
 message ClientReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 command_id = 1;
   required bytes result = 2;
@@ -28,8 +26,7 @@ message ClientReply {
 
 // Inbound messages. ///////////////////////////////////////////////////////////
 message ClientInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     ClientReply client_reply = 1;
@@ -37,8 +34,7 @@ message ClientInbound {
 }
 
 message ServerInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     ClientRequest client_request = 1;

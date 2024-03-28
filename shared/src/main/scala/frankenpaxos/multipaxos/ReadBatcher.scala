@@ -10,8 +10,7 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
 // A ReadBatcher can batch linearizable reads in three different ways:
 //
@@ -28,11 +27,9 @@ import scala.util.Random
 //
 // The size and time schemes can be used for all three types of reads. The
 // adaptive scheme can only be used for linearizable reads.
-@JSExportAll
-sealed trait ReadBatchingScheme
+ sealed trait ReadBatchingScheme
 
-@JSExportAll
-object ReadBatchingScheme {
+ object ReadBatchingScheme {
   case class Size(batchSize: Int, timeout: java.time.Duration)
       extends ReadBatchingScheme
   case class Time(timeout: java.time.Duration) extends ReadBatchingScheme
@@ -64,8 +61,7 @@ object ReadBatchingScheme {
   })
 }
 
-@JSExportAll
-object ReadBatcherInboundSerializer
+ object ReadBatcherInboundSerializer
     extends ProtoSerializer[ReadBatcherInbound] {
   type A = ReadBatcherInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -73,13 +69,11 @@ object ReadBatcherInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object ReadBatcher {
+ object ReadBatcher {
   val serializer = ReadBatcherInboundSerializer
 }
 
-@JSExportAll
-case class ReadBatcherOptions(
+ case class ReadBatcherOptions(
     readBatchingScheme: ReadBatchingScheme,
     // If `unsafeReadAtFirstSlot` is true, all ReadRequests are issued in slot
     // 0. With this option enabled, our protocol is not safe. Reads are no
@@ -96,8 +90,7 @@ case class ReadBatcherOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ReadBatcherOptions {
+ object ReadBatcherOptions {
   val default = ReadBatcherOptions(
     readBatchingScheme = ReadBatchingScheme.Size(
       batchSize = 100,
@@ -109,8 +102,7 @@ object ReadBatcherOptions {
   )
 }
 
-@JSExportAll
-class ReadBatcherMetrics(collectors: Collectors) {
+ class ReadBatcherMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("multipaxos_read_batcher_requests_total")
@@ -177,8 +169,7 @@ class ReadBatcherMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class ReadBatcher[Transport <: frankenpaxos.Transport[Transport]](
+ class ReadBatcher[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -222,25 +213,20 @@ class ReadBatcher[Transport <: frankenpaxos.Transport[Transport]](
   // TODO(mwhittaker): We need to resend BatchMaxSlotReply requests when using
   // an adaptive batching scheme. Otherwise, if a BatchMaxSlotReply is dropped,
   // we stall.
-  @JSExport
-  protected var linearizableId = 0
+     protected var linearizableId = 0
 
-  @JSExport
-  protected var linearizableBatch = mutable.Buffer[Command]()
+     protected var linearizableBatch = mutable.Buffer[Command]()
 
   // When a ReadBatcher seals a linearizable batch, it contacts acceptors for a
   // max slot. Batches hang out in `pendingLinearizableBatch` until the max
   // slot response comes back. The batches are keyed by id.
-  @JSExport
-  protected val pendingLinearizableBatches =
+     protected val pendingLinearizableBatches =
     mutable.Map[ReadBatcherId, mutable.Buffer[Command]]()
 
-  @JSExport
-  protected val batchMaxSlotReplies =
+     protected val batchMaxSlotReplies =
     mutable.Map[ReadBatcherId, mutable.Map[AcceptorIndex, BatchMaxSlotReply]]()
 
-  @JSExport
-  protected val linearizableTimer: Option[Transport#Timer] =
+     protected val linearizableTimer: Option[Transport#Timer] =
     options.readBatchingScheme match {
       case ReadBatchingScheme.Size(_, timeout) =>
         Some(makeLinearizableTimer(timeout))
@@ -262,14 +248,11 @@ class ReadBatcher[Transport <: frankenpaxos.Transport[Transport]](
     }
 
   // Sequential consistency.
-  @JSExport
-  protected var sequentialSlot = -1
+     protected var sequentialSlot = -1
 
-  @JSExport
-  protected val sequentialBatch = mutable.Buffer[Command]()
+     protected val sequentialBatch = mutable.Buffer[Command]()
 
-  @JSExport
-  protected val sequentialTimer: Option[Transport#Timer] =
+     protected val sequentialTimer: Option[Transport#Timer] =
     options.readBatchingScheme match {
       case ReadBatchingScheme.Size(_, timeout) =>
         Some(makeSequentialTimer(timeout))
@@ -280,11 +263,9 @@ class ReadBatcher[Transport <: frankenpaxos.Transport[Transport]](
     }
 
   // Eventual consistency.
-  @JSExport
-  protected val eventualBatch = mutable.Buffer[Command]()
+     protected val eventualBatch = mutable.Buffer[Command]()
 
-  @JSExport
-  protected val eventualTimer: Option[Transport#Timer] =
+     protected val eventualTimer: Option[Transport#Timer] =
     options.readBatchingScheme match {
       case ReadBatchingScheme.Size(_, timeout) =>
         Some(makeEventualTimer(timeout))

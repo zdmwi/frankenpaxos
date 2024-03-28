@@ -10,31 +10,26 @@ import frankenpaxos.monitoring.PrometheusCollectors
 import scala.collection.mutable
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
+ object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-case class ClientOptions(
+ case class ClientOptions(
     reproposePeriod: java.time.Duration
 )
 
-@JSExportAll
-object ClientOptions {
+ object ClientOptions {
   val default = ClientOptions(
     reproposePeriod = java.time.Duration.ofSeconds(10)
   )
 }
 
-@JSExportAll
-class ClientMetrics(collectors: Collectors) {
+ class ClientMetrics(collectors: Collectors) {
   val responsesTotal: Counter = collectors.counter
     .build()
     .name("unanimous_bpaxos_client_responses_total")
@@ -54,8 +49,7 @@ class ClientMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-object Client {
+ object Client {
   val serializer = ClientInboundSerializer
 
   type Pseudonym = Int
@@ -65,8 +59,7 @@ object Client {
   // there is a pending command, no other command can be proposed. This
   // restriction hurts performance a bit---a single client cannot pipeline
   // requests---but it simplifies the design of the protocol.
-  @JSExportAll
-  case class PendingCommand(
+    case class PendingCommand(
       pseudonym: Pseudonym,
       id: Int,
       command: Array[Byte],
@@ -74,8 +67,7 @@ object Client {
   )
 }
 
-@JSExportAll
-class Client[Transport <: frankenpaxos.Transport[Transport]](
+ class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -102,11 +94,9 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // recover, so we are safe to intialize the id to 0. If clients can recover
   // from failure, we would have to implement some mechanism to ensure that
   // client ids increase over time, even after crashes and restarts.
-  @JSExport
-  protected var ids = mutable.Map[Pseudonym, Id]()
+     protected var ids = mutable.Map[Pseudonym, Id]()
 
-  @JSExport
-  protected var pendingCommands = mutable.Map[Pseudonym, PendingCommand]()
+     protected var pendingCommands = mutable.Map[Pseudonym, PendingCommand]()
 
   // Leader channels.
   private val leaders: Map[Int, Chan[Leader[Transport]]] = {

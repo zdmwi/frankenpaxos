@@ -2,8 +2,7 @@ package frankenpaxos.depgraph
 
 import frankenpaxos.compact.CompactSet
 import scala.collection.mutable
-import scala.scalajs.js.annotation.JSExportAll
-import scalax.collection.GraphEdge.DiEdge
+ import scalax.collection.GraphEdge.DiEdge
 import scalax.collection.GraphPredef._
 import scalax.collection.mutable.Graph
 
@@ -15,8 +14,7 @@ import scalax.collection.mutable.Graph
 // can use it in the JS visualizations.
 //
 // [1]: http://www.scala-graph.org/
-@JSExportAll
-class ScalaGraphDependencyGraph[
+ class ScalaGraphDependencyGraph[
     Key,
     SequenceNumber,
     KeySet <: CompactSet[KeySet] { type T = Key }

@@ -13,23 +13,19 @@ import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
 import scala.util.Random
 
-@JSExportAll
 object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
-  override def toBytes(x: A): Array[Byte] = super.toBytes(x)
+  override def toBytes(x: A): Array[Byte]       = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
-  override def toPrettyString(x: A): String = super.toPrettyString(x)
+  override def toPrettyString(x: A): String     = super.toPrettyString(x)
 }
 
-@JSExportAll
 object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
 case class ClientOptions(
     resendClientRequestPeriod: java.time.Duration,
     // Whether or not to measure the latency of processing every message. See
@@ -37,7 +33,6 @@ case class ClientOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
 object ClientOptions {
   val default = ClientOptions(
     resendClientRequestPeriod = java.time.Duration.ofSeconds(10),
@@ -45,7 +40,6 @@ object ClientOptions {
   )
 }
 
-@JSExportAll
 class ClientMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
@@ -86,7 +80,6 @@ class ClientMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
 class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
@@ -102,9 +95,9 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   override type InboundMessage = ClientInbound
   override val serializer = ClientInboundSerializer
 
-  type Id = Int
+  type Id        = Int
   type Pseudonym = Int
-  type Round = Int
+  type Round     = Int
 
   // Fields ////////////////////////////////////////////////////////////////////
   // A random number generator instantiated from `seed`. This allows us to
@@ -126,14 +119,12 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // recover, so we are safe to intialize the id to 0. If clients can recover
   // from failure, we would have to implement some mechanism to ensure that
   // client ids increase over time, even after crashes and restarts.
-  @JSExport
   protected var ids = mutable.Map[Pseudonym, Id]()
 
   // Clients can only propose one request at a time (per pseudonym), so if
   // there is a pending command, no other command can be proposed. This
   // restriction hurts performance a bit---a single client cannot pipeline
   // requests---but it simplifies the design of the protocol.
-  @JSExportAll
   case class PendingWrite(
       pseudonym: Pseudonym,
       id: Id,
@@ -142,7 +133,6 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       resendClientRequest: Transport#Timer
   )
 
-  @JSExport
   protected var pendingWrites = mutable.Map[Pseudonym, PendingWrite]()
 
   // Timers ////////////////////////////////////////////////////////////////////
@@ -172,8 +162,8 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   private def timed[T](label: String)(e: => T): T = {
     if (options.measureLatencies) {
       val startNanos = System.nanoTime
-      val x = e
-      val stopNanos = System.nanoTime
+      val x          = e
+      val stopNanos  = System.nanoTime
       metrics.requestsLatency
         .labels(label)
         .observe((stopNanos - startNanos).toDouble / 1000000)
@@ -202,11 +192,14 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       case None =>
         // Send the command.
         val id = ids.getOrElse(pseudonym, 0)
-        val commandProto = Command(commandId =
-                                     CommandId(clientAddress = addressAsBytes,
-                                               clientPseudonym = pseudonym,
-                                               clientId = id),
-                                   command = ByteString.copyFrom(command))
+        val commandProto = Command(
+          commandId = CommandId(
+            clientAddress = addressAsBytes,
+            clientPseudonym = pseudonym,
+            clientId = id
+          ),
+          command = ByteString.copyFrom(command)
+        )
         val clientRequest = ClientRequest(command = commandProto)
         servers(rand.nextInt(servers.size))
           .send(ServerInbound().withClientRequest(clientRequest))
@@ -249,7 +242,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       clientReply: ClientReply
   ): Unit = {
     val pseudonym = clientReply.commandId.clientPseudonym
-    val state = pendingWrites.get(pseudonym)
+    val state     = pendingWrites.get(pseudonym)
     state match {
       case None =>
         logger.debug(
@@ -282,16 +275,16 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // Interface /////////////////////////////////////////////////////////////////
   def write(pseudonym: Pseudonym, command: Array[Byte]): Future[Array[Byte]] = {
     val promise = Promise[Array[Byte]]()
-    transport.executionContext.execute(
-      () => writeImpl(pseudonym, command, promise)
+    transport.executionContext.execute(() =>
+      writeImpl(pseudonym, command, promise)
     )
     promise.future
   }
 
   def write(pseudonym: Pseudonym, command: String): Future[String] = {
     val promise = Promise[Array[Byte]]()
-    transport.executionContext.execute(
-      () => writeImpl(pseudonym, command.getBytes(), promise)
+    transport.executionContext.execute(() =>
+      writeImpl(pseudonym, command.getBytes(), promise)
     )
     promise.future.map(new String(_))(
       concurrent.ExecutionContext.Implicits.global

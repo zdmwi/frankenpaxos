@@ -4,10 +4,8 @@ import frankenpaxos.util.TopK
 import frankenpaxos.util.TopOne
 import frankenpaxos.util.VertexIdLike
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-class AppendLog extends StateMachine {
+ 
+ class AppendLog extends StateMachine {
   private var xs = mutable.Buffer[String]()
 
   override def toString(): String = xs.toString()
@@ -33,8 +31,7 @@ class AppendLog extends StateMachine {
 
   override def conflictIndex[Key](): ConflictIndex[Key, Array[Byte]] =
     new ConflictIndex[Key, Array[Byte]] {
-      @JSExport
-      protected val commandsAndSnapshots = mutable.Set[Key]()
+             protected val commandsAndSnapshots = mutable.Set[Key]()
 
       override def put(key: Key, command: Array[Byte]): Unit =
         commandsAndSnapshots += key
@@ -57,8 +54,7 @@ class AppendLog extends StateMachine {
   ): ConflictIndex[Key, Array[Byte]] = {
     if (k == 1) {
       new ConflictIndex[Key, Array[Byte]] {
-        @JSExport
-        protected val topOne = new TopOne(numLeaders, like)
+                 protected val topOne = new TopOne(numLeaders, like)
 
         override def put(key: Key, command: Array[Byte]): Unit = topOne.put(key)
         override def putSnapshot(key: Key): Unit = topOne.put(key)
@@ -67,8 +63,7 @@ class AppendLog extends StateMachine {
       }
     } else {
       new ConflictIndex[Key, Array[Byte]] {
-        @JSExport
-        protected val topK = new TopK[Key](k, numLeaders, like)
+                 protected val topK = new TopK[Key](k, numLeaders, like)
 
         override def put(key: Key, command: Array[Byte]): Unit = topK.put(key)
         override def putSnapshot(key: Key): Unit = topK.put(key)

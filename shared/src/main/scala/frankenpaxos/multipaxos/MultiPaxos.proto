@@ -181,13 +181,11 @@ option (scalapb.options) = {
 
 // Helper messages. ////////////////////////////////////////////////////////////
 message Noop {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message CommandId {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // A client's address, pseudonym, and id uniquely identify a command.
   required bytes client_address = 1;
@@ -196,23 +194,20 @@ message CommandId {
 }
 
 message Command {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required bytes command = 2;
 }
 
 message CommandBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   repeated Command command = 1;
 }
 
 message CommandBatchOrNoop {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof value {
     CommandBatch command_batch = 1;
@@ -222,22 +217,19 @@ message CommandBatchOrNoop {
 
 // Protocol messages. //////////////////////////////////////////////////////////
 message ClientRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required Command command = 1;
 }
 
 message ClientRequestBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandBatch batch = 1;
 }
 
 message Phase1a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 
@@ -252,8 +244,7 @@ message Phase1a {
 }
 
 message Phase1bSlotInfo {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 vote_round = 2;
@@ -261,8 +252,7 @@ message Phase1bSlotInfo {
 }
 
 message Phase1b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 group_index = 1;
   required int32 acceptor_index = 2;
@@ -271,8 +261,7 @@ message Phase1b {
 }
 
 message Phase2a {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required int32 round = 2;
@@ -280,8 +269,7 @@ message Phase2a {
 }
 
 message Phase2b {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 group_index = 1;
   required int32 acceptor_index = 2;
@@ -290,16 +278,14 @@ message Phase2b {
 }
 
 message Chosen {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required CommandBatchOrNoop command_batch_or_noop = 2;
 }
 
 message ClientReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required int32 slot = 2;
@@ -307,22 +293,19 @@ message ClientReply {
 }
 
 message ClientReplyBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   repeated ClientReply batch = 1;
 }
 
 message MaxSlotRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
 }
 
 message MaxSlotReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required int32 group_index = 2;
@@ -331,16 +314,14 @@ message MaxSlotReply {
 }
 
 message BatchMaxSlotRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 read_batcher_index = 1;
   required int32 read_batcher_id = 2;
 }
 
 message BatchMaxSlotReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 read_batcher_index = 1;
   required int32 read_batcher_id = 2;
@@ -349,8 +330,7 @@ message BatchMaxSlotReply {
 }
 
 message ReadRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // If a client sends a ReadRequest to a ReadBatcher, the slot is set to -1.
   required int32 slot = 1;
@@ -358,46 +338,40 @@ message ReadRequest {
 }
 
 message ReadRequestBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   repeated Command command = 2;
 }
 
 message SequentialReadRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   required Command command = 2;
 }
 
 message SequentialReadRequestBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 slot = 1;
   repeated Command command = 2;
 }
 
 message EventualReadRequest {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required Command command = 1;
 }
 
 message EventualReadRequestBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   repeated Command command = 1;
 }
 
 message ReadReply {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required CommandId command_id = 1;
   required int32 slot = 2;
@@ -405,8 +379,7 @@ message ReadReply {
 }
 
 message ReadReplyBatch {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   repeated ReadReply batch = 1;
 }
@@ -417,51 +390,43 @@ message ReadReplyBatch {
 // to all leaders, and the active leader replies with a
 // LeaderInfoReply{Client,Batcher} request with its current round.
 message NotLeaderClient {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoRequestClient {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoReplyClient {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message NotLeaderBatcher {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required ClientRequestBatch client_request_batch = 1;
 }
 
 message LeaderInfoRequestBatcher {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 }
 
 message LeaderInfoReplyBatcher {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message Nack {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   required int32 round = 1;
 }
 
 message ChosenWatermark {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // Replicas periodically send ChosenWatermark messages to the leaders
   // informing them that every log entry smaller than `slot` has been chosen.
@@ -475,8 +440,7 @@ message ChosenWatermark {
 }
 
 message Recover {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   // Replicas execute logs in prefix order. Thus, if the log permanently has a
   // hole in it, the algorithm remains forever blocked. To solve this, if a
@@ -487,8 +451,7 @@ message Recover {
 
 // Inbound messages. ///////////////////////////////////////////////////////////
 message ClientInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     ClientReply client_reply = 1;
@@ -500,8 +463,7 @@ message ClientInbound {
 }
 
 message BatcherInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     ClientRequest client_request = 1;
@@ -511,8 +473,7 @@ message BatcherInbound {
 }
 
 message ReadBatcherInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     ReadRequest read_request = 1;
@@ -523,8 +484,7 @@ message ReadBatcherInbound {
 }
 
 message LeaderInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     Phase1b phase1b = 1;
@@ -539,8 +499,7 @@ message LeaderInbound {
 }
 
 message ProxyLeaderInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     Phase2a phase2a = 1;
@@ -549,8 +508,7 @@ message ProxyLeaderInbound {
 }
 
 message AcceptorInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     Phase1a phase1a = 1;
@@ -561,8 +519,7 @@ message AcceptorInbound {
 }
 
 message ReplicaInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     Chosen chosen = 1;
@@ -576,8 +533,7 @@ message ReplicaInbound {
 }
 
 message ProxyReplicaInbound {
-  option (scalapb.message).annotations =
-    "@scala.scalajs.js.annotation.JSExportAll";
+    
 
   oneof request {
     ClientReplyBatch client_reply_batch = 1;

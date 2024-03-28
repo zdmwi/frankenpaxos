@@ -11,36 +11,30 @@ import frankenpaxos.monitoring.Gauge
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object AcceptorInboundSerializer extends ProtoSerializer[AcceptorInbound] {
+ object AcceptorInboundSerializer extends ProtoSerializer[AcceptorInbound] {
   type A = AcceptorInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Acceptor {
+ object Acceptor {
   val serializer = AcceptorInboundSerializer
 }
 
-@JSExportAll
-case class AcceptorOptions(
+ case class AcceptorOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object AcceptorOptions {
+ object AcceptorOptions {
   val default = AcceptorOptions(
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class AcceptorMetrics(collectors: Collectors) {
+ class AcceptorMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("horizontal_acceptor_requests_total")
@@ -68,8 +62,7 @@ class AcceptorMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
+ class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -87,8 +80,7 @@ class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
   type Slot = Int
   type Round = Int
 
-  @JSExportAll
-  case class State(
+    case class State(
       // The first slot of the chunk that owns this slot.
       firstSlot: Slot,
       voteRound: Round,
@@ -101,11 +93,9 @@ class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
   // For simplicity, we use a round robin round system for the leaders.
   private val roundSystem = new RoundSystem.ClassicRoundRobin(config.numLeaders)
 
-  @JSExport
-  protected var round: Int = -1
+     protected var round: Int = -1
 
-  @JSExport
-  protected var states = mutable.SortedMap[Slot, State]()
+     protected var states = mutable.SortedMap[Slot, State]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   private def timed[T](label: String)(e: => T): T = {

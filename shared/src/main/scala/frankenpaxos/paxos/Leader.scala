@@ -1,27 +1,23 @@
 package frankenpaxos.paxos
 
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-import frankenpaxos.Actor
+ import frankenpaxos.Actor
 import frankenpaxos.Logger
 import frankenpaxos.ProtoSerializer
 import frankenpaxos.Chan
 
-@JSExportAll
-object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
+ object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
   type A = LeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Leader {
+ object Leader {
   val serializer = LeaderInboundSerializer
 }
 
-@JSExportAll
-class Leader[Transport <: frankenpaxos.Transport[Transport]](
+ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -50,8 +46,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
 
   // The leader's round number. With n leaders, leader i uses round
   // numbers i, i + n, i + 2n, i + 3n, etc.
-  @JSExport
-  protected var round: Int = -1
+     protected var round: Int = -1
 
   // The current status of the leader. A leader is either idle, running
   // phase 1, running phase 2, or has learned that a value is chosen.
@@ -60,18 +55,14 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     val Idle, Phase1, Phase2, Chosen = Value
   }
   import Status._
-  @JSExport
-  protected var status: Status = Idle
+     protected var status: Status = Idle
 
   // The value currently being proposed in round `round`.
-  @JSExport
-  protected var proposedValue: Option[String] = None
+     protected var proposedValue: Option[String] = None
 
   // The set of phase 1b and phase 2b responses from the current round.
-  @JSExport
-  protected var phase1bResponses = mutable.Set[Phase1b]()
-  @JSExport
-  protected var phase2bResponses = mutable.Set[Phase2b]()
+     protected var phase1bResponses = mutable.Set[Phase1b]()
+     protected var phase2bResponses = mutable.Set[Phase2b]()
 
   // The chosen value.
   var chosenValue: Option[String] = None

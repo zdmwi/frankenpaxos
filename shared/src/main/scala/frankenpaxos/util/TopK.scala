@@ -1,13 +1,11 @@
 package frankenpaxos.util
 
 import collection.mutable
-import scala.scalajs.js.annotation._
-
+ 
 class TopK[V](k: Int, numLeaders: Int, like: VertexIdLike[V]) {
   type LeaderIndex = Int
 
-  @JSExport
-  protected val topOnes = mutable.Buffer
+     protected val topOnes = mutable.Buffer
     .fill[mutable.SortedSet[Int]](numLeaders)(mutable.SortedSet[Int]())
 
   def put(x: V): Unit = {

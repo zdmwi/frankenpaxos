@@ -17,7 +17,9 @@ lazy val root = project
       "-unchecked",
       "-deprecation",
       "-feature",
-      "-Xfatal-warnings"
+      "-Xfatal-warnings",
+      // allows postfix operators in the code. eg: 10 seconds, 1 hour, etc.
+      "-language:postfixOps"
     ),
     libraryDependencies ++= Seq(
       "com.github.scopt" %% "scopt" % "3.7.0",
@@ -37,7 +39,7 @@ lazy val root = project
       "org.scalatest" %% "scalatest" % "3.0.5"
     ),
     Compile / PB.targets := Seq(
-      scalapb.gen() -> (sourceManaged in Compile).value
+      scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     ),
     Compile / PB.protoSources := Seq(
       file("shared/src/main/scala"),

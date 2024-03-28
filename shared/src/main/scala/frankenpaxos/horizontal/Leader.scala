@@ -18,24 +18,20 @@ import frankenpaxos.quorums.SimpleMajority
 import frankenpaxos.quorums.UnanimousWrites
 import frankenpaxos.roundsystem.RoundSystem
 import frankenpaxos.util
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
+ object LeaderInboundSerializer extends ProtoSerializer[LeaderInbound] {
   type A = LeaderInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Leader {
+ object Leader {
   val serializer = LeaderInboundSerializer
 }
 
-@JSExportAll
-case class LeaderOptions(
+ case class LeaderOptions(
     // A Leader implements its log as a BufferMap. `logGrowSize` is the
     // `growSize` argument used to construct the BufferMap.
     logGrowSize: Int,
@@ -50,8 +46,7 @@ case class LeaderOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object LeaderOptions {
+ object LeaderOptions {
   val default = LeaderOptions(
     logGrowSize = 1000,
     alpha = 1000,
@@ -62,8 +57,7 @@ object LeaderOptions {
   )
 }
 
-@JSExportAll
-class LeaderMetrics(collectors: Collectors) {
+ class LeaderMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("horizontal_leader_requests_total")
@@ -165,8 +159,7 @@ class LeaderMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Leader[Transport <: frankenpaxos.Transport[Transport]](
+ class Leader[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -187,17 +180,14 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   type Round = Int
   type Slot = Int
 
-  @JSExportAll
-  sealed trait Phase
+    sealed trait Phase
 
-  @JSExportAll
-  case class Phase1(
+    case class Phase1(
       phase1bs: mutable.Map[AcceptorIndex, Phase1b],
       resendPhase1as: Transport#Timer
   ) extends Phase
 
-  @JSExportAll
-  case class Phase2(
+    case class Phase2(
       // The next free slot in the log, or None if the chunk is out of slots.
       var nextSlot: Option[Slot],
       // The values that the leader is trying to get chosen.
@@ -212,8 +202,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       var resendPhase2as: Transport#Timer
   ) extends Phase
 
-  @JSExportAll
-  case class Chunk(
+    case class Chunk(
       // The first and last slot owned by this chunk. The names are borrowed
       // from [1]. lastSlot is an Optional because a chunk does not always have
       // a last slot.
@@ -227,19 +216,16 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
       phase: Phase
   )
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
   // One of the proposers is elected leader. All other proposers are inactive.
-  @JSExportAll
-  case class Inactive(
+    case class Inactive(
       // When this inactive proposer becomes a leader, it begins in the first
       // round it owns larger than `round`.
       round: Round
   ) extends State
 
-  @JSExportAll
-  case class Active(
+    case class Active(
       round: Round,
       // We divide the log into chunks, where each chunk is owned by a single
       // configuration. This similar to the approach taken in [1]. chunks
@@ -281,27 +267,22 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
 
   // The log of commands. We implement the log as a BufferMap as opposed to
   // something like a SortedMap for efficiency.
-  @JSExport
-  protected val log = new util.BufferMap[Value](options.logGrowSize)
+     protected val log = new util.BufferMap[Value](options.logGrowSize)
 
   // Every slot less than chosenWatermark has been chosen.
-  @JSExport
-  protected var chosenWatermark: Slot = 0
+     protected var chosenWatermark: Slot = 0
 
   // activeFirstSlots stores the firstSlots of all active chunks. This is
   // maintained by both active and inactive leaders. It is a little redundant
   // with the chunks stored by the active leader.
-  @JSExport
-  protected var activeFirstSlots = mutable.Buffer[Slot](0)
+     protected var activeFirstSlots = mutable.Buffer[Slot](0)
 
   // Leader election address. This field exists for the javascript
   // visualizations.
-  @JSExport
-  protected val electionAddress = config.leaderElectionAddresses(index)
+     protected val electionAddress = config.leaderElectionAddresses(index)
 
   // Leader election participant.
-  @JSExport
-  protected val election = new Participant[Transport](
+     protected val election = new Participant[Transport](
     address = electionAddress,
     transport = transport,
     logger = logger,
@@ -319,8 +300,7 @@ class Leader[Transport <: frankenpaxos.Transport[Transport]](
   })
 
   // The leader's state.
-  @JSExport
-  protected var state: State = if (index == 0) {
+     protected var state: State = if (index == 0) {
     // In the first round, we use a predetermined set of acceptors. This is not
     // necessary, but it is convenient for some benchmarks.
     val quorumSystem =

@@ -1,13 +1,11 @@
 package frankenpaxos.util
 
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
+ 
 class TopOne[V](numLeaders: Int, like: VertexIdLike[V]) {
   type LeaderIndex = Int
 
-  @JSExport
-  protected val topOnes = mutable.Buffer.fill[Int](numLeaders)(0)
+     protected val topOnes = mutable.Buffer.fill[Int](numLeaders)(0)
 
   def put(x: V): Unit = {
     val i = like.leaderIndex(x)

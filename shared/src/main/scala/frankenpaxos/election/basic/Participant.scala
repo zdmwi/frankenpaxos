@@ -30,10 +30,8 @@ import frankenpaxos.Logger
 import frankenpaxos.ProtoSerializer
 import frankenpaxos.Util
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object ParticipantInboundSerializer
+ 
+ object ParticipantInboundSerializer
     extends ProtoSerializer[ParticipantInbound] {
   type A = ParticipantInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -41,8 +39,7 @@ object ParticipantInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Participant {
+ object Participant {
   val serializer = ParticipantInboundSerializer
 }
 
@@ -60,8 +57,7 @@ object ElectionOptions {
   )
 }
 
-@JSExportAll
-class Participant[Transport <: frankenpaxos.Transport[Transport]](
+ class Participant[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -75,14 +71,11 @@ class Participant[Transport <: frankenpaxos.Transport[Transport]](
   override type InboundMessage = ParticipantInbound
   override def serializer = Participant.serializer
 
-  @JSExportAll
-  sealed trait State
+    sealed trait State
 
-  @JSExportAll
-  case object Leader extends State
+    case object Leader extends State
 
-  @JSExportAll
-  case object Follower extends State
+    case object Follower extends State
 
   // Fields ////////////////////////////////////////////////////////////////////
   logger.check(addresses.contains(address))
@@ -100,11 +93,9 @@ class Participant[Transport <: frankenpaxos.Transport[Transport]](
   // The callbacks to inform when a new leader is elected.
   private var callbacks: mutable.Buffer[(Int) => Unit] = mutable.Buffer()
 
-  @JSExport
-  protected var round: Int = 0
+     protected var round: Int = 0
 
-  @JSExport
-  protected var leaderIndex: Int = initialLeaderIndex
+     protected var leaderIndex: Int = initialLeaderIndex
 
   private lazy val pingTimer: Transport#Timer = timer(
     "pingTimer",
@@ -126,8 +117,7 @@ class Participant[Transport <: frankenpaxos.Transport[Transport]](
     }
   )
 
-  @JSExport
-  protected var state: State =
+     protected var state: State =
     if (index == initialLeaderIndex) {
       pingTimer.start()
       Leader

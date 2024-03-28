@@ -7,11 +7,8 @@ import frankenpaxos.monitoring.Gauge
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import scala.collection.mutable
-import scala.scalajs.js.annotation.JSExport
-import scala.scalajs.js.annotation.JSExportAll
-
-@JSExportAll
-class TarjanDependencyGraphMetrics(collectors: Collectors) {
+  
+ class TarjanDependencyGraphMetrics(collectors: Collectors) {
   val methodTotal: Counter = collectors.counter
     .build()
     .name("tarjan_method_total")
@@ -145,8 +142,7 @@ class TarjanDependencyGraphMetrics(collectors: Collectors) {
 // [2]: https://scholar.google.com/scholar?cluster=15533190727229683002
 // [3]: https://github.com/nvanbenschoten/epaxos/blob/master/epaxos/execute.go
 // [4]: https://github.com/efficient/epaxos/blob/master/src/epaxos/epaxos-exec.go
-@JSExportAll
-class TarjanDependencyGraph[
+ class TarjanDependencyGraph[
     Key,
     SequenceNumber,
     KeySet <: CompactSet[KeySet] { type T = Key }
@@ -166,15 +162,13 @@ class TarjanDependencyGraph[
   // - Use VertexIdBufferMap for `vertices`. Makes garbage collection faster.
   // - Attempt to execute vertices in increasing vertex id order.
 
-  @JSExportAll
-  case class Vertex(
+    case class Vertex(
       key: Key,
       sequenceNumber: SequenceNumber,
       dependencies: KeySet
   )
 
-  @JSExportAll
-  case class VertexMetadata(
+    case class VertexMetadata(
       var number: Int,
       var lowLink: Int,
       var stackIndex: Int,
@@ -190,11 +184,9 @@ class TarjanDependencyGraph[
     def appendMany(keys: mutable.Buffer[A], newKeys: mutable.Buffer[Key]): Unit
   }
 
-  @JSExport
-  protected val vertices = mutable.Map[Key, Vertex]()
+     protected val vertices = mutable.Map[Key, Vertex]()
 
-  @JSExport
-  protected val executed: KeySet = emptyKeySet
+     protected val executed: KeySet = emptyKeySet
 
   // Metadata used by execute.
   private val metadatas = mutable.Map[Key, VertexMetadata]()

@@ -5,7 +5,6 @@ import frankenpaxos.util.TopK
 import frankenpaxos.util.TopOne
 import frankenpaxos.util.VertexIdLike
 import org.scalacheck.Gen
-import scala.scalajs.js.annotation._
 
 object KeyValueStoreInputSerializer
     extends frankenpaxos.ProtoSerializer[KeyValueStoreInput]
@@ -13,8 +12,7 @@ object KeyValueStoreInputSerializer
 object KeyValueStoreOutputSerializer
     extends frankenpaxos.ProtoSerializer[KeyValueStoreOutput]
 
-@JSExportAll
-object KeyValueStore {
+ object KeyValueStore {
   def getOneOf(keys: Seq[String]): Gen[KeyValueStoreInput] = {
     for {
       key <- Gen.oneOf(keys)
@@ -34,8 +32,7 @@ object KeyValueStore {
   }
 }
 
-@JSExportAll
-class KeyValueStore
+ class KeyValueStore
     extends TypedStateMachine[KeyValueStoreInput, KeyValueStoreOutput] {
   private val kvs = mutable.Map[String, String]()
 

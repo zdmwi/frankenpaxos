@@ -12,32 +12,26 @@ import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.roundsystem.RoundSystem
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
+ object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Client {
+ object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
-case class ClientOptions()
+ case class ClientOptions()
 
-@JSExportAll
-object ClientOptions {
+ object ClientOptions {
   val default = ClientOptions()
 }
 
-@JSExportAll
-class ClientMetrics(collectors: Collectors) {
+ class ClientMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("unreplicated_client_requests_total")
@@ -57,8 +51,7 @@ class ClientMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Client[Transport <: frankenpaxos.Transport[Transport]](
+ class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -77,8 +70,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // there is a pending command, no other command can be proposed. This
   // restriction hurts performance a bit---a single client cannot pipeline
   // requests---but it simplifies the design of the protocol.
-  @JSExportAll
-  case class PendingCommand(
+    case class PendingCommand(
       commandId: CommandId,
       command: Array[Byte],
       result: Promise[Array[Byte]]
@@ -89,11 +81,9 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   private val server: Chan[Server[Transport]] =
     chan[Server[Transport]](serverAddress, Server.serializer)
 
-  @JSExport
-  protected var nextId: Int = 0
+     protected var nextId: Int = 0
 
-  @JSExport
-  protected var pendingCommands = mutable.Map[CommandId, PendingCommand]()
+     protected var pendingCommands = mutable.Map[CommandId, PendingCommand]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   private def proposeImpl(

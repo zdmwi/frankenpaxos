@@ -12,8 +12,7 @@ import org.jgrapht.traverse.BreadthFirstIterator
 import org.jgrapht.traverse.TopologicalOrderIterator
 import scala.collection.JavaConverters._
 import scala.collection.mutable
-import scala.scalajs.js.annotation.JSExportAll
-
+ 
 // JgraphtDependencyGraph is a DependencyGraph implemented using JGraphT [1].
 // JGraphT is a feature rich library that makes it easy to implement
 // DependencyGraph. However, it is a Java library, so it cannot be used in the

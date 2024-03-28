@@ -10,11 +10,9 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
-import scala.scalajs.js.annotation._
-import scala.util.Random
+ import scala.util.Random
 
-@JSExportAll
-object ProxyReplicaInboundSerializer
+ object ProxyReplicaInboundSerializer
     extends ProtoSerializer[ProxyReplicaInbound] {
   type A = ProxyReplicaInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -22,13 +20,11 @@ object ProxyReplicaInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object ProxyReplica {
+ object ProxyReplica {
   val serializer = ProxyReplicaInboundSerializer
 }
 
-@JSExportAll
-case class ProxyReplicaOptions(
+ case class ProxyReplicaOptions(
     // A proxy replica flushes all of its channels to the clients after every
     // `flushEveryN` (write or read) commands processed.
     flushEveryN: Int,
@@ -39,8 +35,7 @@ case class ProxyReplicaOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ProxyReplicaOptions {
+ object ProxyReplicaOptions {
   val default = ProxyReplicaOptions(
     flushEveryN = 1,
     batchFlush = false,
@@ -48,8 +43,7 @@ object ProxyReplicaOptions {
   )
 }
 
-@JSExportAll
-class ProxyReplicaMetrics(collectors: Collectors) {
+ class ProxyReplicaMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("multipaxos_proxy_replica_requests_total")
@@ -65,8 +59,7 @@ class ProxyReplicaMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class ProxyReplica[Transport <: frankenpaxos.Transport[Transport]](
+ class ProxyReplica[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -87,8 +80,7 @@ class ProxyReplica[Transport <: frankenpaxos.Transport[Transport]](
       yield chan[Leader[Transport]](address, Leader.serializer)
 
   // Client channels.
-  @JSExport
-  protected val clients =
+     protected val clients =
     mutable.Map[Transport#Address, Chan[Client[Transport]]]()
 
   // The number of messages since the last flush.

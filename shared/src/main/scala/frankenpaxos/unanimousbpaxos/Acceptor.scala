@@ -7,29 +7,24 @@ import frankenpaxos.monitoring.Collectors
 import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object AcceptorInboundSerializer extends ProtoSerializer[AcceptorInbound] {
+ 
+ object AcceptorInboundSerializer extends ProtoSerializer[AcceptorInbound] {
   type A = AcceptorInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-case class AcceptorOptions(
+ case class AcceptorOptions(
     // TODO(mwhittaker): Add options.
 )
 
-@JSExportAll
-object AcceptorOptions {
+ object AcceptorOptions {
   // TODO(mwhittaker): Add options.
   val default = AcceptorOptions()
 }
 
-@JSExportAll
-class AcceptorMetrics(collectors: Collectors) {
+ class AcceptorMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("unanimous_bpaxos_acceptor_requests_total")
@@ -38,14 +33,12 @@ class AcceptorMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-object Acceptor {
+ object Acceptor {
   val serializer = AcceptorInboundSerializer
 
   type Round = Int
 
-  @JSExportAll
-  case class VoteValue(
+    case class VoteValue(
       commandOrNoop: CommandOrNoop,
       dependencies: Set[VertexId]
   )
@@ -60,8 +53,7 @@ object Acceptor {
               dependencies = voteValueProto.dependency.toSet)
   }
 
-  @JSExportAll
-  case class State(
+    case class State(
       // round is the largest round that this acceptor has heard of.
       round: Round,
       // voteRound the largest round in which this acceptor has voted, or -1 if
@@ -73,8 +65,7 @@ object Acceptor {
   )
 }
 
-@JSExportAll
-class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
+ class Acceptor[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,

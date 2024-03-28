@@ -11,39 +11,33 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.statemachine.StateMachine
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object ServerInboundSerializer extends ProtoSerializer[ServerInbound] {
+ 
+ object ServerInboundSerializer extends ProtoSerializer[ServerInbound] {
   type A = ServerInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object Server {
+ object Server {
   val serializer = ServerInboundSerializer
 }
 
-@JSExportAll
-case class ServerOptions(
+ case class ServerOptions(
     // A server flushes all of its channels to the proxy servers after every
     // `flushEveryN` commands.
     flushEveryN: Int,
     measureLatencies: Boolean
 )
 
-@JSExportAll
-object ServerOptions {
+ object ServerOptions {
   val default = ServerOptions(
     flushEveryN = 1,
     measureLatencies = true
   )
 }
 
-@JSExportAll
-class ServerMetrics(collectors: Collectors) {
+ class ServerMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
     .name("batchedunreplicated_server_requests_total")
@@ -59,8 +53,7 @@ class ServerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class Server[Transport <: frankenpaxos.Transport[Transport]](
+ class Server[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,
@@ -80,8 +73,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   // perform deterministic randomized tests.
   private val rand = new scala.util.Random(seed)
 
-  @JSExport
-  protected val proxyServers: Seq[Chan[ProxyServer[Transport]]] =
+     protected val proxyServers: Seq[Chan[ProxyServer[Transport]]] =
     for (address <- config.proxyServerAddresses)
       yield chan[ProxyServer[Transport]](address, ProxyServer.serializer)
 

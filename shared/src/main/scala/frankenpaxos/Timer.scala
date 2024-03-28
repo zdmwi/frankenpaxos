@@ -1,7 +1,6 @@
 package frankenpaxos
 
-import scala.scalajs.js.annotation.JSExportAll
-
+ 
 // A Timer is a function that gets invoked after a specified timeout.
 // Typically, you construct a Timer using the `timer` method within actor. For
 // example, the following actor prints "hello" every second.
@@ -19,8 +18,7 @@ import scala.scalajs.js.annotation.JSExportAll
 //       () => { println("hello") }
 //     )
 //   }
-@JSExportAll
-trait Timer {
+ trait Timer {
   // Returns the name of the timer. Note that names do NOT uniquely identify
   // timers. Two timers can have the same name. Timer have names to make
   // debugging easier.

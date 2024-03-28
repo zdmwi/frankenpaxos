@@ -1,9 +1,7 @@
 package frankenpaxos.matchmakermultipaxos
 
-import scala.scalajs.js.annotation.JSExportAll
-
-@JSExportAll
-case class Config[Transport <: frankenpaxos.Transport[Transport]](
+ 
+ case class Config[Transport <: frankenpaxos.Transport[Transport]](
     f: Int,
     leaderAddresses: Seq[Transport#Address],
     leaderElectionAddresses: Seq[Transport#Address],

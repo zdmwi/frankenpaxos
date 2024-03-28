@@ -8,10 +8,8 @@ import frankenpaxos.monitoring.Counter
 import frankenpaxos.monitoring.PrometheusCollectors
 import java.net.InetAddress
 import java.net.InetSocketAddress
-import scala.scalajs.js.annotation._
-
-@JSExportAll
-object BenchmarkServerInboundSerializer
+ 
+ object BenchmarkServerInboundSerializer
     extends ProtoSerializer[BenchmarkServerInbound] {
   type A = BenchmarkServerInbound
   override def toBytes(x: A): Array[Byte] = super.toBytes(x)
@@ -19,13 +17,11 @@ object BenchmarkServerInboundSerializer
   override def toPrettyString(x: A): String = super.toPrettyString(x)
 }
 
-@JSExportAll
-object BenchmarkServer {
+ object BenchmarkServer {
   val serializer = BenchmarkServerInboundSerializer
 }
 
-@JSExportAll
-class BenchmarkServerMetrics(collectors: Collectors) {
+ class BenchmarkServerMetrics(collectors: Collectors) {
   val echoRequestsTotal: Counter = collectors.counter
     .build()
     .name("echo_requests_total")
@@ -33,8 +29,7 @@ class BenchmarkServerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
-class BenchmarkServer[Transport <: frankenpaxos.Transport[Transport]](
+ class BenchmarkServer[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
     logger: Logger,

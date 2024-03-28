@@ -16,23 +16,19 @@ import frankenpaxos.monitoring.PrometheusCollectors
 import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
 import frankenpaxos.statemachine.StateMachine
-import scala.scalajs.js.annotation._
 import scala.util.Random
 
-@JSExportAll
 object ServerInboundSerializer extends ProtoSerializer[ServerInbound] {
   type A = ServerInbound
-  override def toBytes(x: A): Array[Byte] = super.toBytes(x)
+  override def toBytes(x: A): Array[Byte]       = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
-  override def toPrettyString(x: A): String = super.toPrettyString(x)
+  override def toPrettyString(x: A): String     = super.toPrettyString(x)
 }
 
-@JSExportAll
 object Server {
   val serializer = ServerInboundSerializer
 }
 
-@JSExportAll
 case class ServerOptions(
     // Optimization 3 of the Mencius paper describes how a server revokes a
     // failed server's log entries. It is parameterized by beta. See the
@@ -62,7 +58,6 @@ case class ServerOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
 object ServerOptions {
   val default = ServerOptions(
     beta = 1000,
@@ -76,7 +71,6 @@ object ServerOptions {
   )
 }
 
-@JSExportAll
 class ServerMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
@@ -162,7 +156,6 @@ class ServerMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
 class Server[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
@@ -180,13 +173,12 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   override type InboundMessage = ServerInbound
   override val serializer = ServerInboundSerializer
 
-  type ClientId = Int
+  type ClientId        = Int
   type ClientPseudonym = Int
-  type Round = Int
-  type ServerIndex = Int
-  type Slot = Int
+  type Round           = Int
+  type ServerIndex     = Int
+  type Slot            = Int
 
-  @JSExportAll
   case class Phase1(
       startSlotInclusive: Slot,
       stopSlotExclusive: Slot,
@@ -195,7 +187,6 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       resendPhase1as: Transport#Timer
   )
 
-  @JSExportAll
   case class Phase2(
       round: Round,
       value: CommandOrNoop,
@@ -203,22 +194,18 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       phase2bs: mutable.Map[ServerIndex, Phase2b]
   )
 
-  @JSExportAll
   sealed trait LogEntry
 
-  @JSExportAll
   case class VotelessEntry(
       round: Round
   ) extends LogEntry
 
-  @JSExportAll
   case class PendingEntry(
       round: Round,
       voteRound: Round,
       voteValue: CommandOrNoop
   ) extends LogEntry
 
-  @JSExportAll
   case class ChosenEntry(
       value: CommandOrNoop,
       isRevocation: Boolean
@@ -229,7 +216,6 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   // perform deterministic randomized tests.
   private val rand = new Random(seed)
 
-  @JSExport
   protected val index = config.serverAddresses.indexOf(address)
 
   // Server channels.
@@ -265,23 +251,19 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   // executing the command. Note that unlike with generalized protocols like
   // BPaxos and EPaxos, we don't need to use the more complex ClientTable
   // class. A simple map suffices.
-  @JSExport
   protected var clientTable =
     mutable.Map[(ByteString, ClientPseudonym), (ClientId, ByteString)]()
 
-  @JSExport
   val log = new frankenpaxos.util.BufferMap[LogEntry](options.logGrowSize)
 
   // Every log entry less than `executedWatermark` has been executed. There may
   // be commands larger than `executedWatermark` pending execution.
   // `executedWatermark` is public for testing.
-  @JSExport
   var executedWatermark: Int = 0
 
   // The next available slot in the log. Note that nextSlot is incremented by
   // `config.serverAddresses.size` every command, not incremented by 1. Log
   // entries are partitioned round robin across all server groups.
-  @JSExport
   protected var nextSlot: Slot = slotSystem.nextClassicRound(index, -1)
 
   // Consider a Mencius deployment with two servers. Server A is responsible
@@ -297,19 +279,16 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   //
   // Once a server has sent Skip messages to all the other nodes, then it can
   // clear skipSlots.
-  @JSExport
   protected var skipSlots: Option[(Slot, Slot)] = None
 
   // A server has to flush its skipSlots every once in a while to ensure
   // liveness. With a lot of clients, this isn't a problem, but if we only have
   // one client, for example, the protocol can stall.
-  @JSExport
   protected val flushSkipSlotsTimer = makeFlushSkipSlotsTimer()
 
   // When a server revokes slots from some other server, it uses this
   // monotonically increasing round to do so. See the comment above roundSystem
   // for why we start the recoverRound off so high.
-  @JSExport
   protected var recoverRound: Round =
     roundSystem.nextClassicRound(index, config.serverAddresses.size - 1)
 
@@ -319,10 +298,8 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   // perform one revocation for a given failed server at a time. We can revoke
   // two different failed servers at the same time, but not two revocations for
   // the _same_ failed server at the same time.
-  @JSExport
   protected val phase1s = mutable.Map[ServerIndex, Phase1]()
 
-  @JSExport
   protected val phase2s = mutable.Map[Slot, Phase2]()
 
   // For every other server p, we keep track of the largest slot s such that s
@@ -332,16 +309,13 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   // Note that we don't maintain a largestChosenPrefixSlots for ourselves since
   // we never need to revoke ourselves. We have an entry for ourselves, but we
   // never update it.
-  @JSExport
   protected val largestChosenPrefixSlots: mutable.Buffer[Int] =
     mutable.Buffer.fill(config.serverAddresses.size)(-1)
 
   // Servers monitor other servers to make sure they are still alive.
-  @JSExport
   protected val heartbeatAddress: Transport#Address =
     config.heartbeatAddresses(index)
 
-  @JSExport
   protected val heartbeat: frankenpaxos.heartbeat.Participant[Transport] =
     new frankenpaxos.heartbeat.Participant[Transport](
       address = heartbeatAddress,
@@ -351,7 +325,6 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       options = options.heartbeatOptions
     )
 
-  @JSExport
   protected val revocationTimers = mutable.Map[ServerIndex, Transport#Timer]()
   for (i <- 0 until config.serverAddresses.size if i != index) {
     revocationTimers(i) = makeRevocationTimer(i)
@@ -395,17 +368,21 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   ): Transport#Timer = {
     lazy val t: Transport#Timer = timer(
       s"revocationTimer $revokedServer",
-      frankenpaxos.Util.randomDuration(options.revokeMinPeriod,
-                                       options.revokeMaxPeriod),
+      frankenpaxos.Util
+        .randomDuration(options.revokeMinPeriod, options.revokeMaxPeriod),
       () => {
         metrics.revokeTimerTriggeredTotal.inc()
 
         val firstUnchosenSlot =
-          roundSystem.nextClassicRound(revokedServer,
-                                       largestChosenPrefixSlots(revokedServer))
-        if (heartbeat
-              .unsafeAlive()
-              .contains(config.heartbeatAddresses(revokedServer))) {
+          roundSystem.nextClassicRound(
+            revokedServer,
+            largestChosenPrefixSlots(revokedServer)
+          )
+        if (
+          heartbeat
+            .unsafeAlive()
+            .contains(config.heartbeatAddresses(revokedServer))
+        ) {
           // The server is alive. There's no need to revoke anything.
           t.start()
         } else if (firstUnchosenSlot >= nextSlot + options.beta) {
@@ -420,10 +397,12 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
           // process a Phase1a locally, but this is simpler and revocation is
           // rare, so performance is not paramount.
           val startSlotInclusive = firstUnchosenSlot
-          val stopSlotExclusive = nextSlot + (2 * options.beta)
-          val phase1a = Phase1a(round = recoverRound,
-                                startSlotInclusive = startSlotInclusive,
-                                stopSlotExclusive = stopSlotExclusive)
+          val stopSlotExclusive  = nextSlot + (2 * options.beta)
+          val phase1a = Phase1a(
+            round = recoverRound,
+            startSlotInclusive = startSlotInclusive,
+            stopSlotExclusive = stopSlotExclusive
+          )
           for (server <- servers) {
             server.send(ServerInbound().withPhase1A(phase1a))
           }
@@ -467,8 +446,8 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
   private def timed[T](label: String)(e: => T): T = {
     if (options.measureLatencies) {
       val startNanos = System.nanoTime
-      val x = e
-      val stopNanos = System.nanoTime
+      val x          = e
+      val stopNanos  = System.nanoTime
       metrics.requestsLatency
         .labels(label)
         .observe((stopNanos - startNanos).toDouble / 1000000)
@@ -550,10 +529,12 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
         for (server <- otherServers) {
           server.send(
             ServerInbound().withPhase2A(
-              Phase2a(sendingServer = index,
-                      slot = slot,
-                      round = round,
-                      commandOrNoop = value)
+              Phase2a(
+                sendingServer = index,
+                slot = slot,
+                round = round,
+                commandOrNoop = value
+              )
             )
           )
         }
@@ -652,7 +633,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       command: Command,
       replyIf: (Slot => Boolean)
   ): Unit = {
-    val commandId = command.commandId
+    val commandId      = command.commandId
     val clientIdentity = (commandId.clientAddress, commandId.clientPseudonym)
     val clientAddress = transport.addressSerializer
       .fromBytes(commandId.clientAddress.toByteArray())
@@ -791,9 +772,11 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
         for (server <- otherServers) {
           server.sendNoFlush(
             ServerInbound().withSkip(
-              Skip(serverIndex = index,
-                   startSlotInclusive = start,
-                   stopSlotExclusive = stop)
+              Skip(
+                serverIndex = index,
+                startSlotInclusive = start,
+                stopSlotExclusive = stop
+              )
             )
           )
         }
@@ -806,10 +789,12 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     for (server <- otherServers) {
       server.send(
         ServerInbound().withPhase2A(
-          Phase2a(sendingServer = index,
-                  slot = nextSlot,
-                  round = 0,
-                  commandOrNoop = value)
+          Phase2a(
+            sendingServer = index,
+            slot = nextSlot,
+            round = 0,
+            commandOrNoop = value
+          )
         )
       )
     }
@@ -838,7 +823,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     val revokedServerIndex = slotSystem.leader(phase1a.startSlotInclusive)
     if (revokedServerIndex == index) {
       advanceWithSkips(phase1a.stopSlotExclusive - 1)
-      executeLog((slot) => slotSystem.leader(slot) == index)
+      executeLog(slot => slotSystem.leader(slot) == index)
     }
 
     // Handling Phase1a's is a little bit awkward in Mencius. With MultiPaxos,
@@ -853,8 +838,8 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     // hopefully be rare in practice, so the inefficiency shouldn't be a big
     // deal.
     val coordinator = chan[Server[Transport]](src, Server.serializer)
-    val slotInfos = mutable.Buffer[Phase1bSlotInfo]()
-    var slot = phase1a.startSlotInclusive
+    val slotInfos   = mutable.Buffer[Phase1bSlotInfo]()
+    var slot        = phase1a.startSlotInclusive
     while (slot < phase1a.stopSlotExclusive) {
       log.get(slot) match {
         case None =>
@@ -864,9 +849,11 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
           if (phase1a.round < voteless.round) {
             coordinator.send(
               ServerInbound().withPhase1Nack(
-                Phase1Nack(startSlotInclusive = phase1a.startSlotInclusive,
-                           stopSlotExclusive = phase1a.stopSlotExclusive,
-                           round = voteless.round)
+                Phase1Nack(
+                  startSlotInclusive = phase1a.startSlotInclusive,
+                  stopSlotExclusive = phase1a.stopSlotExclusive,
+                  round = voteless.round
+                )
               )
             )
             return
@@ -877,23 +864,29 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
           if (phase1a.round < pending.round) {
             coordinator.send(
               ServerInbound().withPhase1Nack(
-                Phase1Nack(startSlotInclusive = phase1a.startSlotInclusive,
-                           stopSlotExclusive = phase1a.stopSlotExclusive,
-                           round = pending.round)
+                Phase1Nack(
+                  startSlotInclusive = phase1a.startSlotInclusive,
+                  stopSlotExclusive = phase1a.stopSlotExclusive,
+                  round = pending.round
+                )
               )
             )
             return
           }
           slotInfos += Phase1bSlotInfo(slot = slot).withPendingSlotInfo(
-            PendingSlotInfo(voteRound = pending.voteRound,
-                            voteValue = pending.voteValue)
+            PendingSlotInfo(
+              voteRound = pending.voteRound,
+              voteValue = pending.voteValue
+            )
           )
           log.put(slot, pending.copy(round = phase1a.round))
 
         case Some(chosen: ChosenEntry) =>
           slotInfos += Phase1bSlotInfo(slot = slot).withChosenSlotInfo(
-            ChosenSlotInfo(value = chosen.value,
-                           isRevocation = chosen.isRevocation)
+            ChosenSlotInfo(
+              value = chosen.value,
+              isRevocation = chosen.isRevocation
+            )
           )
       }
       slot = slotSystem.nextClassicRound(revokedServerIndex, slot)
@@ -901,11 +894,13 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
 
     coordinator.send(
       ServerInbound().withPhase1B(
-        Phase1b(serverIndex = index,
-                round = phase1a.round,
-                startSlotInclusive = phase1a.startSlotInclusive,
-                stopSlotExclusive = phase1a.stopSlotExclusive,
-                info = slotInfos.toSeq)
+        Phase1b(
+          serverIndex = index,
+          round = phase1a.round,
+          startSlotInclusive = phase1a.startSlotInclusive,
+          stopSlotExclusive = phase1a.stopSlotExclusive,
+          info = slotInfos.toSeq
+        )
       )
     )
   }
@@ -954,7 +949,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       val slotInfos = phase1.phase1bs.values
         .flatMap(phase1b => phase1b.info.find(_.slot == slot))
       val pendingSlotInfos = slotInfos.flatMap(_.info.pendingSlotInfo)
-      val chosenSlotInfos = slotInfos.flatMap(_.info.chosenSlotInfo)
+      val chosenSlotInfos  = slotInfos.flatMap(_.info.chosenSlotInfo)
 
       chosenSlotInfos.headOption match {
         case Some(info: ChosenSlotInfo) =>
@@ -971,15 +966,19 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
           if (pendingSlotInfos.isEmpty) {
             // No server has voted for any value in this slot, so we have to
             // propose a noop (remember that this is simple consensus).
-            propose(round = phase1.round,
-                    slot = slot,
-                    value = CommandOrNoop().withNoop(Noop()))
+            propose(
+              round = phase1.round,
+              slot = slot,
+              value = CommandOrNoop().withNoop(Noop())
+            )
           } else {
             // Some servers voted in this slot, so we propose the value v
             // associated with the largest voted round k.
-            propose(round = phase1.round,
-                    slot = slot,
-                    value = pendingSlotInfos.maxBy(_.voteRound).voteValue)
+            propose(
+              round = phase1.round,
+              slot = slot,
+              value = pendingSlotInfos.maxBy(_.voteRound).voteValue
+            )
           }
 
       }
@@ -990,7 +989,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     // We may have just chosen some command, so we try and execute the log as
     // best we can. We don't send back client replies though since we're
     // revoking.
-    executeLog((_) => false)
+    executeLog(_ => false)
 
     // End Phase 1.
     phase1.resendPhase1as.stop()
@@ -1008,7 +1007,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     val revokedServerIndex = slotSystem.leader(phase2a.slot)
     if (revokedServerIndex == index) {
       advanceWithSkips(phase2a.slot)
-      executeLog((slot) => slotSystem.leader(slot) == index)
+      executeLog(slot => slotSystem.leader(slot) == index)
     }
 
     // Ignore stale rounds.
@@ -1017,9 +1016,11 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       case Some(chosen: ChosenEntry) =>
         coordinator.send(
           ServerInbound().withChosen(
-            Chosen(slot = phase2a.slot,
-                   commandOrNoop = chosen.value,
-                   isRevocation = chosen.isRevocation)
+            Chosen(
+              slot = phase2a.slot,
+              commandOrNoop = chosen.value,
+              isRevocation = chosen.isRevocation
+            )
           )
         )
         return
@@ -1042,19 +1043,25 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     }
 
     // Update our state.
-    log.put(phase2a.slot,
-            PendingEntry(round = phase2a.round,
-                         voteRound = phase2a.round,
-                         voteValue = phase2a.commandOrNoop))
+    log.put(
+      phase2a.slot,
+      PendingEntry(
+        round = phase2a.round,
+        voteRound = phase2a.round,
+        voteValue = phase2a.commandOrNoop
+      )
+    )
 
     // If we're being revoked, then we updated our nextSlot up above.
     // Otherwise, we only want to advance our nextSlot if this Phase2a is not
     // part of a revocation. This is the case when the sending server owns the
     // slot of the Phase2a.
-    if (revokedServerIndex != index &&
-        slotSystem.leader(phase2a.slot) == phase2a.sendingServer) {
+    if (
+      revokedServerIndex != index &&
+      slotSystem.leader(phase2a.slot) == phase2a.sendingServer
+    ) {
       advanceWithSkips(phase2a.slot)
-      executeLog((slot) => slotSystem.leader(slot) == index)
+      executeLog(slot => slotSystem.leader(slot) == index)
     }
 
     // Send any pending skipSlots back to the coordinator.
@@ -1066,9 +1073,11 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       case Some((start, stop)) =>
         coordinator.sendNoFlush(
           ServerInbound().withSkip(
-            Skip(serverIndex = index,
-                 startSlotInclusive = start,
-                 stopSlotExclusive = stop)
+            Skip(
+              serverIndex = index,
+              startSlotInclusive = start,
+              stopSlotExclusive = stop
+            )
           )
         )
     }
@@ -1131,14 +1140,16 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
       server.send(
         ServerInbound()
           .withChosen(
-            Chosen(slot = phase2b.slot,
-                   commandOrNoop = phase2.value,
-                   isRevocation = phase2.isRevocation)
+            Chosen(
+              slot = phase2b.slot,
+              commandOrNoop = phase2.value,
+              isRevocation = phase2.isRevocation
+            )
           )
       )
     }
     choose(phase2b.slot, phase2.value, phase2.isRevocation)
-    executeLog((slot) => slotSystem.leader(slot) == index)
+    executeLog(slot => slotSystem.leader(slot) == index)
   }
 
   private def handleSkip(
@@ -1153,7 +1164,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     // server to propose a non-noop value if it noticed that the leader had
     // proposed a non-noop, but because the leader has proposed a noop, that is
     // impossible.
-    var slot = skip.startSlotInclusive
+    var slot        = skip.startSlotInclusive
     val coordinator = slotSystem.leader(skip.startSlotInclusive)
     while (slot < skip.stopSlotExclusive) {
       choose(slot, CommandOrNoop().withNoop(Noop()), isRevocation = false)
@@ -1164,7 +1175,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
     // wanted to, but I don't think it's necessary.
     {}
 
-    executeLog((slot) => slotSystem.leader(slot) == index)
+    executeLog(slot => slotSystem.leader(slot) == index)
   }
 
   private def handleChosen(
@@ -1193,7 +1204,7 @@ class Server[Transport <: frankenpaxos.Transport[Transport]](
 
     // choose and advanceWithSkips can both fill in the log, so we might be
     // able to execute a bit more of the log now.
-    executeLog((slot) => slotSystem.leader(slot) == index)
+    executeLog(slot => slotSystem.leader(slot) == index)
   }
 
   private def handlePhase1Nack(
