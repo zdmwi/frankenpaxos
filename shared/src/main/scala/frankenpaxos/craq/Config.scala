@@ -1,8 +1,5 @@
 package frankenpaxos.craq
 
-import scala.scalajs.js.annotation.JSExportAll
-
-@JSExportAll
 case class Config[Transport <: frankenpaxos.Transport[Transport]](
     f: Int,
     chainNodeAddresses: Seq[Transport#Address]

@@ -1,7 +1,7 @@
 package frankenpaxos
 
 class ProtoSerializer[
-    Proto <: scalapb.GeneratedMessage with scalapb.Message[Proto]
+    Proto <: scalapb.GeneratedMessage
 ](
     implicit companion: scalapb.GeneratedMessageCompanion[Proto]
 ) extends Serializer[Proto] {

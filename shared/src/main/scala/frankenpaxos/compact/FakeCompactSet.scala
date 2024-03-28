@@ -1,11 +1,9 @@
 package frankenpaxos.compact
 
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
 
 // A FakeCompactSet[A] is really just a Set[A]. It doesn't do any form of
 // compaction at all. FakeCompactSet is useful for testing.
-@JSExportAll
 class FakeCompactSet[A](initialValues: Set[A] = Set[A]())
     extends CompactSet[FakeCompactSet[A]] {
   override type T = A

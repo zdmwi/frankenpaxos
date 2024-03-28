@@ -13,7 +13,7 @@ class PrintLogger(logLevel: LogLevel = LogDebug) extends Logger(logLevel) {
     s"[${formatter.format(java.time.Instant.now())}]"
 
   private def threadId: String =
-    s"[Thread ${Thread.currentThread().getId()}]"
+    s"[Thread ${Thread.currentThread().getName()}]"
 
   override def fatalImpl(message: String): Nothing = {
     def show(s: String): Unit = {

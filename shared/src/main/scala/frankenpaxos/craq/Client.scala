@@ -13,23 +13,19 @@ import frankenpaxos.monitoring.Summary
 import frankenpaxos.roundsystem.RoundSystem
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.scalajs.js.annotation._
 import scala.util.Random
 
-@JSExportAll
 object ClientInboundSerializer extends ProtoSerializer[ClientInbound] {
   type A = ClientInbound
-  override def toBytes(x: A): Array[Byte] = super.toBytes(x)
+  override def toBytes(x: A): Array[Byte]       = super.toBytes(x)
   override def fromBytes(bytes: Array[Byte]): A = super.fromBytes(bytes)
-  override def toPrettyString(x: A): String = super.toPrettyString(x)
+  override def toPrettyString(x: A): String     = super.toPrettyString(x)
 }
 
-@JSExportAll
 object Client {
   val serializer = ClientInboundSerializer
 }
 
-@JSExportAll
 case class ClientOptions(
     // Resend periods.
     resendClientRequestPeriod: java.time.Duration,
@@ -42,7 +38,6 @@ case class ClientOptions(
     measureLatencies: Boolean
 )
 
-@JSExportAll
 object ClientOptions {
   val default = ClientOptions(
     resendClientRequestPeriod = java.time.Duration.ofSeconds(10),
@@ -54,7 +49,6 @@ object ClientOptions {
   )
 }
 
-@JSExportAll
 class ClientMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
@@ -113,7 +107,6 @@ class ClientMetrics(collectors: Collectors) {
     .register()
 }
 
-@JSExportAll
 class Client[Transport <: frankenpaxos.Transport[Transport]](
     address: Transport#Address,
     transport: Transport,
@@ -129,32 +122,27 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   override type InboundMessage = ClientInbound
   override val serializer = ClientInboundSerializer
 
-  type Pseudonym = Int
-  type Id = Int
+  type Pseudonym     = Int
+  type Id            = Int
   type AcceptorIndex = Int
 
-  @JSExportAll
   sealed trait State
 
-  @JSExportAll
   case class PendingWrite(
       id: Id,
       result: Promise[Unit],
       resendClientRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
   case class PendingRead(
       id: Id,
       result: Promise[String],
       resendReadRequest: Transport#Timer
   ) extends State
 
-  @JSExportAll
   class Ticker(fireEveryN: Int, thunk: () => Unit) {
     logger.checkGe(fireEveryN, 1)
 
-    @JSExport
     protected var x: Int = 0
 
     def tick() {
@@ -183,10 +171,8 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   private val headNode = chainNodes.head
   private val tailNode = chainNodes.last
 
-  @JSExport
   protected var growingBatch = mutable.Buffer[Write]()
 
-  @JSExport
   protected var growingReadBatch = mutable.Buffer[Read]()
 
   // Every request that a client sends is annotated with a monotonically
@@ -194,36 +180,42 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   // recover, so we are safe to intialize the id to 0. If clients can recover
   // from failure, we would have to implement some mechanism to ensure that
   // client ids increase over time, even after crashes and restarts.
-  @JSExport
   protected var ids = mutable.Map[Pseudonym, Id]()
 
   // Clients can only propose one request at a time (per pseudonym), so if
   // there is a pending command, no other command can be proposed. This
   // restriction hurts performance a bit---a single client cannot pipeline
   // requests---but it simplifies the design of the protocol.
-  @JSExport
   protected var states = mutable.Map[Pseudonym, State]()
 
-  @JSExport
   protected val writeTicker: Option[Ticker] =
     if (options.flushWritesEveryN == 1) {
       None
     } else {
-      Some(new Ticker(options.flushWritesEveryN, () => {
-        headNode.flush()
-        metrics.writeChannelsFlushedTotal.inc()
-      }))
+      Some(
+        new Ticker(
+          options.flushWritesEveryN,
+          () => {
+            headNode.flush()
+            metrics.writeChannelsFlushedTotal.inc()
+          }
+        )
+      )
     }
 
-  @JSExport
   protected val readTicker: Option[Ticker] =
     if (options.flushReadsEveryN == 1) {
       None
     } else {
-      Some(new Ticker(options.flushReadsEveryN, () => {
-        chainNodes.foreach(_.flush())
-        metrics.readChannelsFlushedTotal.inc()
-      }))
+      Some(
+        new Ticker(
+          options.flushReadsEveryN,
+          () => {
+            chainNodes.foreach(_.flush())
+            metrics.readChannelsFlushedTotal.inc()
+          }
+        )
+      )
     }
 
   // Helpers ///////////////////////////////////////////////////////////////////
@@ -272,8 +264,8 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
   private def timed[T](label: String)(e: => T): T = {
     if (options.measureLatencies) {
       val startNanos = System.nanoTime
-      val x = e
-      val stopNanos = System.nanoTime
+      val x          = e
+      val stopNanos  = System.nanoTime
       metrics.requestsLatency
         .labels(label)
         .observe((stopNanos - startNanos).toDouble / 1000000)
@@ -351,12 +343,15 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       case None =>
         // Send the command.
         val id = ids.getOrElse(pseudonym, 0)
-        val clientRequest = Write(commandId =
-                                    CommandId(clientAddress = addressAsBytes,
-                                              clientPseudonym = pseudonym,
-                                              clientId = id),
-                                  key = key,
-                                  value = value)
+        val clientRequest = Write(
+          commandId = CommandId(
+            clientAddress = addressAsBytes,
+            clientPseudonym = pseudonym,
+            clientId = id
+          ),
+          key = key,
+          value = value
+        )
 
         sendClientRequest(clientRequest, forceFlush = false)
 
@@ -392,15 +387,18 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
         // the acceptors ourselves. Otherwise, we send the message to a batcher
         // and let it do it for us.
         val id = ids.getOrElse(pseudonym, 0)
-        val readRequest = Read(commandId =
-                                 CommandId(clientAddress = addressAsBytes,
-                                           clientPseudonym = pseudonym,
-                                           clientId = id),
-                               key = key)
+        val readRequest = Read(
+          commandId = CommandId(
+            clientAddress = addressAsBytes,
+            clientPseudonym = pseudonym,
+            clientId = id
+          ),
+          key = key
+        )
 
         if (options.batchSize == 1) {
           val inbound = ChainNodeInbound().withRead(readRequest)
-          val node = chainNodes(rand.nextInt(chainNodes.size))
+          val node    = chainNodes(rand.nextInt(chainNodes.size))
 
           if (options.flushWritesEveryN == 1) {
             node.send(inbound)
@@ -452,7 +450,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       clientReply: ClientReply
   ): Unit = {
     val pseudonym = clientReply.commandId.clientPseudonym
-    val state = states.get(pseudonym)
+    val state     = states.get(pseudonym)
     state match {
       case None | Some(_: PendingRead) =>
         logger.debug(
@@ -485,7 +483,7 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       readReply: ReadReply
   ): Unit = {
     val pseudonym = readReply.commandId.clientPseudonym
-    val state = states.get(pseudonym)
+    val state     = states.get(pseudonym)
     state match {
       case None | Some(_: PendingWrite) =>
         logger.debug(
@@ -517,17 +515,15 @@ class Client[Transport <: frankenpaxos.Transport[Transport]](
       value: String
   ): Future[Unit] = {
     val promise = Promise[Unit]()
-    transport.executionContext.execute(
-      () => writeImpl(pseudonym, key, value, promise)
+    transport.executionContext.execute(() =>
+      writeImpl(pseudonym, key, value, promise)
     )
     promise.future
   }
 
   def read(pseudonym: Pseudonym, key: String): Future[String] = {
     val promise = Promise[String]()
-    transport.executionContext.execute(
-      () => readImpl(pseudonym, key, promise)
-    )
+    transport.executionContext.execute(() => readImpl(pseudonym, key, promise))
     promise.future
   }
 }

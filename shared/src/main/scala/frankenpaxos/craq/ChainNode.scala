@@ -81,26 +81,19 @@ class ChainNode[Transport <: frankenpaxos.Transport[Transport]](
   // class. A simple map suffices.
   //
   // TODO(mwhittaker): Right now, the clientTable is unsused.
-  @JSExport
   protected var clientTable =
     mutable.Map[(ByteString, ClientPseudonym), (ClientId, ByteString)]()
 
-  @JSExport
   protected val index = config.chainNodeAddresses.indexOf(address)
 
-  @JSExport
   protected val nextIndex = index + 1
 
-  @JSExport
   protected val prevIndex = index - 1
 
-  @JSExport
   protected val isHead = index == 0
 
-  @JSExport
   protected val isTail = index == config.chainNodeAddresses.size - 1
 
-  @JSExport
   protected val pendingWrites: mutable.Buffer[WriteBatch] = mutable.Buffer()
 
   val stateMachine: mutable.Map[String, String] = mutable.Map[String, String]()

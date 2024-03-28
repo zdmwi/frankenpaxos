@@ -1,12 +1,9 @@
 package frankenpaxos.compact
 
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
 
-@JSExportAll
 object IntPrefixSet {
   // Construct an empty IntPrefixSet.
-  @JSExport("apply")
   def apply(): IntPrefixSet = new IntPrefixSet(0, mutable.Set())
 
   // Construct an IntPrefixSet from a watermark.
@@ -14,18 +11,15 @@ object IntPrefixSet {
     new IntPrefixSet(watermark, mutable.Set[Int]())
 
   // Construct an IntPrefixSet from a standard, uncompacted set.
-  @JSExport("apply")
   def apply(values: Set[Int]): IntPrefixSet =
     new IntPrefixSet(0, values.to[mutable.Set])
 
   // Construct an IntPrefixSet from a standard, uncompacted set.
-  @JSExport("apply")
   def fromMutableSet(values: mutable.Set[Int]): IntPrefixSet =
     new IntPrefixSet(0, values)
 
   // Construct an IntPrefixSet from a watermark and set. It is assumed, but not
   // enforced, that every value in values is greater than or equal to watermark.
-  @JSExport("apply")
   def apply(watermark: Int, values: Set[Int]): IntPrefixSet =
     new IntPrefixSet(watermark, values.to[mutable.Set])
 
@@ -45,7 +39,7 @@ object IntPrefixSet {
   }
 
   implicit val factory = new CompactSetFactory[IntPrefixSet, Int] {
-    override def empty = IntPrefixSet()
+    override def empty                 = IntPrefixSet()
     override def fromSet(xs: Set[Int]) = IntPrefixSet(xs)
   }
 
@@ -59,7 +53,7 @@ object IntPrefixSet {
     }
 
     override def hasNext: Boolean = iterator.hasNext
-    override def next(): Int = iterator.next()
+    override def next(): Int      = iterator.next()
   }
 
   trait OptionIterator[A] extends Iterator[A] {
@@ -202,7 +196,7 @@ object IntPrefixSet {
 //   | {0, 1, 3}       | watermark: 2; values: {3}    |
 //   | {0, 1, 3, 4}    | watermark: 2; values: {3, 4} |
 //   | {0, 1, 2, 3, 4} | watermark: 5; values: {}     |
-@JSExportAll
+
 class IntPrefixSet private (
     private var watermark: Int,
     private var values: mutable.Set[Int]
@@ -292,8 +286,8 @@ class IntPrefixSet private (
       } else if (other.values.isEmpty) {
         values.view.filter(_ >= other.watermark)
       } else {
-        values.view.filter(
-          x => x >= other.watermark && !other.values.contains(x)
+        values.view.filter(x =>
+          x >= other.watermark && !other.values.contains(x)
         )
       }
     } else {
@@ -351,8 +345,10 @@ class IntPrefixSet private (
   }
 
   override def subtractAll(other: IntPrefixSet): this.type = {
-    if ((watermark == 0 && values.isEmpty) ||
-        (other.watermark == 0 && other.values.isEmpty)) {
+    if (
+      (watermark == 0 && values.isEmpty) ||
+      (other.watermark == 0 && other.values.isEmpty)
+    ) {
       return this
     }
 

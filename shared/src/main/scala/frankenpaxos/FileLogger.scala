@@ -12,7 +12,7 @@ class FileLogger(filename: String, logLevel: LogLevel = LogDebug)
     s"[${formatter.format(java.time.Instant.now())}]"
 
   private def threadId: String =
-    s"[Thread ${Thread.currentThread().getId()}]"
+    s"[Thread ${Thread.currentThread().getName()}]"
 
   override def fatalImpl(message: String): Nothing = {
     writer.println(s"$time [FATAL] $threadId " + message)
