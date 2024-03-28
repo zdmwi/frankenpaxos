@@ -42,8 +42,7 @@ lazy val root = project
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     ),
     Compile / PB.protoSources := Seq(
-      file("shared/src/main/scala"),
-      file("jvm/src/main/scala")
+      file("src/main/scala"),
     ),
     assembly / assemblyMergeStrategy := {
       case PathList(ps @ _*) if ps.last endsWith "nowarn$.class" => MergeStrategy.first
