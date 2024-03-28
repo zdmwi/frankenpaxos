@@ -45,6 +45,13 @@ lazy val root = project
       file("shared/src/main/scala"),
       file("jvm/src/main/scala")
     ),
+    assembly / assemblyMergeStrategy := {
+      case PathList(ps @ _*) if ps.last endsWith "nowarn$.class" => MergeStrategy.first
+      case PathList(ps @ _*) if ps.last endsWith "nowarn.class" => MergeStrategy.first
+      case x =>
+        val oldStrategy = (assembly / assemblyMergeStrategy).value
+        oldStrategy(x)
+    },
     // These settings enable scalameter. See [1].
     //
     // [1]: https://github.com/scalameter/scalameter-examples/blob/master/basic-with-separate-config/build.sbt
