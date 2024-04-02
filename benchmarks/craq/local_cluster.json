@@ -1,6 +1,0 @@
-{
-  "1": {
-    "clients": ["localhost"],
-    "chain_nodes": ["localhost"]
-  }
-}

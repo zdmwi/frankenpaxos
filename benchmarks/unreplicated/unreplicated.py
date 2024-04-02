@@ -107,7 +107,7 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
 
     def _connect(self, address: str) -> host.Host:
         client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy)
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
         if self.args()['identity_file']:
             client.connect(address, key_filename=self.args()['identity_file'])
         else:
@@ -257,7 +257,10 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
         # Wait for clients to finish and then terminate leaders and acceptors.
         for p in client_procs:
             p.wait()
+
+        print("Killing server...")
         server_proc.kill()
+        print("Server killed...")
         bench.log('Clients finished and processes terminated.')
 
         # Client i writes results to `client_i_data.csv`.
