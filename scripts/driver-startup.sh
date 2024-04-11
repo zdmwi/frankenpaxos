@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 
+
 function setup_ports() {
     # set the statd port if it isn't already set
     STATD_FILE=/etc/default/nfs-common
@@ -45,9 +46,16 @@ function mount_filestore() {
 function main() {
     mount_filestore "$@"
     setup_ports "$@"
-
-    # install sbt, scala and java via coursier
+    
     curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup --yes
+    sudo git clone https://github.com/zdmwi/frankenpaxos.git
 }
 
 main "$@"
+
+# install python3.10-dev python3.10-venv gcc build-essential
+# python -m benchmarks.unreplicated.smoke -s /home/zdw32/tmp -i ~/.ssh/id_rsa --cluster benchmarks/unreplicated/local_cluster.json
+# ssh-add ~/.ssh/google_compute_engine
+# gcloud compute ssh --ssh-flag="-A" vm0
+
+# 3072 SHA256:qDwEZ3oiRqeeK287RNdYBppvanUmO+MI/sWWvWKJpns zidanewright@Zidanes-MacBook-Air.local (RSA)

@@ -17,3 +17,4 @@ requests==2.25.1
 six==1.15.0
 tqdm==4.60.0
 urllib3==1.26.18
+google-cloud-os-login==2.14.3

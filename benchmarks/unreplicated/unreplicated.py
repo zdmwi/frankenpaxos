@@ -9,6 +9,7 @@ from .. import prometheus
 from .. import proto_util
 from .. import util
 from .. import workload
+from .. import gcloud_utils
 from ..workload import Workload
 from typing import Any, Callable, Collection, Dict, List, NamedTuple, Optional
 import argparse
@@ -111,7 +112,8 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
         if self.args()['identity_file']:
             client.connect(address, key_filename=self.args()['identity_file'])
         else:
-            client.connect(address)
+            identity_file = gcloud_utils.login_and_create_ssh_key()
+            client.connect(address, key_filename=identity_file)
         return host.RemoteHost(client)
 
     def run_benchmark(self, bench: benchmark.BenchmarkDirectory,
