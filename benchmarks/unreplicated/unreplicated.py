@@ -121,7 +121,8 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
         net = UnreplicatedNet(self._cluster, input)
 
         # If we're monitoring the code, run garbage collection verbosely.
-        java = ['java']
+        source_profile = ['source', '.profile', '&&']
+        java = source_profile + ['java']
         if input.monitored:
             java += [
                 '-verbose:gc',
@@ -212,6 +213,9 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
                 # heaps and verbose garbage collection because they are all
                 # colocated on one machine.
                 cmd=[
+                    'source',
+                    '.profile',
+                    '&&',
                     'java',
                     '-cp',
                     os.path.abspath(args['jar']),

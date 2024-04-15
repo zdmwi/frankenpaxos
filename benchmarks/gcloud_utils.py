@@ -106,8 +106,8 @@ def login_and_create_ssh_key(account: Optional[str] = None) -> str:
         account or requests.get(SERVICE_ACCOUNT_METADATA_URL, headers=HEADERS).text
     )
 
-    if not account.startswith("user/"):
-        account = f"user/{account}"
+    if not account.startswith("users/"):
+        account = f"users/{account}"
 
     return create_ssh_key(oslogin, account)
     

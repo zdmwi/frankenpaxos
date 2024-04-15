@@ -86,3 +86,6 @@ Verify the startup output of a created instance by SSH'ing into the machine and 
 sudo journalctl -u google-startup-scripts.service
 ```
 
+Need to have each node set the java path before running the program. We are not using an interactive SSH session so the .profile file does not
+get sourced. So for each node SSH from the driver 
+

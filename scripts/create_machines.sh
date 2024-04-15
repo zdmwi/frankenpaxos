@@ -87,15 +87,10 @@ gcloud compute instances bulk create \
 
 
 # install sbt, scala and java via coursier 
-echo "Step 8/${NUM_STEPS}: Installing dependencies on the driver..."
+echo "Step 8/${NUM_STEPS}: Transferring initialization script to driver..."
 
-gcloud compute ssh vm0 --command=""
-
-# clone the project to the node
-gcloud compute ssh vm0 --command="sudo git clone https://github.com/zdmwi/frankenpaxos.git"
-
-# install python dependencies
-gcloud compute ssh vm0 --command="sudo apt install python3.10-dev python3.10-venv gcc build-essential -y"
-gcloud compute ssh vm0 --command="cd frankenpaxos/benchmarks && pip3 install -r requirements.txt"
+INIT_SCRIPT_NAME="initialize_driver.sh"
+gcloud compute scp scripts/${INIT_SCRIPT_NAME} vm0:
+gcloud compute ssh vm0 --command="chmod +x ${INIT_SCRIPT_NAME} && ./initialize_driver.sh"
 
 echo "FINISHED!"
