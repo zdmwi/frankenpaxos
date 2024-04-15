@@ -122,7 +122,9 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
 
         # If we're monitoring the code, run garbage collection verbosely.
         source_profile = ['source', '.profile', '&&']
-        java = source_profile + ['java']
+        # add code to change the java used based on whether this is local or not
+
+        java = source_profile + ['sudo', '/home/zidanewright/.cache/coursier/arc/https/github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%252B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.22_7.tar.gz/jdk-11.0.22+7/bin/java']
         if input.monitored:
             java += [
                 '-verbose:gc',
