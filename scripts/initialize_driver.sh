@@ -15,8 +15,4 @@ cd frankenpaxos &&
 git checkout refactor &&
 source ../.profile &&
 cd benchmarks &&
-pip3 install -r requirements.txt 
-
-# make frankenpaxos public keys available project-wide
-cd # change back to the home directory
-gcloud compute project-info add-metadata --metadata-from-file=ssh-keys=ssh-keys.txt
+pip3 install --no-warn-script-location -r requirements.txt 

@@ -87,7 +87,10 @@ gcloud compute instances bulk create \
 echo "Step 8/${NUM_STEPS}: Transferring ssh-keys to driver..."
 # sleep for a bit to ensure that the node has spun up properly
 sleep 20
-# make sure to generate ssh key first
+# make sure the ssh-keys work project-wide
+gcloud compute project-info add-metadata --metadata-from-file=ssh-keys=ssh-keys.txt
+
+# remember to generate the ssh-key first
 gcloud compute scp ~/.ssh/frankenpaxos* vm0:~/.ssh
 gcloud compute scp ssh-keys.txt vm0:
 
