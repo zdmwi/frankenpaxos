@@ -84,19 +84,18 @@ gcloud compute instances bulk create \
     --metadata-from-file=startup-script=${COMPUTE_STARTUP_SCRIPT} \
     --metadata=filestore-ip=${FILESTORE_IP_ADDRESS}
 
-# install sbt, scala and java via coursier on the driver 
-echo "Step 8/${NUM_STEPS}: Transferring initialization script to driver..."
-
-sleep 60
-gcloud compute scp target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar vm0:/mnt/csi699
-
-INIT_SCRIPT_NAME="initialize_driver.sh"
+echo "Step 8/${NUM_STEPS}: Transferring ssh-keys to driver..."
 # sleep for a bit to ensure that the node has spun up properly
-gcloud compute scp scripts/${INIT_SCRIPT_NAME} vm0:
-gcloud compute ssh vm0 --command="chmod +x ${INIT_SCRIPT_NAME} && ./initialize_driver.sh"
-
-echo "Step 9/${NUM_STEPS}: Transferring ssh-keys to driver..."
+sleep 20
 # make sure to generate ssh key first
-gcloud compute scp ~/.ssh/frankenpaxos* ssh-keys.txt cred-file.json vm0:~/.ssh
+gcloud compute scp ~/.ssh/frankenpaxos* vm0:~/.ssh
+gcloud compute scp ssh-keys.txt cred-file.json vm0:
+
+# install sbt, scala and java via coursier on the driver 
+echo "Step 9/${NUM_STEPS}: Transferring initialization script to driver..."
+INIT_SCRIPT_NAME="initialize_driver.sh"
+gcloud compute scp scripts/${INIT_SCRIPT_NAME} vm0:
+gcloud compute ssh vm0 --command="chmod +x ${INIT_SCRIPT_NAME} && ./${INIT_SCRIPT_NAME}"
+gcloud compute scp target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar vm0:/mnt/csi699
 
 echo "FINISHED!"

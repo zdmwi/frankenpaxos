@@ -45,9 +45,6 @@ function mount_filestore() {
 function main() {
     mount_filestore "$@"
     setup_ports "$@"
-
-    # install sbt, scala and java via coursier
-    curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup -y
 }
 
 main "$@"

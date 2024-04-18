@@ -93,7 +93,7 @@ get sourced. So for each node SSH from the driver.
 
 Start a benchmark experiment
 ```bash
-python3 -m benchmarks.unreplicated.smoke -j /mnt/csi699/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar -s /mnt/csi699/ -m -l info -i ~/.ssh/google_compute_engine --cluster benchmarks/unreplicated/local_cluster.json 
+python3 -m benchmarks.unreplicated.smoke -j /mnt/csi699/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar -s /mnt/csi699/ -m -l info -i ~/.ssh/frankenpaxos --cluster benchmarks/unreplicated/local_cluster.json 
 ```
 
 Experiments need to be run with elevated priveleges for networking stuff to work. 
