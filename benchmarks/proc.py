@@ -112,7 +112,7 @@ class ParamikoProc(Proc):
                  args: Union[str, Sequence[str]], stdout: str,
                  stderr: str) -> None:
         self._nonce = _random_string(80)
-        self._cmd = (f'echo {self._nonce}; ' +
+        self._cmd = (f'echo {self._nonce}; source .profile;' +
                      f'({_canonicalize_args(args)}) 2> "{stderr}" > "{stdout}"')
         self._client = client
         self._channel = client.get_transport().open_session()

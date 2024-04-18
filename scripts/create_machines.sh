@@ -19,7 +19,7 @@ COMPUTE_STARTUP_SCRIPT="scripts/startup.sh"
 COMPUTE_DRIVER_STARTUP_SCRIPT="scripts/driver-startup.sh"
 
 # maybe teardown previous filestore instance?
-NUM_STEPS=8
+NUM_STEPS=9
 
 # create the filestore
 echo "Step 1/${NUM_STEPS}: Creating filestore instance..."
@@ -59,8 +59,7 @@ gcloud compute firewall-rules create nfs-egress \
     --action=ALLOW \
     --rules=tcp:111,tcp:2046,tcp:2049,tcp:2050,tcp:4045 \
     --network="default"
-    
-# maybe teardown previous machines?
+
 
 # create the machines
 echo "Step 7/${NUM_STEPS}: Creating ${COMPUTE_COUNT} virtual machines..."
@@ -85,11 +84,16 @@ gcloud compute instances bulk create \
     --metadata-from-file=startup-script=${COMPUTE_STARTUP_SCRIPT} \
     --metadata=filestore-ip=${FILESTORE_IP_ADDRESS}
 
+echo "Step 8/${NUM_STEPS}: Allowing internal TCP and UDP connections to vm instances..."
 
 # install sbt, scala and java via coursier 
-echo "Step 8/${NUM_STEPS}: Transferring initialization script to driver..."
+echo "Step 9/${NUM_STEPS}: Transferring initialization script to driver..."
+
+sleep 60
+gcloud compute scp target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar vm0:/mnt/csi699
 
 INIT_SCRIPT_NAME="initialize_driver.sh"
+# sleep for a bit to ensure that the node has spun up properly
 gcloud compute scp scripts/${INIT_SCRIPT_NAME} vm0:
 gcloud compute ssh vm0 --command="chmod +x ${INIT_SCRIPT_NAME} && ./initialize_driver.sh"
 

@@ -78,6 +78,7 @@ gcloud compute instances bulk create \
 
 - Follow the instructions [here](https://cloud.google.com/filestore/docs/configuring-firewall) to setup the firewall to get NFS working right.
 
+
 ## Useful Commands
 
 Verify the startup output of a created instance by SSH'ing into the machine and running the following command:
@@ -87,5 +88,13 @@ sudo journalctl -u google-startup-scripts.service
 ```
 
 Need to have each node set the java path before running the program. We are not using an interactive SSH session so the .profile file does not
-get sourced. So for each node SSH from the driver 
+get sourced. So for each node SSH from the driver.
+
+
+Start a benchmark experiment
+```bash
+python3 -m benchmarks.unreplicated.smoke -j /mnt/csi699/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar -s /mnt/csi699/ -m -l info -i ~/.ssh/google_compute_engine --cluster benchmarks/unreplicated/local_cluster.json 
+```
+
+Experiments need to be run with elevated priveleges for networking stuff to work. 
 

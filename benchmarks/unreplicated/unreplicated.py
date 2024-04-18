@@ -121,10 +121,7 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
         net = UnreplicatedNet(self._cluster, input)
 
         # If we're monitoring the code, run garbage collection verbosely.
-        source_profile = ['source', '.profile', '&&']
-        # add code to change the java used based on whether this is local or not
-
-        java = source_profile + ['sudo', '/home/zidanewright/.cache/coursier/arc/https/github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%252B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.22_7.tar.gz/jdk-11.0.22+7/bin/java']
+        java = ['java']
         if input.monitored:
             java += [
                 '-verbose:gc',
@@ -215,11 +212,7 @@ class UnreplicatedSuite(benchmark.Suite[Input, Output]):
                 # heaps and verbose garbage collection because they are all
                 # colocated on one machine.
                 cmd=[
-                    'source',
-                    '.profile',
-                    '&&',
-                    'sudo',
-                    '/home/zidanewright/.cache/coursier/arc/https/github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.22%252B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.22_7.tar.gz/jdk-11.0.22+7/bin/java',
+                    'java',
                     '-cp',
                     os.path.abspath(args['jar']),
                     'frankenpaxos.unreplicated.ClientMain',
