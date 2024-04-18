@@ -26,8 +26,8 @@ function mount_filestore() {
 
     # Steps from: https://cloud.google.com/filestore/docs/mounting-fileshares#linux:-etcfstab
 
-    sudo apt-get -y update &&
-    sudo apt-get -y install nfs-common
+    sudo apt-get -yq update &&
+    sudo apt-get -yq install nfs-common openjdk-11-jdk
     
     # make a local directory to map to the Filestore file share
     sudo mkdir -p mnt/csi699
@@ -47,7 +47,7 @@ function main() {
     setup_ports "$@"
 
     # install sbt, scala and java via coursier
-    curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup --yes
+    curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup -y
 }
 
 main "$@"

@@ -9,7 +9,7 @@ curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64
 git clone https://github.com/zdmwi/frankenpaxos.git
 
 # install python dependencies
-sudo apt install python3-pip python3.10-dev python3.10-venv gcc build-essential -y
+sudo apt-get install python3-pip python3.10-dev python3.10-venv gcc build-essential -yq
 
 cd frankenpaxos && 
 git checkout refactor &&
@@ -18,4 +18,7 @@ cd benchmarks &&
 pip3 install -r requirements.txt 
 
 # sign into google cloud
-gcloud auth login
+gcloud auth login --cred-file cred-file.json
+
+# make frankenpaxos public keys available project-wide
+gcloud compute project-info add-metadata --metadata-from-file=ssh-keys=ssh-keys.txt

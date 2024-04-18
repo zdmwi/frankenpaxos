@@ -241,3 +241,5 @@ dmypy.json
 .metals/
 .bloop/
 .vscode/
+ssh-keys.txt
+cred-file.json
