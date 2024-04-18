@@ -89,7 +89,7 @@ echo "Step 8/${NUM_STEPS}: Transferring ssh-keys to driver..."
 sleep 20
 # make sure to generate ssh key first
 gcloud compute scp ~/.ssh/frankenpaxos* vm0:~/.ssh
-gcloud compute scp ssh-keys.txt cred-file.json vm0:
+gcloud compute scp ssh-keys.txt vm0:
 
 # install sbt, scala and java via coursier on the driver 
 echo "Step 9/${NUM_STEPS}: Transferring initialization script to driver..."

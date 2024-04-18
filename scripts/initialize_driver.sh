@@ -17,8 +17,6 @@ source ../.profile &&
 cd benchmarks &&
 pip3 install -r requirements.txt 
 
-# sign into google cloud
-gcloud auth login --cred-file cred-file.json
-
 # make frankenpaxos public keys available project-wide
+cd # change back to the home directory
 gcloud compute project-info add-metadata --metadata-from-file=ssh-keys=ssh-keys.txt
