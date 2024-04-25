@@ -93,7 +93,7 @@ class ReplicaOptions(NamedTuple):
         datetime.timedelta(seconds=20)
     unsafe_dont_recover: bool = False
 
-class Monitor(NamedTuple):
+class MonitorOptions(NamedTuple):
     measure_latencies: bool = True
 
 

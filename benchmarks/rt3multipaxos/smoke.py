@@ -100,7 +100,7 @@ def main(args) -> None:
                     client_log_level = args.log_level,
                     driver_log_level = args.log_level,
                 )
-                for f in [1, 2]
+                for f in [1]
             ]
 
         def summary(self, input: Input, output: Output) -> str:

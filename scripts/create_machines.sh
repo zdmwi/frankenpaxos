@@ -65,7 +65,7 @@ gcloud compute firewall-rules create nfs-egress \
 echo "Step 7/${NUM_STEPS}: Creating ${COMPUTE_COUNT} virtual machines..."
 
 # create the driver node
-gcloud compute instances create vm0 \
+gcloud compute instances create vm00 \
     --zone=${ZONE} \
     --machine-type=${COMPUTE_MACHINE_TYPE} \
     --image-project=${COMPUTE_IMAGE_PROJECT} \
@@ -91,14 +91,14 @@ sleep 20
 gcloud compute project-info add-metadata --metadata-from-file=ssh-keys=ssh-keys.txt
 
 # remember to generate the ssh-key first
-gcloud compute scp ~/.ssh/frankenpaxos* vm0:~/.ssh
-gcloud compute scp ssh-keys.txt vm0:
+gcloud compute scp ~/.ssh/frankenpaxos* vm00:~/.ssh
+gcloud compute scp ssh-keys.txt vm00:
 
 # install sbt, scala and java via coursier on the driver 
 echo "Step 9/${NUM_STEPS}: Transferring initialization script to driver..."
 INIT_SCRIPT_NAME="initialize_driver.sh"
-gcloud compute scp scripts/${INIT_SCRIPT_NAME} vm0:
-gcloud compute ssh vm0 --command="chmod +x ${INIT_SCRIPT_NAME} && ./${INIT_SCRIPT_NAME}"
-gcloud compute scp target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar vm0:/mnt/csi699
+gcloud compute scp scripts/${INIT_SCRIPT_NAME} vm00:
+gcloud compute ssh vm00 --command="chmod +x ${INIT_SCRIPT_NAME} && ./${INIT_SCRIPT_NAME}"
+gcloud compute scp target/scala-2.12/frankenpaxos-assembly-0.1.0-SNAPSHOT.jar vm00:/mnt/csi699
 
 echo "FINISHED!"
