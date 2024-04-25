@@ -8,5 +8,5 @@
     "replicas": ["vm01", "vm03"],
     "monitors": ["vm00"],
     "driver": ["vm00"]
-  },
+  }
 }
