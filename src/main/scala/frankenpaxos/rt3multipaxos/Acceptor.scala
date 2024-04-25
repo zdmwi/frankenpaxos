@@ -1,4 +1,4 @@
-package frankenpaxos.matchmakermultipaxos
+package frankenpaxos.rt3multipaxos
 
 import collection.mutable
 import frankenpaxos.Actor
@@ -160,6 +160,7 @@ import scala.util.Random
         case Request.Phase2A(_)   => "Phase2a"
         case Request.Persisted(_) => "Persisted"
         case Request.Die(_)       => "Die"
+        case Request.MetricsRequest(_) => "MetricsRequest"
         case Request.Empty =>
           logger.fatal("Empty AcceptorInbound encountered.")
       }
@@ -171,10 +172,18 @@ import scala.util.Random
         case Request.Phase2A(r)   => handlePhase2a(src, r)
         case Request.Persisted(r) => handlePersisted(src, r)
         case Request.Die(r)       => handleDie(src, r)
+        case Request.MetricsRequest(r) => handleMetricsRequest(src, r)
         case Request.Empty =>
           logger.fatal("Empty AcceptorInbound encountered.")
       }
     }
+  }
+
+  private def handleMetricsRequest(
+    src: Transport#Address,
+    metricsRequest: MetricsRequest
+  ): Unit = {
+    logger.info("Received metrics request")
   }
 
   private def handlePhase1a(

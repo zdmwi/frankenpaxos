@@ -1,4 +1,4 @@
-package frankenpaxos.matchmakermultipaxos
+package frankenpaxos.rt3multipaxos
 
 import collection.mutable
 import frankenpaxos.Actor
@@ -1341,6 +1341,7 @@ import scala.util.Random
         case Request.MatchChosen(_)            => "MatchChosen"
         case Request.Die(_)                    => "Die"
         case Request.ForceReconfiguration(_)   => "ForceReconfiguration"
+        case Request.MetricsRequest(_)         => "MetricsRequeset"
         case Request.Empty =>
           logger.fatal("Empty LeaderInbound encountered.")
       }
@@ -1366,10 +1367,18 @@ import scala.util.Random
         case Request.Die(r)               => handleDie(src, r)
         case Request.ForceReconfiguration(r) =>
           handleForceReconfiguration(src, r)
+        case Request.MetricsRequest(r)    => handleMetricsRequest(src, r)
         case Request.Empty =>
           logger.fatal("Empty LeaderInbound encountered.")
       }
     }
+  }
+
+  private def handleMetricsRequest(
+      src: Transport#Address,
+      metricsRequest: MetricsRequest
+  ): Unit = {
+      logger.info("Received metrics request")
   }
 
   private def handleMatchReply(

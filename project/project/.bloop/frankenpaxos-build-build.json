@@ -18,7 +18,7 @@
         "classpath": [
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/sbt/1.9.9/sbt-1.9.9.jar",
             "/Users/zidanewright/.sbt/boot/scala-2.12.18/lib/scala-library.jar",
-            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.15/sbt-bloop_2.12_1.0-1.5.15.jar",
+            "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.6/sbt-bloop-1.5.6.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/main_2.12/1.9.9/main_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.12/1.9.9/io_2.12-1.9.9.jar",
             "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/1.5.5/bloop-config_2.12-1.5.5.jar",
@@ -221,19 +221,6 @@
             },
             "mainClass": [
                 
-            ],
-            "runtimeConfig": {
-                "home": "/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home",
-                "options": [
-                    "-Duser.dir=/Users/zidanewright/School/csi699/frankenpaxos/project/project"
-                ]
-            },
-            "classpath": [
-                "/Users/zidanewright/School/csi699/frankenpaxos/project/project/.bloop/frankenpaxos-build-build/scala-2.12/sbt-1.0/classes",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.15/sbt-bloop_2.12_1.0-1.5.15.jar",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/1.5.5/bloop-config_2.12-1.5.5.jar",
-                "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.12/2.4.0/jsoniter-scala-core_2.12-2.4.0.jar",
-                "/Users/zidanewright/.sbt/boot/scala-2.12.18/lib/scala-library.jar"
             ]
         },
         "resolution": {
@@ -241,17 +228,17 @@
                 {
                     "organization": "ch.epfl.scala",
                     "name": "sbt-bloop",
-                    "version": "1.5.15",
+                    "version": "1.5.6",
                     "configurations": "default",
                     "artifacts": [
                         {
                             "name": "sbt-bloop",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.15/sbt-bloop_2.12_1.0-1.5.15.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.6/sbt-bloop-1.5.6.jar"
                         },
                         {
                             "name": "sbt-bloop",
                             "classifier": "sources",
-                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.15/sbt-bloop_2.12_1.0-1.5.15-sources.jar"
+                            "path": "/Users/zidanewright/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-bloop_2.12_1.0/1.5.6/sbt-bloop-1.5.6-sources.jar"
                         }
                     ]
                 },

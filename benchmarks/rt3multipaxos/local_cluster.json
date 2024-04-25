@@ -6,6 +6,7 @@
     "reconfigurers": ["vm02", "vm04"],
     "acceptors": ["vm01", "vm02", "vm03", "vm04", "vm05"],
     "replicas": ["vm01", "vm03"],
+    "monitors": ["vm00"],
     "driver": ["vm00"]
   },
 }
