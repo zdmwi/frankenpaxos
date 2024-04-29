@@ -25,16 +25,14 @@ import scala.util.Random
 }
 
  case class MonitorOptions(
-    // When an Monitor receives a Phase1a, it delays sending back a Phase1b
-    // for this amount of time. This simulates a WAN deployment without
-    // actually having to deploy on a WAN.
-    measureLatencies: Boolean
+    measureLatencies: Boolean,
+    requestStrategy: MonitorRequestStrategy
 )
 
  object MonitorOptions {
   val default = MonitorOptions(
-    phase1aDelay = java.time.Duration.ofSeconds(0),
-    measureLatencies = true
+    measureLatencies = true,
+    requestStrategy = IntervalRequestStrategy(100)
   )
 }
 
@@ -144,12 +142,14 @@ import scala.util.Random
 
   private def becomeActive(): Unit = {
     // request the metrics from each node type by sending them a message 
-    val request = MetricsRequest()
-    leaders.foreach(l => l.send(LeaderInbound().withMetricsRequest(request)))
-    acceptors.foreach(a => a.send(AcceptorInbound().withMetricsRequest(request)))
-    matchmakers.foreach(m => m.send(MatchmakerInbound().withMetricsRequest(request)))
-    reconfigurers.foreach(r => r.send(ReconfigurerInbound().withMetricsRequest(request)))
-    replicas.foreach(r => r.send(ReplicaInbound().withMetricsRequest(request)))
+    logger.info("Setting up monitoring strategy")
+    options.requestStrategy.monitor(
+      leaders,
+      acceptors,
+      matchmakers,
+      reconfigurers,
+      replicas
+    )
 
     waitForMetricResponses()
   }
