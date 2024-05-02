@@ -437,8 +437,7 @@ message MetricsRequest {
 
 message MetricsReply {
     required int32 requestsTotal = 1;
-    required float requestsLatency = 2;
-    required float reconfigurationLatency = 3;
+    required double requestsLatency = 2;
 }
 
 // Inbound messages. ///////////////////////////////////////////////////////////

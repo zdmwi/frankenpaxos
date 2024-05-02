@@ -16,3 +16,6 @@ git checkout refactor &&
 source ../.profile &&
 cd benchmarks &&
 pip3 install --no-warn-script-location -r requirements.txt 
+
+# extract prometheus from tarball and start server
+tar xvfz prometheus-*.tar.gz

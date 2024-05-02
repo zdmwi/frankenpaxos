@@ -538,7 +538,7 @@ class RT3MultiPaxosSuite(benchmark.Suite[Input, Output]):
                                            f'monitor_{i}')
             monitor_procs.append(p)
         bench.log('Monitors started.')
-
+ 
         # Launch Prometheus.
         if input.monitored:
             prometheus_config = prometheus.prometheus_config(
@@ -577,7 +577,7 @@ class RT3MultiPaxosSuite(benchmark.Suite[Input, Output]):
                 host=net.placement().clients[0].host,
                 label='prometheus',
                 cmd=[
-                    'prometheus',
+                    './prometheus-*/prometheus',
                     f'--config.file={bench.abspath("prometheus.yml")}',
                     f'--storage.tsdb.path={bench.abspath("prometheus_data")}',
                 ],

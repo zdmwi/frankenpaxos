@@ -94,6 +94,9 @@ gcloud compute project-info add-metadata --metadata-from-file=ssh-keys=ssh-keys.
 gcloud compute scp ~/.ssh/frankenpaxos* vm00:~/.ssh
 gcloud compute scp ssh-keys.txt vm00:
 
+# copy over the prometheus binary
+gcloud compute scp prometheus-*.tar.gz vm00:frankenpaxos/
+
 # install sbt, scala and java via coursier on the driver 
 echo "Step 9/${NUM_STEPS}: Transferring initialization script to driver..."
 INIT_SCRIPT_NAME="initialize_driver.sh"

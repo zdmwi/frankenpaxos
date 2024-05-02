@@ -121,19 +121,19 @@ import scala.util.Random
   // For simplicity, we use a round robin round system for the leaders.
   private val roundSystem = new RoundSystem.ClassicRoundRobin(config.numLeaders)
 
-     protected var round: Int = -1
+  protected var round: Int = -1
 
   // This acceptor knows that all log entries less than persistedWatermark have
   // been persisted on at least f+1 replicas. The acceptor is free to garbage
   // collect all log entries less than persistedWatermark. If a leader contacts
   // the acceptor about one of these log entries, the acceptor will inform the
   // leader that the value was already chosen.
-     protected var persistedWatermark: Int = 0
+  protected var persistedWatermark: Int = 0
 
   // A nonce used to make phase1aDelay timer names unique.
-     protected var nonce: Int = 0
+  protected var nonce: Int = 0
 
-     protected var states = mutable.SortedMap[Slot, State]()
+  protected var states = mutable.SortedMap[Slot, State]()
 
   // Helpers ///////////////////////////////////////////////////////////////////
   private def timed[T](label: String)(e: => T): T = {
@@ -184,6 +184,17 @@ import scala.util.Random
     metricsRequest: MetricsRequest
   ): Unit = {
     logger.info("Received metrics request")
+    val monitor = chan[Monitor[Transport]](src, Monitor.serializer)
+
+    logger.info(s"Total Requests Metrics Details: ${metrics.requestsTotal.get()}")
+    logger.info(s"Request Latency Metrics Details: ${metrics.requestsLatency}")
+
+    val metricsReply = MetricsReply(
+      requestsTotal = metrics.requestsTotal.get().toInt,
+      requestsLatency = metrics.requestsLatency.get().count,
+    )
+
+    monitor.send(MonitorInbound().withMetricsReply(metricsReply))
   }
 
   private def handlePhase1a(

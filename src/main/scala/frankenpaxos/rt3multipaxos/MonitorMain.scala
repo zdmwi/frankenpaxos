@@ -51,8 +51,8 @@ object MonitorMain extends App {
       .text(s"-1 to disable")
 
     // Options.
-    opt[java.time.Duration]("options.phase1aDelay")
-      .optionAction((x, o) => o.copy(phase1aDelay = x))
+    // opt[java.time.Duration]("options.phase1aDelay")
+    // .optionAction((x, o) => o.copy(phase1aDelay = x))
   }
 
   // Parse flags.

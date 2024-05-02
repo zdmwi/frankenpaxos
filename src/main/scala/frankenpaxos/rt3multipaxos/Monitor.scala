@@ -22,6 +22,7 @@ import scala.util.Random
 
  object Monitor {
   val serializer = MonitorInboundSerializer
+  val metricsTable = mutable.Map()
 }
 
  case class MonitorOptions(
@@ -32,7 +33,7 @@ import scala.util.Random
  object MonitorOptions {
   val default = MonitorOptions(
     measureLatencies = true,
-    requestStrategy = IntervalRequestStrategy(100)
+    requestStrategy = new FixedIntervalRequestStrategy(1000)
   )
 }
 
@@ -143,23 +144,16 @@ import scala.util.Random
   private def becomeActive(): Unit = {
     // request the metrics from each node type by sending them a message 
     logger.info("Setting up monitoring strategy")
-    options.requestStrategy.monitor(
-      leaders,
-      acceptors,
-      matchmakers,
-      reconfigurers,
-      replicas
-    )
 
-    waitForMetricResponses()
-  }
-
-  private def waitForMetricResponses(): Unit = {
-    logger.info("Waiting for metrics")
+    options.requestStrategy.run(() => {
+      val request = MetricsRequest()
+      acceptors.foreach(a => a.send(AcceptorInbound().withMetricsRequest(request)))
+    })
   }
 
   private def handleMetricsResponse(src: Transport#Address, metricsResponse: MetricsReply): Unit = {
-    logger.info("Received metrics")
+    logger.info(s"Received metrics from ${src}")
+    logger.info(s"Requests Latency: ${metricsResponse.requestsLatency}, Total Requests: ${metricsResponse.requestsTotal} ")
   }
 
   private def handleDie(src: Transport#Address, die: Die): Unit = {
