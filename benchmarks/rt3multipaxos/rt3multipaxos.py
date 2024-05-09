@@ -577,7 +577,7 @@ class RT3MultiPaxosSuite(benchmark.Suite[Input, Output]):
                 host=net.placement().clients[0].host,
                 label='prometheus',
                 cmd=[
-                    './prometheus-*/prometheus', # use the absolute path here. doesn't find it on path for some reason
+                    'prometheus', # use the absolute path here. doesn't find it on path for some reason
                     f'--config.file={bench.abspath("prometheus.yml")}',
                     f'--storage.tsdb.path={bench.abspath("prometheus_data")}',
                 ],
