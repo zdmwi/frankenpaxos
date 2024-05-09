@@ -33,7 +33,7 @@ import scala.util.Random
  object MonitorOptions {
   val default = MonitorOptions(
     measureLatencies = true,
-    requestStrategy = new FixedIntervalRequestStrategy(1000)
+    requestStrategy = new FixedIntervalRequestStrategy(200),
   )
 }
 

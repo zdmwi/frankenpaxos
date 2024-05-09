@@ -95,7 +95,7 @@ gcloud compute scp ~/.ssh/frankenpaxos* vm00:~/.ssh
 gcloud compute scp ssh-keys.txt vm00:
 
 # copy over the prometheus binary
-gcloud compute scp prometheus-*.tar.gz vm00:frankenpaxos/
+gcloud compute scp prometheus-*.tar.gz vm00:
 
 # install sbt, scala and java via coursier on the driver 
 echo "Step 9/${NUM_STEPS}: Transferring initialization script to driver..."

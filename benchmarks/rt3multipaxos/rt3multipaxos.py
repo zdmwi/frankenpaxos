@@ -287,11 +287,7 @@ class RT3MultiPaxosSuite(benchmark.Suite[Input, Output]):
             if input.monitored:
                 cmd += [
                     '-verbose:gc',
-                    '-XX:-PrintGC',
-                    '-XX:+PrintHeapAtGC',
-                    '-XX:+PrintGCDetails',
-                    '-XX:+PrintGCTimeStamps',
-                    '-XX:+PrintGCDateStamps',
+                    '-Xlog:gc*',
                 ]
             return cmd
 
@@ -577,7 +573,7 @@ class RT3MultiPaxosSuite(benchmark.Suite[Input, Output]):
                 host=net.placement().clients[0].host,
                 label='prometheus',
                 cmd=[
-                    './prometheus-*/prometheus',
+                    './prometheus-*/prometheus', # use the absolute path here. doesn't find it on path for some reason
                     f'--config.file={bench.abspath("prometheus.yml")}',
                     f'--storage.tsdb.path={bench.abspath("prometheus_data")}',
                 ],
