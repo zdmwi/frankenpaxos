@@ -42,45 +42,45 @@ import scala.util.Random
  class AcceptorMetrics(collectors: Collectors) {
   val requestsTotal: Counter = collectors.counter
     .build()
-    .name("matchmakermultipaxos_acceptor_requests_total")
+    .name("rt3multipaxos_acceptor_requests_total")
     .labelNames("type")
     .help("Total number of processed requests.")
     .register()
 
   val requestsLatency: Summary = collectors.summary
     .build()
-    .name("matchmakermultipaxos_acceptor_requests_latency")
+    .name("rt3multipaxos_acceptor_requests_latency")
     .labelNames("type")
     .help("Latency (in milliseconds) of a request.")
     .register()
 
   val phase1NacksSentTotal: Counter = collectors.counter
     .build()
-    .name("matchmakermultipaxos_acceptor_phase1_nacks_sent_total")
+    .name("rt3multipaxos_acceptor_phase1_nacks_sent_total")
     .help("Total number of nacks sent in Phase 1.")
     .register()
 
   val phase2NacksSentTotal: Counter = collectors.counter
     .build()
-    .name("matchmakermultipaxos_acceptor_phase2_nacks_sent_total")
+    .name("rt3multipaxos_acceptor_phase2_nacks_sent_total")
     .help("Total number of nacks sent in Phase 2.")
     .register()
 
   val stalePersistedTotal: Counter = collectors.counter
     .build()
-    .name("matchmakermultipaxos_acceptor_stale_persisted_total")
+    .name("rt3multipaxos_acceptor_stale_persisted_total")
     .help("Total number of stale Persisted messages received.")
     .register()
 
   val persistedWatermark: Gauge = collectors.gauge
     .build()
-    .name("matchmakermultipaxos_acceptor_persisted_watermark")
+    .name("rt3multipaxos_acceptor_persisted_watermark")
     .help("The persisted watermark.")
     .register()
 
   val phase2aPersistedTotal: Counter = collectors.counter
     .build()
-    .name("matchmakermultipaxos_acceptor_phase2a_persisted_total")
+    .name("rt3multipaxos_acceptor_phase2a_persisted_total")
     .help(
       "Total number of Phase2a messages that an acceptor received for a " +
         "persisted slot."
