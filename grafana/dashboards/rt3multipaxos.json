@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1592700093857,
+  "iteration": 1582409769962,
   "links": [],
   "panels": [
     {
@@ -153,15 +153,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_batcher_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_batcher_requests_latency_count{job=~\"$job\"}[1s])",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 1,
-          "legendFormat": "{{type}} latency (ms) ({{job}}:{{instance}})",
-          "refId": "A"
-        },
-        {
-          "expr": "rate(horizontal_leader_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_leader_requests_latency_count{job=~\"$job\"}[1s])",
+          "expr": "rate(rt3multipaxos_leader_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_leader_requests_latency_count{job=~\"$job\"}[1s])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -169,15 +161,7 @@
           "refId": "B"
         },
         {
-          "expr": "rate(horizontal_proxy_leader_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_proxy_leader_requests_latency_count{job=~\"$job\"}[1s])",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 1,
-          "legendFormat": "{{type}} latency (ms) ({{job}}:{{instance}})",
-          "refId": "C"
-        },
-        {
-          "expr": "rate(horizontal_acceptor_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_acceptor_requests_latency_count{job=~\"$job\"}[1s])",
+          "expr": "rate(rt3multipaxos_acceptor_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_acceptor_requests_latency_count{job=~\"$job\"}[1s])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -185,7 +169,7 @@
           "refId": "D"
         },
         {
-          "expr": "rate(horizontal_replica_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_replica_requests_latency_count{job=~\"$job\"}[1s])",
+          "expr": "rate(rt3multipaxos_replica_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_replica_requests_latency_count{job=~\"$job\"}[1s])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -193,20 +177,20 @@
           "refId": "E"
         },
         {
-          "expr": "rate(horizontal_proxy_replica_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_proxy_replica_requests_latency_count{job=~\"$job\"}[1s])",
+          "expr": "rate(rt3multipaxos_matchmaker_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_matchmaker_requests_latency_count{job=~\"$job\"}[1s])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
           "legendFormat": "{{type}} latency (ms) ({{job}}:{{instance}})",
-          "refId": "F"
+          "refId": "A"
         },
         {
-          "expr": "rate(horizontal_client_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(horizontal_client_requests_latency_count{job=~\"$job\"}[1s])",
+          "expr": "rate(rt3multipaxos_reconfigurer_requests_latency_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_reconfigurer_requests_latency_count{job=~\"$job\"}[1s])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
           "legendFormat": "{{type}} latency (ms) ({{job}}:{{instance}})",
-          "refId": "G"
+          "refId": "C"
         }
       ],
       "thresholds": [],
@@ -293,14 +277,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_leader_requests_total[1s])",
+          "expr": "rate(rt3multipaxos_leader_requests_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{type}} ({{instance}})",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(horizontal_leader_requests_total[1s])) by (instance)",
+          "expr": "sum(rate(rt3multipaxos_leader_requests_total[1s])) by (instance)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total Inbound ({{instance}})",
@@ -363,6 +347,202 @@
         "x": 0,
         "y": 21
       },
+      "id": 25,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "6.1.3",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(rt3multipaxos_matchmaker_requests_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{type}} ({{instance}})",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(rt3multipaxos_matchmaker_requests_total[1s])) by (instance)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Total Inbound ({{instance}})",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Matchmaker Request Throughput",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 26,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "6.1.3",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(rt3multipaxos_reconf[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{type}} ({{instance}})",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(rt3multipaxos_reconfigurer_requests_total[1s])) by (instance)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Total Inbound ({{instance}})",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Reconfigurer Request Throughput",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
       "id": 23,
       "legend": {
         "alignAsTable": false,
@@ -391,14 +571,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_acceptor_requests_total[1s])",
+          "expr": "rate(rt3multipaxos_acceptor_requests_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{type}} ({{instance}})",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(horizontal_acceptor_requests_total[1s])) by (instance)",
+          "expr": "sum(rate(rt3multipaxos_acceptor_requests_total[1s])) by (instance)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total Inbound ({{instance}})",
@@ -459,7 +639,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 42
       },
       "id": 24,
       "legend": {
@@ -489,46 +669,32 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_replica_requests_total[1s])",
+          "expr": "rate(rt3multipaxos_replica_requests_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{type}} ({{instance}})",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(horizontal_replica_requests_total[1s])) by (instance)",
+          "expr": "sum(rate(rt3multipaxos_replica_requests_total[1s])) by (instance)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total Inbound ({{instance}})",
           "refId": "B"
         },
         {
-          "expr": "sum(rate(horizontal_replica_chosen_watermarks_sent_total[1s])) by (instance)",
+          "expr": "sum(rate(rt3multipaxos_replica_chosen_watermarks_sent_total[1s])) by (instance)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Chosen watermarks sent ({{instance}})",
           "refId": "C"
         },
         {
-          "expr": "sum(rate(horizontal_replica_recovers_sent_total[1s])) by (instance)",
+          "expr": "sum(rate(rt3multipaxos_replica_recovers_sent_total[1s])) by (instance)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Recovers sent ({{instance}})",
           "refId": "D"
-        },
-        {
-          "expr": "rate(horizontal_replica_deferred_reads_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Deferred reads ({{instance}})",
-          "refId": "E"
-        },
-        {
-          "expr": "rate(horizontal_replica_executed_reads_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Executed reads ({{instance}})",
-          "refId": "F"
         }
       ],
       "thresholds": [],
@@ -583,7 +749,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 49
       },
       "id": 6,
       "legend": {
@@ -610,60 +776,46 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_client_replies_received_total[1s])",
+          "expr": "rate(rt3multipaxos_client_responses_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Good Responses ({{instance}})",
           "refId": "C"
         },
         {
-          "expr": "sum(rate(horizontal_client_replies_received_total[1s]))",
+          "expr": "sum(rate(rt3multipaxos_client_responses_total[1s]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total Good Reponses",
           "refId": "D"
         },
         {
-          "expr": "rate(horizontal_client_stale_client_replies_received_total[1s])",
+          "expr": "rate(rt3multipaxos_client_unpending_responses_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Stale Responses ({{instance}})",
+          "legendFormat": "Unpending Responses ({{instance}})",
           "refId": "G"
         },
         {
-          "expr": "sum(rate(horizontal_client_stale_client_replies_received_total[1s]))",
+          "expr": "sum(rate(rt3multipaxos_client_unpending_responses_total[1s]))",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Total Stale Reponses",
+          "legendFormat": "Total Unpending Reponses",
           "refId": "H"
         },
         {
-          "expr": "rate(horizontal_client_client_requests_sent_total[1s])",
+          "expr": "rate(rt3multipaxos_client_requests_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Requests sent ({{instance}})",
           "refId": "I"
         },
         {
-          "expr": "sum(rate(horizontal_client_client_requests_sent_total[1s]))",
+          "expr": "sum(rate(rt3multipaxos_client_requests_total[1s]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total requests sent",
           "refId": "J"
-        },
-        {
-          "expr": "rate(horizontal_client_requests_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{type}} ({{instance}})",
-          "refId": "A"
-        },
-        {
-          "expr": "sum(rate(horizontal_client_requests_total{type=\"ReadReply\"}[1s]))",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Total ReadReply ({{instance}})",
-          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -718,7 +870,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 56
       },
       "id": 4,
       "legend": {
@@ -745,46 +897,32 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_replica_redundantly_chosen_total[1s])",
+          "expr": "rate(rt3multipaxos_replica_executed_log_entries_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Redundantly Chosen (({{instance}})",
+          "legendFormat": "Executed log entries (type={{type}}) ({{instance}})",
           "refId": "A"
         },
         {
-          "expr": "rate(horizontal_replica_executed_unique_commands_total[1s])",
+          "expr": "rate(rt3multipaxos_replica_executed_commands_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Executed unique commands ({{instance}})",
+          "legendFormat": "Executed commands ({{instance}})",
           "refId": "G"
         },
         {
-          "expr": "rate(horizontal_replica_executed_duplicate_commands_total[1s])",
+          "expr": "rate(rt3multipaxos_replica_redundantly_chosen_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Executed duplicate commands ({{instance}})",
+          "legendFormat": "Redundantly chosen commands ({{instance}})",
           "refId": "B"
         },
         {
-          "expr": "rate(horizontal_replica_executed_noops_total[1s])",
+          "expr": "rate(rt3multipaxos_replica_reduntantly_executed_commands_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Executed noops ({{instance}})",
+          "legendFormat": "Redundantly executed commands ({{instance}})",
           "refId": "C"
-        },
-        {
-          "expr": "rate(horizontal_replica_executed_configurations_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Executed configurations ({{instance}})",
-          "refId": "D"
-        },
-        {
-          "expr": "rate(horizontal_replica_executed_unique_commands_total[1s]) + \nrate(horizontal_replica_executed_duplicate_commands_total[1s]) + \nrate(horizontal_replica_executed_noops_total[1s]) + \nrate(horizontal_replica_executed_configurations_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Total executed (({{instance}})",
-          "refId": "E"
         }
       ],
       "thresholds": [],
@@ -831,209 +969,6 @@
     {
       "aliasColors": {},
       "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "description": "",
-      "fill": 1,
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 50
-      },
-      "id": 27,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "hideZero": false,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pluginVersion": "6.1.3",
-      "pointradius": 1,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "rate(horizontal_leader_alpha_overflow_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Alpha overflow ({{instance}})",
-          "refId": "A"
-        },
-        {
-          "expr": "rate(horizontal_leader_no_chunks_found_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "No chunks found ({{instance}})",
-          "refId": "B"
-        },
-        {
-          "expr": "horizontal_leader_pending_values",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Pending values ({{instance}})",
-          "refId": "C"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Alpha Overflows",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "description": "",
-      "fill": 1,
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 57
-      },
-      "id": 28,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "hideZero": false,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pluginVersion": "6.1.3",
-      "pointradius": 1,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "rate(horizontal_leader_become_leader_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Become leader ({{instance}})",
-          "refId": "A"
-        },
-        {
-          "expr": "rate(horizontal_leader_stop_being_leader_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Stop being leader ({{instance}})",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Leader Changes",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
@@ -1044,7 +979,7 @@
         "x": 0,
         "y": 64
       },
-      "id": 7,
+      "id": 28,
       "legend": {
         "avg": false,
         "current": false,
@@ -1069,32 +1004,39 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_leader_resend_phase1as_total[1s])",
+          "expr": "rate(rt3multipaxos_leader_become_i_i_plus_one_leader_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Resend Phase1as ({{instance}})",
+          "legendFormat": "i/i+1 reconfigurations (type={{successful}}) ({{instance}})",
           "refId": "A"
         },
         {
-          "expr": "rate(horizontal_leader_resend_phase2as_total[1s])",
+          "expr": "rate(rt3multipaxos_leader_gc_done_during_leader_change[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Resend Phase2as ({{instance}})",
+          "legendFormat": "GC done during leader change ({{instance}})",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(rt3multipaxos_leader_become_leader_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Become leader ({{instance}})",
           "refId": "C"
         },
         {
-          "expr": "rate(horizontal_client_resend_client_request_total[1s])",
+          "expr": "rate(rt3multipaxos_leader_stop_being_leader_total[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Resend client requests ({{instance}})",
-          "refId": "B"
+          "legendFormat": "Stop being leader ({{instance}})",
+          "refId": "D"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Timeouts",
+      "title": "Leader Changes",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1144,7 +1086,7 @@
         "x": 0,
         "y": 72
       },
-      "id": 26,
+      "id": 29,
       "legend": {
         "avg": false,
         "current": false,
@@ -1169,74 +1111,411 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(horizontal_acceptor_phase1_nacks_sent_total[1s])",
+          "expr": "rate(rt3multipaxos_leader_reconfiguration_latency_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_leader_reconfiguration_latency_count{job=~\"$job\"}[1s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Phase 1 nacks sent (({{instance}})",
-          "refId": "E"
-        },
-        {
-          "expr": "rate(horizontal_acceptor_phase2_nacks_sent_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Phase 2 nacks (({{instance}})",
+          "legendFormat": "Reconfiguration latency (phase={{phase}}) ({{instance}})",
           "refId": "A"
-        },
-        {
-          "expr": "rate(horizontal_leader_stale_phase1bs_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Stale Phase1bs (({{instance}})",
-          "refId": "B"
-        },
-        {
-          "expr": "rate(horizontal_leader_stale_phase2bs_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Stale Phase2bs (({{instance}})",
-          "refId": "C"
-        },
-        {
-          "expr": "rate(horizontal_leader_phase2b_already_chosen_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Phase2b already chosen (({{instance}})",
-          "refId": "D"
-        },
-        {
-          "expr": "rate(horizontal_leader_stale_nack_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Stale nacks (({{instance}})",
-          "refId": "F"
-        },
-        {
-          "expr": "rate(horizontal_leader_ignored_recover_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Ignored recover (({{instance}})",
-          "refId": "G"
-        },
-        {
-          "expr": "rate(horizontal_replica_recovers_sent_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Recovers sent (({{instance}})",
-          "refId": "H"
-        },
-        {
-          "expr": "rate(horizontal_replica_failed_recover_total[1s])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Failed recovers (({{instance}})",
-          "refId": "I"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Rare Events",
+      "title": "Reconfiguration Latencies",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 80
+      },
+      "id": 30,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(rt3multipaxos_leader_previous_number_of_rounds_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Previous number of rounds (n={{n}}) ({{instance}})",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(rt3multipaxos_leader_phase1_num_entries_sum{job=~\"$job\"}[1s])\n/ rate(matchmakermultipaxos_leader_phase1_num_entries_count{job=~\"$job\"}[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Phase 1 number of entries ({{instance}})",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Reconfiguration Sizes",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 88
+      },
+      "id": 27,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(rt3multipaxos_acceptor_phase1_nacks_sent_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Phase 1 nacks sent ({{instance}})",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(rt3multipaxos_acceptor_phase2_nacks_sent_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Phase 2 nacks sent ({{instance}})",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(rt3multipaxos_matchmaker_nacks_sent_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Matchmaker nacks sent ({{instance}})",
+          "refId": "C"
+        },
+        {
+          "expr": "rate(rt3multipaxos_leader_stale_acceptor_nack_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Stale acceptor nacks received ({{instance}})",
+          "refId": "D"
+        },
+        {
+          "expr": "rate(rt3multipaxos_leader_stale_matchmaker_nack_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Stale matchmaker nacks received ({{instance}})",
+          "refId": "E"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Nack Throughput",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 96
+      },
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(rt3multipaxos_leader_resend_phase1as_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Resend Phase1as ({{instance}})",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(rt3multipaxos_leader_leader_changes_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Leader changes ({{instance}})",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(rt3multipaxos_leader_resend_phase2as_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Resend Phase2as ({{instance}})",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Leader Timeout Rate",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 104
+      },
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "rate(rt3multipaxos_client_resend_client_request_total[1s])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Resend client request ({{instance}})",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Client Timeout Rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1283,6 +1562,8 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
+          "tags": [],
           "text": "jvm_gc_collection_seconds_sum",
           "value": "jvm_gc_collection_seconds_sum"
         },
@@ -1294,186 +1575,6 @@
         "multi": false,
         "name": "metric",
         "options": [
-          {
-            "selected": false,
-            "text": "horizontal_acceptor_phase1_nacks_sent_total",
-            "value": "horizontal_acceptor_phase1_nacks_sent_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_acceptor_phase2_nacks_sent_total",
-            "value": "horizontal_acceptor_phase2_nacks_sent_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_acceptor_requests_latency_count",
-            "value": "horizontal_acceptor_requests_latency_count"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_acceptor_requests_latency_sum",
-            "value": "horizontal_acceptor_requests_latency_sum"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_acceptor_requests_total",
-            "value": "horizontal_acceptor_requests_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_client_requests_sent_total",
-            "value": "horizontal_client_client_requests_sent_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_replies_received_total",
-            "value": "horizontal_client_replies_received_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_requests_latency_count",
-            "value": "horizontal_client_requests_latency_count"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_requests_latency_sum",
-            "value": "horizontal_client_requests_latency_sum"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_requests_total",
-            "value": "horizontal_client_requests_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_resend_client_request_total",
-            "value": "horizontal_client_resend_client_request_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_client_stale_client_replies_received_total",
-            "value": "horizontal_client_stale_client_replies_received_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_active_leader_received_chosen_total",
-            "value": "horizontal_leader_active_leader_received_chosen_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_alpha_overflow_total",
-            "value": "horizontal_leader_alpha_overflow_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_become_leader_total",
-            "value": "horizontal_leader_become_leader_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_ignored_recover_total",
-            "value": "horizontal_leader_ignored_recover_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_no_chunks_found_total",
-            "value": "horizontal_leader_no_chunks_found_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_phase2b_already_chosen_total",
-            "value": "horizontal_leader_phase2b_already_chosen_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_requests_latency_count",
-            "value": "horizontal_leader_requests_latency_count"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_requests_latency_sum",
-            "value": "horizontal_leader_requests_latency_sum"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_requests_total",
-            "value": "horizontal_leader_requests_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_resend_phase1as_total",
-            "value": "horizontal_leader_resend_phase1as_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_stale_acceptor_nack_total",
-            "value": "horizontal_leader_stale_acceptor_nack_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_stale_phase1bs_total",
-            "value": "horizontal_leader_stale_phase1bs_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_stale_phase2bs_total",
-            "value": "horizontal_leader_stale_phase2bs_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_leader_stop_being_leader_total",
-            "value": "horizontal_leader_stop_being_leader_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_executed_configurations_total",
-            "value": "horizontal_replica_executed_configurations_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_executed_duplicate_commands_total",
-            "value": "horizontal_replica_executed_duplicate_commands_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_executed_noops_total",
-            "value": "horizontal_replica_executed_noops_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_executed_unique_commands_total",
-            "value": "horizontal_replica_executed_unique_commands_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_failed_recover_total",
-            "value": "horizontal_replica_failed_recover_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_recovers_sent_total",
-            "value": "horizontal_replica_recovers_sent_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_redundantly_chosen_total",
-            "value": "horizontal_replica_redundantly_chosen_total"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_requests_latency_count",
-            "value": "horizontal_replica_requests_latency_count"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_requests_latency_sum",
-            "value": "horizontal_replica_requests_latency_sum"
-          },
-          {
-            "selected": false,
-            "text": "horizontal_replica_requests_total",
-            "value": "horizontal_replica_requests_total"
-          },
           {
             "selected": false,
             "text": "jvm_buffer_pool_capacity_bytes",
@@ -1601,6 +1702,281 @@
           },
           {
             "selected": false,
+            "text": "rt3multipaxos_acceptor_persisted_watermark",
+            "value": "rt3multipaxos_acceptor_persisted_watermark"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_phase1_nacks_sent_total",
+            "value": "rt3multipaxos_acceptor_phase1_nacks_sent_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_phase2_nacks_sent_total",
+            "value": "rt3multipaxos_acceptor_phase2_nacks_sent_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_phase2a_persisted_total",
+            "value": "rt3multipaxos_acceptor_phase2a_persisted_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_requests_latency_count",
+            "value": "rt3multipaxos_acceptor_requests_latency_count"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_requests_latency_sum",
+            "value": "rt3multipaxos_acceptor_requests_latency_sum"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_requests_total",
+            "value": "rt3multipaxos_acceptor_requests_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_acceptor_stale_persisted_total",
+            "value": "rt3multipaxos_acceptor_stale_persisted_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_client_requests_total",
+            "value": "rt3multipaxos_client_requests_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_client_resend_client_request_total",
+            "value": "rt3multipaxos_client_resend_client_request_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_client_responses_total",
+            "value": "rt3multipaxos_client_responses_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_client_unpending_responses_total",
+            "value": "rt3multipaxos_client_unpending_responses_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_become_i_i_plus_one_leader_total",
+            "value": "rt3multipaxos_leader_become_i_i_plus_one_leader_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_become_leader_total",
+            "value": "rt3multipaxos_leader_become_leader_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_gc_done_during_leader_change",
+            "value": "rt3multipaxos_leader_gc_done_during_leader_change"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_phase1_num_entries_count",
+            "value": "rt3multipaxos_leader_phase1_num_entries_count"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_phase1_num_entries_sum",
+            "value": "rt3multipaxos_leader_phase1_num_entries_sum"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_phase2b_already_chosen_total",
+            "value": "rt3multipaxos_leader_phase2b_already_chosen_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_previous_number_of_rounds_total",
+            "value": "rt3multipaxos_leader_previous_number_of_rounds_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_reconfiguration_latency_count",
+            "value": "rt3multipaxos_leader_reconfiguration_latency_count"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_reconfiguration_latency_sum",
+            "value": "rt3multipaxos_leader_reconfiguration_latency_sum"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_requests_latency_count",
+            "value": "rt3multipaxos_leader_requests_latency_count"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_requests_latency_sum",
+            "value": "rt3multipaxos_leader_requests_latency_sum"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_requests_total",
+            "value": "rt3multipaxos_leader_requests_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_executed_watermark_requests_total",
+            "value": "rt3multipaxos_leader_resend_executed_watermark_requests_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_garbage_collect_total",
+            "value": "rt3multipaxos_leader_resend_garbage_collect_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_match_requests_total",
+            "value": "rt3multipaxos_leader_resend_match_requests_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_persisted_total",
+            "value": "rt3multipaxos_leader_resend_persisted_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_phase1as_total",
+            "value": "rt3multipaxos_leader_resend_phase1as_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_phase2as_total",
+            "value": "rt3multipaxos_leader_resend_phase2as_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_resend_reconfigure_total",
+            "value": "rt3multipaxos_leader_resend_reconfigure_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_stale_acceptor_nack_total",
+            "value": "rt3multipaxos_leader_stale_acceptor_nack_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_stale_match_replies_total",
+            "value": "rt3multipaxos_leader_stale_match_replies_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_stale_matchmaker_nack_total",
+            "value": "rt3multipaxos_leader_stale_matchmaker_nack_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_stale_phase1bs_total",
+            "value": "rt3multipaxos_leader_stale_phase1bs_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_stale_phase2bs_total",
+            "value": "rt3multipaxos_leader_stale_phase2bs_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_leader_stop_being_leader_total",
+            "value": "rt3multipaxos_leader_stop_being_leader_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_matchmaker_nacks_sent_total",
+            "value": "rt3multipaxos_matchmaker_nacks_sent_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_matchmaker_requests_latency_count",
+            "value": "rt3multipaxos_matchmaker_requests_latency_count"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_matchmaker_requests_latency_sum",
+            "value": "rt3multipaxos_matchmaker_requests_latency_sum"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_matchmaker_requests_total",
+            "value": "rt3multipaxos_matchmaker_requests_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_matchmaker_stale_garbage_collects_total",
+            "value": "rt3multipaxos_matchmaker_stale_garbage_collects_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_reconfigurer_resend_bootstraps_total",
+            "value": "rt3multipaxos_reconfigurer_resend_bootstraps_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_reconfigurer_resend_matchPhase1as_total",
+            "value": "rt3multipaxos_reconfigurer_resend_matchPhase1as_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_reconfigurer_resend_matchPhase2as_total",
+            "value": "rt3multipaxos_reconfigurer_resend_matchPhase2as_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_reconfigurer_resend_stops_total",
+            "value": "rt3multipaxos_reconfigurer_resend_stops_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_executed_commands_total",
+            "value": "rt3multipaxos_replica_executed_commands_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_executed_log_entries_total",
+            "value": "rt3multipaxos_replica_executed_log_entries_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_failed_recover_total",
+            "value": "rt3multipaxos_replica_failed_recover_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_recovers_sent_total",
+            "value": "rt3multipaxos_replica_recovers_sent_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_redundantly_chosen_total",
+            "value": "rt3multipaxos_replica_redundantly_chosen_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_reduntantly_executed_commands_total",
+            "value": "rt3multipaxos_replica_reduntantly_executed_commands_total"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_requests_latency_count",
+            "value": "rt3multipaxos_replica_requests_latency_count"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_requests_latency_sum",
+            "value": "rt3multipaxos_replica_requests_latency_sum"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica_requests_total",
+            "value": "rt3multipaxos_replica_requests_total"
+          },
+          {
+            "selected": false,
             "text": "process_cpu_seconds_total",
             "value": "process_cpu_seconds_total"
           },
@@ -1664,10 +2040,11 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "tags": [],
-          "text": "All",
+          "text": "rt3multipaxos_leader",
           "value": [
-            "$__all"
+            "rt3multipaxos_leader"
           ]
         },
         "datasource": "Prometheus",
@@ -1679,29 +2056,39 @@
         "name": "job",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "All",
             "value": "$__all"
           },
           {
             "selected": false,
-            "text": "horizontal_acceptor",
-            "value": "horizontal_acceptor"
+            "text": "rt3multipaxos_acceptor",
+            "value": "rt3multipaxos_acceptor"
           },
           {
             "selected": false,
-            "text": "horizontal_client",
-            "value": "horizontal_client"
+            "text": "rt3multipaxos_client",
+            "value": "rt3multipaxos_client"
+          },
+          {
+            "selected": true,
+            "text": "rt3multipaxos_leader",
+            "value": "rt3multipaxos_leader"
           },
           {
             "selected": false,
-            "text": "horizontal_leader",
-            "value": "horizontal_leader"
+            "text": "rt3multipaxos_matchmaker",
+            "value": "rt3multipaxos_matchmaker"
           },
           {
             "selected": false,
-            "text": "horizontal_replica",
-            "value": "horizontal_replica"
+            "text": "rt3multipaxos_reconfigurer",
+            "value": "rt3multipaxos_reconfigurer"
+          },
+          {
+            "selected": false,
+            "text": "rt3multipaxos_replica",
+            "value": "rt3multipaxos_replica"
           }
         ],
         "query": "label_values(job)",
@@ -1746,8 +2133,8 @@
     ]
   },
   "time": {
-    "from": "2020-06-21T00:37:10.889Z",
-    "to": "2020-06-21T00:39:04.559Z"
+    "from": "2020-02-22T22:13:37.989Z",
+    "to": "2020-02-22T22:14:00.738Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1775,7 +2162,7 @@
     ]
   },
   "timezone": "",
-  "title": "Horizontal",
-  "uid": "6Du2BIWMz",
-  "version": 5
+  "title": "MatchmakerMultiPaxos",
+  "uid": "9Kdek-QWk",
+  "version": 9
 }

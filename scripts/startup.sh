@@ -27,7 +27,7 @@ function mount_filestore() {
     # Steps from: https://cloud.google.com/filestore/docs/mounting-fileshares#linux:-etcfstab
 
     sudo apt-get -yq update &&
-    sudo apt-get -yq install nfs-common openjdk-11-jdk
+    sudo apt-get -yq install nfs-common openjdk-8-jdk
     
     # make a local directory to map to the Filestore file share
     sudo mkdir -p mnt/csi699

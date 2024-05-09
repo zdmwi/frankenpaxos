@@ -287,7 +287,11 @@ class RT3MultiPaxosSuite(benchmark.Suite[Input, Output]):
             if input.monitored:
                 cmd += [
                     '-verbose:gc',
-                    '-Xlog:gc*',
+                    '-XX:-PrintGC',
+                    '-XX:+PrintHeapAtGC',
+                    '-XX:+PrintGCDetails',
+                    '-XX:+PrintGCTimeStamps',
+                    '-XX:+PrintGCDateStamps',
                 ]
             return cmd
 
